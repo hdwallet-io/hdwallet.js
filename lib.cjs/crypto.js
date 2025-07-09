@@ -17,9 +17,12 @@ exports.hash160 = hash160;
 exports.crc32 = crc32;
 exports.xmodemCrc = xmodemCrc;
 exports.pbkdf2HmacSha512 = pbkdf2HmacSha512;
+const tslib_1 = require("tslib");
 const hmac_1 = require("@noble/hashes/hmac");
-// @ts-ignore: no declaration file for '@taichunmin/crc'
-const crc_1 = require("@taichunmin/crc");
+// @ts-ignore: no declaration file for '@taichunmin/crc/crc32'
+const crc32_1 = tslib_1.__importDefault(require("@taichunmin/crc/crc32"));
+// @ts-ignore: no declaration file for '@taichunmin/crc/crc16xmodem'
+const crc16xmodem_1 = tslib_1.__importDefault(require("@taichunmin/crc/crc16xmodem"));
 const sha2_1 = require("@noble/hashes/sha2");
 const sha3_1 = require("@noble/hashes/sha3");
 const blake2_1 = require("@noble/hashes/blake2");
@@ -113,11 +116,11 @@ function hash160(data) {
     return ripemd160(sha);
 }
 function crc32(data) {
-    const num = (0, crc_1.crc32)((0, utils_1.toBuffer)(data)) >>> 0;
+    const num = (0, crc32_1.default)((0, utils_1.toBuffer)(data));
     return (0, utils_1.integerToBytes)(num, 4);
 }
 function xmodemCrc(data) {
-    const num = (0, crc_1.crc16xmodem)((0, utils_1.toBuffer)(data)) & 0xffff;
+    const num = (0, crc16xmodem_1.default)((0, utils_1.toBuffer)(data));
     return (0, utils_1.integerToBytes)(num, 2);
 }
 function pbkdf2HmacSha512(password, salt, iterations, keyLen = 64) {

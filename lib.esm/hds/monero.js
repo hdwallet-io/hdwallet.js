@@ -24,7 +24,7 @@ export class MoneroHD extends HD {
     }) {
         super(options);
         const network = ensureTypeMatch(options.network, Network, { otherTypes: ['string'] });
-        const networkType = network.isValid ? network.value.getName() : options.network;
+        const networkType = network.isValid ? network.value.NAME : options.network;
         if (!Monero.NETWORKS.isNetwork(networkType)) {
             throw new NetworkError(`Wrong Monero network`, {
                 expected: Monero.NETWORKS.getNetworks(), got: options.network
@@ -147,7 +147,7 @@ export class MoneroHD extends HD {
             spendPublicKey: this.spendPublicKey,
             viewPublicKey: this.viewPublicKey
         }, {
-            network: this.network.name.toLowerCase(),
+            network: this.network.NAME,
             addressType: Monero.ADDRESS_TYPES.STANDARD
         });
     }
@@ -158,7 +158,7 @@ export class MoneroHD extends HD {
             spendPublicKey: this.spendPublicKey,
             viewPublicKey: this.viewPublicKey
         }, {
-            network: this.network.name.toLowerCase(),
+            network: this.network.NAME,
             addressType: Monero.ADDRESS_TYPES.INTEGRATED,
             paymentID: paymentID ?? this.paymentID
         });
@@ -172,7 +172,7 @@ export class MoneroHD extends HD {
             spendPublicKey: spendPublicKey,
             viewPublicKey: viewPublicKey
         }, {
-            network: this.network.name.toLowerCase(),
+            network: this.network.NAME,
             addressType: Monero.ADDRESS_TYPES.SUB_ADDRESS
         });
     }

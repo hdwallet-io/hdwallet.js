@@ -1,6 +1,6 @@
 {
   "name": "hdwallet",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host=0.0.0.0 --port 4200",

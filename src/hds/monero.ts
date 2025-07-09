@@ -213,7 +213,7 @@ export class MoneroHD extends HD {
         spendPublicKey: this.spendPublicKey,
         viewPublicKey: this.viewPublicKey
       }, {
-        network: (this.network as typeof Network).name.toLowerCase(),
+        network: (this.network as typeof Network).NAME,
         addressType: Monero.ADDRESS_TYPES.STANDARD
       }
     );
@@ -226,7 +226,7 @@ export class MoneroHD extends HD {
         spendPublicKey: this.spendPublicKey,
         viewPublicKey: this.viewPublicKey
       }, {
-        network: (this.network as typeof Network).name.toLowerCase(),
+        network: (this.network as typeof Network).NAME,
         addressType: Monero.ADDRESS_TYPES.INTEGRATED,
         paymentID: paymentID ?? this.paymentID
       }
@@ -249,7 +249,7 @@ export class MoneroHD extends HD {
         spendPublicKey: spendPublicKey,
         viewPublicKey: viewPublicKey
       }, {
-        network: (this.network as typeof Network).name.toLowerCase(),
+        network: (this.network as typeof Network).NAME,
         addressType: Monero.ADDRESS_TYPES.SUB_ADDRESS
       }
     );

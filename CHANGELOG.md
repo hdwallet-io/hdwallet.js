@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.0.0-beta.5](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.5) (2025-07-09)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.4...1.0.0-beta.5)
+
+**Enhancement:**
+
+- Update: separate import to reduce bundle size of @taichunmin/crc package by [@taichunmin](https://github.com/taichunmin)
+
+**Fix Bugs:**
+
+- Fix: Monero HD get network name issue
+
+**Closed Pull-requests:**
+
+- [[#2](https://github.com/hdwallet-io/hdwallet.js/pull/2)] Update @taichunmin/crc
+
 ## [1.0.0-beta.4](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.4) (2025-07-06)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.3...1.0.0-beta.4)

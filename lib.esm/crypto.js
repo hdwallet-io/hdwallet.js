@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 import { hmac } from '@noble/hashes/hmac';
-// @ts-ignore: no declaration file for '@taichunmin/crc'
-import { crc32 as crc32Hex, crc16xmodem as crc16xmodemHex } from '@taichunmin/crc';
+// @ts-ignore: no declaration file for '@taichunmin/crc/crc32'
+import numCrc32 from '@taichunmin/crc/crc32';
+// @ts-ignore: no declaration file for '@taichunmin/crc/crc16xmodem'
+import numCrc16xmodem from '@taichunmin/crc/crc16xmodem';
 import { sha256 as nobleSha256, sha512 as nobleSha512, sha512_256 as nobleSha512_256 } from '@noble/hashes/sha2';
 import { sha3_256 as nobleSha3_256, keccak_256 as nobleKeccak256 } from '@noble/hashes/sha3';
 import { blake2b as nobleBlake2b } from '@noble/hashes/blake2';
@@ -88,11 +90,11 @@ export function hash160(data) {
     return ripemd160(sha);
 }
 export function crc32(data) {
-    const num = crc32Hex(toBuffer(data)) >>> 0;
+    const num = numCrc32(toBuffer(data));
     return integerToBytes(num, 4);
 }
 export function xmodemCrc(data) {
-    const num = crc16xmodemHex(toBuffer(data)) & 0xffff;
+    const num = numCrc16xmodem(toBuffer(data));
     return integerToBytes(num, 2);
 }
 export function pbkdf2HmacSha512(password, salt, iterations, keyLen = 64) {

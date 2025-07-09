@@ -1,6 +1,6 @@
 {
   "name": "@hdwallet/core",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "description": "A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.",
   "author": "Meheret Tesfaye Batu",
   "email": "meherett.batu@gmail.com",

@@ -8,7 +8,8 @@ import { PUBLIC_KEY_TYPES, SEMANTICS } from '../../src/consts';
 const bip141HD: BIP141HD = new BIP141HD({
   ecc: Cryptocurrency.ECC,
   publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-  wifPrefix: Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX
+  wifPrefix: Cryptocurrency.NETWORKS.MAINNET.WIF_PREFIX,
+  semantic: SEMANTICS.P2WSH_IN_P2SH
 });
 
 // bip141HD.fromSemantic(SEMANTICS.P2WSH_IN_P2SH)

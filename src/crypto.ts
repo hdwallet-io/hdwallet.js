@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 
 import { hmac } from '@noble/hashes/hmac';
+// @ts-ignore: no declaration file for '@taichunmin/crc/crc32'
 import numCrc32 from '@taichunmin/crc/crc32';
+// @ts-ignore: no declaration file for '@taichunmin/crc/crc16xmodem'
 import numCrc16xmodem from '@taichunmin/crc/crc16xmodem';
 import {
   sha256 as nobleSha256, sha512 as nobleSha512, sha512_256 as nobleSha512_256
