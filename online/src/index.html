@@ -6,8 +6,73 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1DXD5QC3G4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-1DXD5QC3G4');
+  </script>
 </head>
+<style>
+  #splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .splash-spinner {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    background: linear-gradient(0deg, rgba(131, 185, 255, 0.2) 33%, #83B9FF 100%);
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+
+  .splash-spinner::after {
+    content: '';
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #000000;
+  }
+
+  @keyframes rotation {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg)}
+  }
+
+  #app-root {
+    opacity: 0;
+  }
+
+  #app-root.visible {
+    opacity: 1;
+  }
+</style>
 <body>
-  <app-root></app-root>
+  <div id="splash-screen">
+    <div class="splash-spinner"></div>
+  </div>
+  <div id="app-root">
+    <app-root></app-root>
+  </div>
 </body>
 </html>
