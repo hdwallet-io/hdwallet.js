@@ -46,7 +46,7 @@ export class MoneroHD extends HD {
     super(options);
 
     const network = ensureTypeMatch(options.network, Network, { otherTypes: ['string'] });
-    const networkType = network.isValid ? network.value.getName() : options.network;
+    const networkType = network.isValid ? network.value.NAME : options.network;
     if (!Monero.NETWORKS.isNetwork(networkType)) {
       throw new NetworkError(`Wrong Monero network`, {
         expected: Monero.NETWORKS.getNetworks(), got: options.network
