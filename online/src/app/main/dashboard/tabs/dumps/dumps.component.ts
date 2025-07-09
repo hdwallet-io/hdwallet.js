@@ -218,7 +218,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     } else if (['Electrum-V1', 'Electrum-V2'].includes(hd)) {
       this.updateFormGroup('include', 'at:change,at:address,address,public-key,wif', emitEvent, timeout);
     } else if (hd === 'Monero') {
-      this.updateFormGroup('include', 'at:minor,at:major,sub_address', emitEvent, timeout);
+      this.updateFormGroup('include', 'at:minor,at:major,sub-address', emitEvent, timeout);
     }
     if (['ETH', 'ARB', 'OP', 'XDC'].includes(symbol)) {
       this.updateFormGroup('include', 'at:path,address,public-key,private-key', emitEvent, timeout);

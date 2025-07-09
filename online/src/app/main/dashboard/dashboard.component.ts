@@ -86,7 +86,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     } else if (action === 'passphrase') {
       this.toolsComponent.passphraseComponent.initFromURL(action);
     } else if (action && action.startsWith('dumps') && this.selectedTab.value.startsWith('dumps')) {
-      const actions: string[] = action.split("/");
+      const actions: string[] = action.split('?')[0].split('/');
       this.dumpsComponent.initFromURL(actions[1], actions[2]);
     }
     this.storageService.clearStorage('action');
