@@ -8,11 +8,13 @@
       </div>
       <div class="flex justify-end items-center native-font">
         <div class="flex native-font gap-2.5">
-          <custom-combobox id="tabs"
-            [customOptions]="tabs"
-            [customSelectedOption]="selectedTab"
-            (customSelectedOptionChange)="selectTab($event)"
-          ></custom-combobox>
+          <fieldset [disabled]="!toBoolean(storageService.getStorage('disclaimer'))">
+            <custom-combobox id="tabs"
+                             [customOptions]="tabs"
+                             [customSelectedOption]="selectedTab"
+                             (customSelectedOptionChange)="selectTab($event)"
+            ></custom-combobox>
+          </fieldset>
           <button type="button" class="custom-button sm:hidden" (click)="terminalService.showTerminal.set(true)">{{'>_'}}</button>
         </div>
       </div>
@@ -65,7 +67,7 @@
   <fieldset *ngIf="!terminalService.showTerminal()"
     [disabled]="!toBoolean(storageService.getStorage('disclaimer'))"
     class="yo-footer flex-none default-font" style="margin-top: 5px">
-    <div class="px-3" style="border-left: solid 3.5px #83b9ff">
+    <div class="px-3 yo-footer-os">
       <h2 class="native-font uppercase">This project is 100% open-source code</h2>
       <small>Powered by <a class="customLink" style="width: 100%" target="_blank" href="https://talonlab.org">
        Talon-Lab

@@ -5,12 +5,25 @@
   padding: 15px;
 }
 
+.yo-footer-os {
+  border-left: solid 3.5px #83b9ff
+}
+
+fieldset[disabled] .yo-footer-os {
+  border-left: solid 3.5px rgba(255, 255, 255, 0.25);
+}
+
 ::ng-deep #tabs .custom-combobox {
   background: transparent;
   min-width: 80px;
   border-bottom: 3px solid #83B9FFFF;
   border-radius: 0;
   padding: 0;
+}
+
+fieldset[disabled] ::ng-deep #tabs .custom-combobox {
+  border-bottom: 3px solid rgba(255, 255, 255, 0.25);
+  min-width: 85px;
 }
 
 ::ng-deep #tabs button {

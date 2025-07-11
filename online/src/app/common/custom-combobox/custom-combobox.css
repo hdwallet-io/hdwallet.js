@@ -82,7 +82,7 @@ fieldset[disabled] * .toggle-icon {
   background-color: rgb(25, 30, 36, 0.7);
 }
 
-.custom-combobox:disabled #hdwSelectedOptionName {
+.custom-combobox:disabled #customSelectedOptionName {
   color: rgb(255, 255, 255, 0.5);
 }
 
