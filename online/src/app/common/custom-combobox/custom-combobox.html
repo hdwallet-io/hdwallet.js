@@ -1,10 +1,11 @@
-<div class="custom-combobox" (click)="toggleDropdown()" [ngClass]="{'bs': isOpen}">
+<fieldset class="custom-combobox" [disabled]="isFieldsetDisabled"
+          (click)="toggleDropdown()" [ngClass]="{'bs': isOpen}" >
   <button type="button" class="items-center w-full h-full" #dropdownButton>
     <div class="flex items-center justify-between w-full">
       <div id="customSelectedOptionName" class="whitespace-nowrap overflow-hidden text-ellipsis hyphens-none">
         {{ isFieldsetDisabled ? '(Select)' : customSelectedOptionName }}
       </div>
-      <span class="toggle-icon" [ngClass]="{'rotate': isOpen}" style="flex-shrink: 0;">
+      <span [ngClass]="{'rotate': isOpen}" style="flex-shrink: 0;">
         <svg width="20px" height="20px" viewBox="-2.4 -2.4 28.80 28.80" xmlns="http://www.w3.org/2000/svg" fill="#ffffff" stroke="#ffffff" stroke-width="0.00024000000000000003"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.4800000000000001"/><g id="SVGRepo_iconCarrier"> <rect x="0" fill="none" width="24" height="24"/> <g> <path d="M20 9l-8 8-8-8 1.414-1.414L12 14.172l6.586-6.586"/> </g> </g></svg>
       </span>
     </div>
@@ -18,4 +19,4 @@
       }
     </ul>
   }
-</div>
+</fieldset>

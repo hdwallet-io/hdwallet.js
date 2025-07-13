@@ -73,17 +73,20 @@
   background-color:rgb(16, 21, 27);
 }
 
-fieldset[disabled] * .toggle-icon {
-  pointer-events: none;
-  opacity: 0.5;
+fieldset[disabled] {
+  background-color: rgba(25, 30, 36, 0.7);
+}
+
+fieldset[disabled] svg {
+  fill: rgba(255, 255, 255, 0.5);
 }
 
 .custom-combobox:disabled {
-  background-color: rgb(25, 30, 36, 0.7);
+  /*background-color: rgb(25, 30, 36, 0.7);*/
 }
 
 .custom-combobox:disabled #customSelectedOptionName {
-  color: rgb(255, 255, 255, 0.5);
+  /*color: rgb(255, 255, 255, 0.5);*/
 }
 
 /*.custom-combobox:disabled button {*/

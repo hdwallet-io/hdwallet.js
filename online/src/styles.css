@@ -296,10 +296,6 @@ fieldset[disabled] * {
   pointer-events: none;
 }
 
-fieldset[disabled] svg {
-  opacity: 0.2;
-}
-
 input:disabled,
 fieldset[disabled] input {
   color: rgba(255, 255, 255, 0.5);
