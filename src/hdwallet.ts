@@ -980,7 +980,7 @@ export class HDWallet {
     return excludeKeys(root, exclude);
   }
 
-  getDumps(exclude: string[] = []): Record<string, any> | Record<string, any>[] | null {
+  getDumps(exclude: string[] = []): any {
     if (!this.derivation) return null;
 
     const derivationsList: Record<string, any>[] = [];
