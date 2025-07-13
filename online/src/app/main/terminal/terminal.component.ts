@@ -2,7 +2,7 @@ import { AfterViewInit, Component, computed, ElementRef, Renderer2, Signal } fro
 import { ActivatedRoute } from '@angular/router';
 
 import {
-  syntaxJSONHighlight, syntaxCSVHighlight, replaceHyphen2Underscore, toLowerCase
+  syntaxJSONHighlight, syntaxCSVHighlight, replaceHyphen2Underscore, toLowerCase, toBoolean
 } from '../../../utils';
 import { StorageService } from '../../services/storage/storage.service';
 import { TerminalService } from '../../services/terminal/terminal.service';
@@ -99,4 +99,6 @@ export class TerminalComponent implements AfterViewInit {
     }
     return data;
   }
+
+  protected readonly toBoolean = toBoolean;
 }

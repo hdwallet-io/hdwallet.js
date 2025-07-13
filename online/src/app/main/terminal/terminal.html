@@ -6,6 +6,8 @@
     </button>
   </div>
   <div class="fixed bottom-4 right-4">
-    <button type="button" class="custom-button uppercase" (click)="clear()">Clear</button>
+    <fieldset [disabled]="!toBoolean(storageService.getStorage('disclaimer'))">
+      <button type="button" class="custom-button uppercase" (click)="clear()">Clear</button>
+    </fieldset>
   </div>
 </div>

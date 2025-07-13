@@ -92,6 +92,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.storageService.clearStorage('action');
     this.terminalService.update('clear', null, false);
     this.disabledStateService.setDisabledState(false);
+    setTimeout(() => { this.updateModalHeights() }, 10);
   }
 
   updateModalHeights(): void {
@@ -130,7 +131,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   onResize(event: any): void {
     this.showMobileTerminal = window.innerWidth < 640;
     this.terminalService.update(null, null, false);
-    this.updateModalHeights();
+    setTimeout(() => { this.updateModalHeights() }, 10);
   }
 
   protected readonly toBoolean = toBoolean;
