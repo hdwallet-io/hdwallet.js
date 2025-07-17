@@ -9,10 +9,9 @@
 
 A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.
 
-> The library is designed to be flexible and scalable, making it ideal for developers who need to integrate multi-currency wallet functionalities into their applications. 
-> It supports standard protocols for compatibility with other wallets and services, offering features like secure seed creation, efficient key management, and easy account handling.
->
-> This library simplifies the complexity of blockchain interactions and enhances security for end-users. 
+> This library offers a flexible and scalable solution for developers integrating multi-currency wallet functionality. It adheres to standard protocols for compatibility with other wallets and services, and provides features like secure seed generation, robust key management, and streamlined account control. By simplifying blockchain interactions, it enhances the developer experience and strengthens end-user security.
+> 
+> For Python support, explore [python-hdwallet](https://github.com/hdwallet-io/python-hdwallet), the original implementation of this library. Try it live at https://hdwallet.online, our interactive web playground.
 
 | Features                      | Protocols                                                                                                                                                                                                                                                                                                                                                                                                             |
 |:------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -194,9 +193,18 @@ For more information, see the [CONTRIBUTING.md](https://github.com/hdwallet-io/h
 
 If this tool was helpful, support its development with a donation or a ⭐!
 
-**EVM Chains** - 0xD3cbCB0B6F82A03C715D665b72dC44CEf54e6D9B / meherett.eth
+- **Monero**: `47xYi7dw4VchWhbhacY6RZHDmmcxZdzPE9tLk84c7hE72bw6aLSMVFWPXxGMEEYofkjNjxoWfnLSHejS6yzRGnPqEtxfgZi`
+- **EVM-Chains**: `0xD3cbCB0B6F82A03C715D665b72dC44CEf54e6D9B` | `meherett.eth`
+- **Bitcoin**: `16c7ajUwHEMaafrceuYSrd35SDjmfVdjoS`
 
-**Bitcoin** - 16c7ajUwHEMaafrceuYSrd35SDjmfVdjoS
+> [!TIP]
+> We accept a wide range of cryptocurrencies! If you'd like to donate using another coin, generate an address using the following ECC public keys at [https://hdwallet.online](https://hdwallet.online):
+>
+> - **SLIP10-Secp256k1**: [029890465120fb6c4efecdfcfd149f8333b0929b98976722a28ee39f5344d29eee](https://hdwallet.online/dumps/slip10-secp256k1/BTC?network=mainnet&hd=BIP32&from=public-key&public-key=029890465120fb6c4efecdfcfd149f8333b0929b98976722a28ee39f5344d29eee&public-key-type=compressed&format=JSON&exclude=root&generate=true)                                         
+> - **SLIP10-Ed25519**: [007ff5643c73e46e6c6a0dfd702894610505423e145dc8a93df19ff44eb011323b](https://hdwallet.online/dumps/slip10-ed25519/ALGO?network=mainnet&hd=BIP32&from=public-key&public-key=007ff5643c73e46e6c6a0dfd702894610505423e145dc8a93df19ff44eb011323b&format=JSON&exclude=root&generate=true)                                                       
+> - **Kholaw-Ed25519**: [005a49188ccd3d841dd877d7c00078da5c90452cbd69d4cef7a959f679fcc0e0e3](https://hdwallet.online/dumps/kholaw-ed25519/ADA?network=mainnet&hd=Cardano&from=public-key&public-key=005a49188ccd3d841dd877d7c00078da5c90452cbd69d4cef7a959f679fcc0e0e3&staking-public-key=005a49188ccd3d841dd877d7c00078da5c90452cbd69d4cef7a959f679fcc0e0e3&address-type=payment&format=JSON&exclude=root&generate=true) 
+> - **SLIP10-Ed25519-Blake2b**: [0051e8b29f7d0214dc96843cdbdcc071dc65397016ea6f7381f81bf42d76c7357c](https://hdwallet.online/dumps/slip10-ed25519-blake2b/XNO?network=mainnet&hd=BIP32&from=public-key&public-key=0051e8b29f7d0214dc96843cdbdcc071dc65397016ea6f7381f81bf42d76c7357c&format=JSON&exclude=root&generate=true)                                                    
+> - **SLIP10-Nist256p1**: [039ee4e2aadd6f4e7938d164b646c4b424114b8dd57252287151398ba0baf25780](https://hdwallet.online/dumps/slip10-nist256p1/NEO?network=mainnet&hd=BIP32&from=public-key&public-key=039ee4e2aadd6f4e7938d164b646c4b424114b8dd57252287151398ba0baf25780&format=JSON&exclude=root&generate=true)
 
 ## License
 
