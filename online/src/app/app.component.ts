@@ -34,6 +34,9 @@ export class AppComponent implements OnInit {
     if (!this.storageService.getStorage('disclaimer')) {
       this.storageService.setStorage('disclaimer', false);
     }
+    if (!this.storageService.getStorage('stop')) {
+      this.storageService.setStorage('stop', true);
+    }
   }
 
   getInfo(): void {
@@ -46,7 +49,7 @@ export class AppComponent implements OnInit {
       email: info.__email__,
       source: info.__source__,
       changelog: info.__changelog__,
-      tracker: info.__tracker__,
+      tracker: info.__tracker__
     });
     this.terminalService.update(null, null, false);
   }

@@ -125,6 +125,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.selectedTab = selectedTab;
     this.terminalService.update(null, null, false);
     this.location.replaceState(`/${this.selectedTab.value}`);
+    setTimeout(() => { this.updateModalHeights() }, 10);
   }
 
   @HostListener('window:resize', ['$event'])

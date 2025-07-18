@@ -1,7 +1,7 @@
 import {
   AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, OnInit, Output, Renderer2
 } from '@angular/core';
-import { NgClass, NgForOf, NgIf, NgStyle, TitleCasePipe } from '@angular/common';
+import { NgClass, NgForOf, NgIf, NgStyle } from '@angular/common';
 import {
   AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators
 } from '@angular/forms';
@@ -18,14 +18,13 @@ import { HDWallet } from '@hdwallet/core';
 
 import {
   toLowerCase, toUpperCase, toTitleCase, replaceUnderscore2Hyphen, getDateTimeStamp,
-  saveAsCSV, saveAsJSON, objectIsIncluded
+  saveAsCSV, saveAsJSON, objectIsIncluded, toBoolean
 } from '../../../../../utils';
 import {
   ComboboxInterface, DictionaryInterface, DumpsInterface, KeyValuePairInterface
 } from '../../../../../interfaces';
 import { StorageService } from '../../../../services/storage/storage.service';
 import { CustomComboboxComponent } from '../../../../common/custom-combobox/custom-combobox.component';
-import { ToolsComponent } from '../tools/tools.component';
 import { TerminalService } from '../../../../services/terminal/terminal.service';
 import { GroupBoxService } from '../../../../services/group-box/group-box.service';
 import {
@@ -42,8 +41,6 @@ import {
     NgIf,
     NgClass,
     NgStyle,
-    ToolsComponent,
-    TitleCasePipe,
     CustomComboboxComponent,
   ],
   providers: [
@@ -1282,8 +1279,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       async function driveHelper(
         derivations: Array<[number, number, boolean] | [number, boolean]>,
         current: Array<[number, boolean]> = [],
-        terminal: any, groupBox: any
+        terminal: any, storage: any
       ): Promise<void> {
+
+        const stop = await new Promise<boolean>((resolve) => {
+          resolve(toBoolean(storage.getStorage('stop')));
+        });
+        if (stop) return;
 
         if (derivations.length === 0) {
           let derivation: Derivation;
@@ -1354,13 +1356,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
           const [start, end, hardened] = derivations[0] as [number, number, boolean];
           for (let value = start; value <= end; value++) {
             await driveHelper(
-              derivations.slice(1), current.concat([[value, hardened]]), terminal, groupBox
+              derivations.slice(1), current.concat([[value, hardened]]), terminal, storage
             );
           }
         } else {
           const [value, hardened] = derivations[0] as [number, boolean];
           await driveHelper(
-            derivations.slice(1), current.concat([[value, hardened]]), terminal, groupBox
+            derivations.slice(1), current.concat([[value, hardened]]), terminal, storage
           );
         }
         return;
@@ -1368,8 +1370,12 @@ export class DumpsComponent implements OnInit, AfterViewInit {
 
       (async () => {
         if (hdwallet.derivation) {
+          await new Promise<void>((resolve) => {
+            this.storageService.setStorage('stop', false);
+            resolve();
+          });
           await driveHelper(
-            hdwallet.derivation.getDerivations(), [], this.terminalService, this.groupBoxService
+            hdwallet.derivation.getDerivations(), [], this.terminalService, this.storageService
           );
           if (dumpsType === 'save') {
             if (data.format == 'json') {

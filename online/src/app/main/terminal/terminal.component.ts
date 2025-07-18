@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, ElementRef, Renderer2, Signal } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, Renderer2, Signal, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import {
@@ -8,6 +8,7 @@ import { StorageService } from '../../services/storage/storage.service';
 import { TerminalService } from '../../services/terminal/terminal.service';
 import { GroupBoxService } from '../../services/group-box/group-box.service';
 import { DictionaryInterface } from '../../../interfaces';
+import { DumpsComponent } from '../dashboard/tabs/dumps/dumps.component';
 
 @Component({
   selector: 'app-terminal',

@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { take } from 'rxjs/operators';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -13,7 +13,6 @@ import { ComboboxInterface } from '../../interfaces';
     DashboardComponent,
     TerminalComponent,
     NgIf,
-    NgStyle,
     NgClass
   ],
   templateUrl: './main.html',
