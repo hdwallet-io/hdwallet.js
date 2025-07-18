@@ -1,13 +1,13 @@
 "use strict";
 // SPDX-License-Identifier: MIT
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.__websites__ = exports.__keywords__ = exports.__tracker__ = exports.__changelog__ = exports.__source__ = exports.__url__ = exports.__description__ = exports.__documentation__ = exports.__email__ = exports.__author__ = exports.__license__ = exports.__version__ = exports.__name__ = void 0;
+exports.__websites__ = exports.__keywords__ = exports.__tracker__ = exports.__changelog__ = exports.__source__ = exports.__url__ = exports.__description__ = exports.__email__ = exports.__author__ = exports.__license__ = exports.__version__ = exports.__name__ = void 0;
 exports.__name__ = 'hdwallet';
-exports.__version__ = '1.0.0-beta.5';
+exports.__version__ = '1.0.0-beta.6';
 exports.__license__ = 'MIT';
 exports.__author__ = 'Meheret Tesfaye Batu';
 exports.__email__ = 'meherett.batu@gmail.com';
-exports.__documentation__ = 'https://hdwallet.readthedocs.com';
+// export const __documentation__: string = '...';
 exports.__description__ = 'A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.';
 exports.__url__ = 'https://hdwallet.io';
 exports.__source__ = 'https://github.com/hdwallet-io/hdwallet.js';
@@ -22,7 +22,7 @@ exports.__keywords__ = [
 exports.__websites__ = [
     'https://talonlab.org',
     'https://talonlab.gitbook.io/hdwallet',
-    exports.__documentation__,
+    // __documentation__,
     'https://hdwallet.online',
     'https://hd.wallet',
     exports.__url__

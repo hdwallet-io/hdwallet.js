@@ -3,7 +3,6 @@ export declare const __version__: string;
 export declare const __license__: string;
 export declare const __author__: string;
 export declare const __email__: string;
-export declare const __documentation__: string;
 export declare const __description__: string;
 export declare const __url__: string;
 export declare const __source__: string;

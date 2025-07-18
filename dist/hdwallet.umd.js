@@ -7,11 +7,11 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
 
     // SPDX-License-Identifier: MIT
     const __name__ = 'hdwallet';
-    const __version__ = '1.0.0-beta.5';
+    const __version__ = '1.0.0-beta.6';
     const __license__ = 'MIT';
     const __author__ = 'Meheret Tesfaye Batu';
     const __email__ = 'meherett.batu@gmail.com';
-    const __documentation__ = 'https://hdwallet.readthedocs.com';
+    // export const __documentation__: string = '...';
     const __description__ = 'A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.';
     const __url__ = 'https://hdwallet.io';
     const __source__ = 'https://github.com/hdwallet-io/hdwallet.js';
@@ -26,7 +26,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     const __websites__ = [
         'https://talonlab.org',
         'https://talonlab.gitbook.io/hdwallet',
-        __documentation__,
+        // __documentation__,
         'https://hdwallet.online',
         'https://hd.wallet',
         __url__
@@ -39,7 +39,6 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         __license__: __license__,
         __author__: __author__,
         __email__: __email__,
-        __documentation__: __documentation__,
         __description__: __description__,
         __url__: __url__,
         __source__: __source__,
@@ -20746,7 +20745,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
             'BIP44'
         ]);
         static DEFAULT_HD = Solana.HDS.BIP44;
-        static DEFAULT_PATH = `m/44'/${Solana.COIN_TYPE}'/0'/0`;
+        static DEFAULT_PATH = `m/44'/${Solana.COIN_TYPE}'/0'/0'`;
         static ADDRESSES = new Addresses({
             SOLANA: 'Solana'
         });
@@ -82701,7 +82700,45 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 });
             }
             this.network = this.cryptocurrency.NETWORKS.getNetwork(networkName);
-            const _address = options.address ?? this.cryptocurrency.DEFAULT_ADDRESS;
+            if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
+                this.semantic = options.semantic ?? this.cryptocurrency.DEFAULT_SEMANTIC;
+            }
+            else if (hdName === 'BIP49') {
+                this.semantic = options.semantic ?? SEMANTICS.P2WPKH_IN_P2SH;
+            }
+            else if (['BIP84', 'BIP141'].includes(hdName)) {
+                this.semantic = options.semantic ?? SEMANTICS.P2WPKH;
+            }
+            else {
+                this.semantic = undefined;
+            }
+            let _address = options.address;
+            if (!options.address) { // Use default address
+                _address = this.cryptocurrency.DEFAULT_ADDRESS;
+                if (hdName === 'BIP49') {
+                    _address = 'P2WPKH-In-P2SH';
+                }
+                else if (hdName === 'BIP84') {
+                    _address = 'P2WPKH';
+                }
+                else if (hdName === 'BIP86') {
+                    _address = 'P2TR';
+                }
+                else if (hdName === 'BIP141') {
+                    if (this.semantic === SEMANTICS.P2WPKH) {
+                        _address = 'P2WPKH';
+                    }
+                    else if (this.semantic === SEMANTICS.P2WPKH_IN_P2SH) {
+                        _address = 'P2WPKH-In-P2SH';
+                    }
+                    else if (this.semantic === SEMANTICS.P2WSH) {
+                        _address = 'P2WSH';
+                    }
+                    else if (this.semantic === SEMANTICS.P2WSH_IN_P2SH) {
+                        _address = 'P2WSH-In-P2SH';
+                    }
+                }
+            }
             const resolvedAddress = ensureTypeMatch(_address, Address, { otherTypes: ['string'] });
             const addressName = resolvedAddress.isValid ? resolvedAddress.value.getName() : _address;
             if (!this.cryptocurrency.ADDRESSES.isAddress(addressName)) {
@@ -82732,18 +82769,6 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             this.addressType = options.addressType ?? this.cryptocurrency.DEFAULT_ADDRESS_TYPE;
             if (this.cryptocurrency.NAME === 'Tezos') {
                 this.addressPrefix = options.addressPrefix ?? this.cryptocurrency.DEFAULT_ADDRESS_PREFIX;
-            }
-            if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
-                this.semantic = options.semantic ?? this.cryptocurrency.DEFAULT_SEMANTIC;
-            }
-            else if (hdName === 'BIP49') {
-                this.semantic = options.semantic ?? SEMANTICS.P2WPKH_IN_P2SH;
-            }
-            else if (['BIP84', 'BIP141'].includes(hdName)) {
-                this.semantic = options.semantic ?? SEMANTICS.P2WPKH;
-            }
-            else {
-                this.semantic = undefined;
             }
             this.hd = new hdClass({
                 ecc: this.cryptocurrency.ECC,
@@ -82892,7 +82917,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             if (['Cardano', 'Monero'].includes(this.hd.getName())) {
                 throw new WIFError(`WIF is not supported by ${this.hd.getName()} HD type`);
             }
-            if (this.network.WIF_PREFIX === null || this.network.WIF_PREFIX === null) {
+            if (this.network.WIF_PREFIX === null) {
                 throw new WIFError(`WIF is not supported by ${this.cryptocurrency.NAME} cryptocurrency`);
             }
             this.hd.fromWIF(wif);
@@ -83215,7 +83240,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             const derivationDump = {};
             const hdName = this.hd.getName();
             if (this.derivation) {
-                let at = {};
+                let at;
                 switch (this.derivation.getName()) {
                     case 'BIP44':
                     case 'BIP49':

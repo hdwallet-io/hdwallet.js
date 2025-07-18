@@ -47,7 +47,7 @@ class Solana extends cryptocurrency_1.Cryptocurrency {
         'BIP44'
     ]);
     static DEFAULT_HD = Solana.HDS.BIP44;
-    static DEFAULT_PATH = `m/44'/${Solana.COIN_TYPE}'/0'/0`;
+    static DEFAULT_PATH = `m/44'/${Solana.COIN_TYPE}'/0'/0'`;
     static ADDRESSES = new consts_1.Addresses({
         SOLANA: 'Solana'
     });

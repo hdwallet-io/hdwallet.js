@@ -54,7 +54,45 @@ export class HDWallet {
             });
         }
         this.network = this.cryptocurrency.NETWORKS.getNetwork(networkName);
-        const _address = options.address ?? this.cryptocurrency.DEFAULT_ADDRESS;
+        if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
+            this.semantic = options.semantic ?? this.cryptocurrency.DEFAULT_SEMANTIC;
+        }
+        else if (hdName === 'BIP49') {
+            this.semantic = options.semantic ?? SEMANTICS.P2WPKH_IN_P2SH;
+        }
+        else if (['BIP84', 'BIP141'].includes(hdName)) {
+            this.semantic = options.semantic ?? SEMANTICS.P2WPKH;
+        }
+        else {
+            this.semantic = undefined;
+        }
+        let _address = options.address;
+        if (!options.address) { // Use default address
+            _address = this.cryptocurrency.DEFAULT_ADDRESS;
+            if (hdName === 'BIP49') {
+                _address = 'P2WPKH-In-P2SH';
+            }
+            else if (hdName === 'BIP84') {
+                _address = 'P2WPKH';
+            }
+            else if (hdName === 'BIP86') {
+                _address = 'P2TR';
+            }
+            else if (hdName === 'BIP141') {
+                if (this.semantic === SEMANTICS.P2WPKH) {
+                    _address = 'P2WPKH';
+                }
+                else if (this.semantic === SEMANTICS.P2WPKH_IN_P2SH) {
+                    _address = 'P2WPKH-In-P2SH';
+                }
+                else if (this.semantic === SEMANTICS.P2WSH) {
+                    _address = 'P2WSH';
+                }
+                else if (this.semantic === SEMANTICS.P2WSH_IN_P2SH) {
+                    _address = 'P2WSH-In-P2SH';
+                }
+            }
+        }
         const resolvedAddress = ensureTypeMatch(_address, Address, { otherTypes: ['string'] });
         const addressName = resolvedAddress.isValid ? resolvedAddress.value.getName() : _address;
         if (!this.cryptocurrency.ADDRESSES.isAddress(addressName)) {
@@ -85,18 +123,6 @@ export class HDWallet {
         this.addressType = options.addressType ?? this.cryptocurrency.DEFAULT_ADDRESS_TYPE;
         if (this.cryptocurrency.NAME === 'Tezos') {
             this.addressPrefix = options.addressPrefix ?? this.cryptocurrency.DEFAULT_ADDRESS_PREFIX;
-        }
-        if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
-            this.semantic = options.semantic ?? this.cryptocurrency.DEFAULT_SEMANTIC;
-        }
-        else if (hdName === 'BIP49') {
-            this.semantic = options.semantic ?? SEMANTICS.P2WPKH_IN_P2SH;
-        }
-        else if (['BIP84', 'BIP141'].includes(hdName)) {
-            this.semantic = options.semantic ?? SEMANTICS.P2WPKH;
-        }
-        else {
-            this.semantic = undefined;
         }
         this.hd = new hdClass({
             ecc: this.cryptocurrency.ECC,
@@ -245,7 +271,7 @@ export class HDWallet {
         if (['Cardano', 'Monero'].includes(this.hd.getName())) {
             throw new WIFError(`WIF is not supported by ${this.hd.getName()} HD type`);
         }
-        if (this.network.WIF_PREFIX === null || this.network.WIF_PREFIX === null) {
+        if (this.network.WIF_PREFIX === null) {
             throw new WIFError(`WIF is not supported by ${this.cryptocurrency.NAME} cryptocurrency`);
         }
         this.hd.fromWIF(wif);
@@ -568,7 +594,7 @@ export class HDWallet {
         const derivationDump = {};
         const hdName = this.hd.getName();
         if (this.derivation) {
-            let at = {};
+            let at;
             switch (this.derivation.getName()) {
                 case 'BIP44':
                 case 'BIP49':

@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.0-beta.6](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.6) (2025-07-18)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.5...1.0.0-beta.6)
+
+**Enhancement:**
+
+- Add: default address setup based on HDs in hdwallet.ts
+- Update: Solana default derivation path to `m/44'/${Solana.COIN_TYPE}'/0'/0'`
+- Modify: return type of `getDumps` to `any` in hdwallet.ts
+
 ## [1.0.0-beta.5](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.5) (2025-07-09)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.4...1.0.0-beta.5)

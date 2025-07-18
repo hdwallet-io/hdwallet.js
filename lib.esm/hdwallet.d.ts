@@ -97,6 +97,6 @@ export declare class HDWallet {
     getSubAddress(minor?: number, major?: number): string | null;
     getAddress(options?: HDWalletAddressOptionsInterface): string | null;
     getDump(exclude?: string[]): Record<string, any>;
-    getDumps(exclude?: string[]): Record<string, any> | Record<string, any>[] | null;
+    getDumps(exclude?: string[]): any;
 }
 //# sourceMappingURL=hdwallet.d.ts.map
