@@ -1,47 +1,49 @@
-<div class="flex ml-2 mt-2 mr-9">
-  <div class="flex-none">
-    <div class="flex items-center native-font h-full">
-      <h3 class="uppercase" style="font-size: 18px">Donations</h3>
-    </div>
-  </div>
-  <div class="flex-1">
-    <div class="flex justify-end items-center native-font h-full">
-
-    </div>
-  </div>
-</div>
-
-<div class="flex flex-col items-center gap-4 mt-4 mb-2">
-  <div class="qrcode-container">
-    <qrcode
-      [qrdata]="selectedAddress.value"
-      [colorDark]="'#FFFFFF'"
-      [colorLight]="'#191E24FF'"
-      [width]="200"
-      [errorCorrectionLevel]="'M'">
-    </qrcode>
-  </div>
-  <div class="flex w-full max-w-xs gap-2.5">
-    <div class="flex-1">
-      <input #addressInput type="text" class="custom-input my-auto text-center" readonly
-             [value]="selectedTruncatedAddress ? selectedTruncatedAddress : getTruncatedAddress(selectedAddress.value, addressInput.offsetWidth)">
-    </div>
+<div #donationPage>
+  <div class="flex ml-2 mt-2 mr-9">
     <div class="flex-none">
-      <fieldset [disabled]="copyDisable">
-        <button type="button" class="custom-button mt-2" (click)="copyAddress(selectedAddress.value)">{{ copyMessage }}</button>
-      </fieldset>
+      <div class="flex items-center native-font h-full">
+        <h3 class="uppercase" style="font-size: 18px">Donations</h3>
+      </div>
+    </div>
+    <div class="flex-1">
+      <div class="flex justify-end items-center native-font h-full">
+
+      </div>
     </div>
   </div>
-  <fieldset class="w-full max-w-xs">
-    <label class="block text-center mb-3 native-font uppercase" style="font-size: 16px;">Cryptocurrency</label>
-    <custom-combobox
-      [customOptions]="addresses"
-      [(customSelectedOption)]="selectedAddress"
-      (customSelectedOptionChange)="onAddressChange($event)">
-    </custom-combobox>
-  </fieldset>
-  <p class="max-w-xs">
-    Your donation empowers our core team to continue our work and grow.
-    Every contribution counts—thank you for your support!
-  </p>
+
+  <div class="flex flex-col items-center gap-4 mt-4 mb-2">
+    <div class="qrcode-container">
+      <qrcode
+        [qrdata]="selectedAddress.value"
+        [colorDark]="'#FFFFFF'"
+        [colorLight]="'#191E24FF'"
+        [width]="200"
+        [errorCorrectionLevel]="'M'">
+      </qrcode>
+    </div>
+    <div class="flex w-full max-w-xs gap-2.5">
+      <div class="flex-1">
+        <input #addressInput type="text" class="custom-input my-auto text-center" readonly
+               [value]="selectedTruncatedAddress ? selectedTruncatedAddress : getTruncatedAddress(selectedAddress.value, addressInput.offsetWidth)">
+      </div>
+      <div class="flex-none">
+        <fieldset [disabled]="copyDisable">
+          <button type="button" class="custom-button mt-2" (click)="copyAddress(selectedAddress.value)">{{ copyMessage }}</button>
+        </fieldset>
+      </div>
+    </div>
+    <fieldset class="w-full max-w-xs">
+      <label class="block text-center mb-3 native-font uppercase" style="font-size: 16px;">Cryptocurrency</label>
+      <custom-combobox
+        [customOptions]="addresses"
+        [(customSelectedOption)]="selectedAddress"
+        (customSelectedOptionChange)="onAddressChange($event)">
+      </custom-combobox>
+    </fieldset>
+    <p class="max-w-xs">
+      Your donation empowers our core team to continue our work and grow.
+      Every contribution counts—thank you for your support!
+    </p>
+  </div>
 </div>

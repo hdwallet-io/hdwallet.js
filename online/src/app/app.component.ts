@@ -34,9 +34,7 @@ export class AppComponent implements OnInit {
     if (!this.storageService.getStorage('disclaimer')) {
       this.storageService.setStorage('disclaimer', false);
     }
-    if (!this.storageService.getStorage('stop')) {
-      this.storageService.setStorage('stop', true);
-    }
+    this.storageService.setStorage('stop', true);
   }
 
   getInfo(): void {

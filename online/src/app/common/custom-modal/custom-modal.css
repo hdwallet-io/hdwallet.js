@@ -9,13 +9,13 @@
 }
 
 .custom-modal-content {
-  position: fixed;
-  /*margin: 15% auto;*/
+  position: relative;
+  margin: 15% auto;
   bottom: auto;
   padding: 16px;
   background: rgba(16, 21, 27);
   min-height: 25vh;
-  /*max-width: inherit;*/
+  max-width: inherit;
   border-radius: 5px;
 }
 
@@ -29,9 +29,9 @@
 }
 
 .custom-modal-close:hover {
-  background: rgba(255, 0, 0, 0.75);
+  background: rgba(180, 46, 49, 0.75);
 }
 
 .custom-modal-close:active {
-  background: rgba(255, 0, 0, 0.50);
+  background: rgba(180, 46, 49, 0.50);
 }

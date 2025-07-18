@@ -98,18 +98,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   updateModalHeights(): void {
     this.donationModal.customModalStyle = { height: this.dashboard.nativeElement.offsetHeight + 'px' };
     this.shareModal.customModalStyle = { height: this.dashboard.nativeElement.offsetHeight + 'px' };
-    const width = this.dashboard.nativeElement.offsetWidth;
-    const margin = width * 0.075;
-    this.donationModal.customContentStyle = {
-      'max-width': `${width - (margin * 2)}px`,
-      'margin': `0px ${margin}px`,
-      'top': `${window.innerWidth < 640 ? 5 : 15}%`
-    };
-    this.shareModal.customContentStyle = {
-      'max-width': `${width - (margin * 2)}px`,
-      'margin': `0px ${margin}px`,
-      'top': `${window.innerWidth < 640 ? 5 : 15}%`
-    };
+    // const width = this.dashboard.nativeElement.offsetWidth;
+    // const margin = width * 0.075;
+    // this.donationModal.customContentStyle = {
+    //   'max-width': `${width - (margin * 2)}px`,
+    //   'margin': `0px ${margin}px`,
+    //   'top': `${window.innerWidth < 640 ? 5 : 15}%`
+    // };
+    // this.shareModal.customContentStyle = {
+    //   'max-width': `${width - (margin * 2)}px`,
+    //   'margin': `0px ${margin}px`,
+    //   'top': `${window.innerWidth < 640 ? 5 : 15}%`
+    // };
     this.changeDetectorRef.detectChanges();
   }
 
@@ -118,7 +118,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   share(data: any): void {
     this.shareComponent.updateShareData(data);
     this.shareModal.open();
-    // this.renderer2.setProperty(this.main, 'scrollTop', 0);
+    this.renderer2.setProperty(this.main, 'scrollTop', 0);
+  }
+
+  donation(): void {
+    this.donationModal.open();
+    this.renderer2.setProperty(this.main, 'scrollTop', 0);
   }
 
   selectTab(selectedTab: ComboboxInterface): void {

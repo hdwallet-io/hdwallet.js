@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, Renderer2, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { QRCodeComponent } from 'angularx-qrcode';
 
@@ -27,17 +27,19 @@ export class DonationComponent {
   );
   selectedAddress: ComboboxInterface = this.addresses[68]; // Ethereum
   selectedTruncatedAddress: string | null = null;
+  @Input() main!: HTMLDivElement;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef
-  ) {
-  }
+    private changeDetectorRef: ChangeDetectorRef,
+    private renderer2: Renderer2
+  ) { }
 
   onAddressChange(address: ComboboxInterface): void {
     this.selectedAddress = address;
     this.selectedTruncatedAddress = this.getTruncatedAddress(
       this.selectedAddress.value, this.addressInput.nativeElement.offsetWidth
     );
+    this.renderer2.setProperty(this.main, 'scrollTop', 0);
   }
 
   getTruncatedAddress(address: string, inputElementWidth: number): string {

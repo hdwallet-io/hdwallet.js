@@ -154,7 +154,7 @@
         <small class="default-font" style="color: #dddddd">© 2020-{{ currentYear }} <span class="customLink"><a href="https://hdwallet.io" target="_blank">hdwallet.io</a></span></small>
       </div>
       <div class="flex-none flex gap-2.5">
-        <button type="button" class="custom-button uppercase" style="margin: 0 0 0 10px;" (click)="donationModal.open()">Donation</button>
+        <button type="button" class="custom-button uppercase" style="margin: 0 0 0 10px;" (click)="donation()">Donation</button>
         <a target="_blank" href="https://talonlab.gitbook.io/hdwallet/manual/dumps">
           <button type="button" class="custom-button uppercase">Help</button>
         </a>
@@ -164,7 +164,7 @@
 </div>
 
 <custom-modal #donationModal [customContentClass]="{ 'max-sm:w-[90%] max-xl:w-[80%] w-[70%]': true }">
-  <app-donation></app-donation>
+  <app-donation [main]="main"></app-donation>
 </custom-modal>
 <custom-modal #shareModal [customContentStyle]="{ 'width': '90%' }">
   <app-share></app-share>
