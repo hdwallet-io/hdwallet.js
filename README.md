@@ -25,6 +25,9 @@ A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurre
 | Addresses                     | ``Algorand``, ``Aptos``, ``Avalanche``, ``Cardano``, ``Cosmos``, ``EOS``, ``Ergo``, ``Ethereum``, ``Filecoin``, ``Harmony``, ``Icon``, ``Injective``, ``Monero``, ``MultiversX``, ``Nano``, ``Near``, ``Neo``, ``OKT-Chain``, ``P2PKH``, ``P2SH``, ``P2TR``, ``P2WPKH``, ``P2WPKH-In-P2SH``, ``P2WSH``, ``P2WSH-In-P2SH``, ``Ripple``, ``Solana``, ``Stellar``, ``Sui``, ``Tezos``, ``Tron``, ``XinFin``, ``Zilliqa`` |
 | Others                        | ``Wallet Import Format``, ``Serialization``                                                                                                                                                                                                                                                                                                                                                                           |
 
+> [!NOTE]
+> Full documentation is coming soon — until then, explore the [examples](https://github.com/hdwallet-io/hdwallet.js/blob/master/examples) folder for every feature or check the [python-hdwallet](https://github.com/hdwallet-io/python-hdwallet) docs (APIs are almost identical).
+
 ## Installation
 
 Pick the build that matches your environment.
@@ -61,11 +64,12 @@ Standalone browser build, load via `<script>` and access as `window.hdwallet`.
 
 ## Quick Usage
 
-> [!NOTE]
-> Full documentation is coming soon — until then, explore the [examples](https://github.com/hdwallet-io/hdwallet.js/blob/master/examples) folder for every feature or check the [python-hdwallet](https://github.com/hdwallet-io/python-hdwallet) docs (APIs are almost identical).
+### Example
+
+A simple Bitcoin HDWallet generator:
 
 ```node
-// bitcoin.hdwallet.ts
+// SPDX-License-Identifier: MIT
 
 import { HDWallet } from '@hdwallet/core';
 import { BIP39_ENTROPY_STRENGTHS, BIP39Entropy } from '@hdwallet/core/entropies';
@@ -75,19 +79,25 @@ import { CustomDerivation } from '@hdwallet/core/derivations';
 import { PUBLIC_KEY_TYPES } from '@hdwallet/core/consts';
 import { BIP32HD } from '@hdwallet/core/hds';
 
-const hdwallet: HDWallet = new HDWallet(Cryptocurrency, {
-  hd: BIP32HD,
-  network: Cryptocurrency.NETWORKS.MAINNET,
-  language: BIP39_MNEMONIC_LANGUAGES.KOREAN,
-  publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
-  passphrase: 'talonlab'
-}).fromEntropy(new BIP39Entropy(
-  BIP39Entropy.generate(
-    BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+const hdwallet: HDWallet = new HDWallet(
+  Cryptocurrency, {
+    hd: BIP32HD,
+    network: Cryptocurrency.NETWORKS.MAINNET,
+    language: BIP39_MNEMONIC_LANGUAGES.KOREAN,
+    publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
+    passphrase: 'talonlab'
+  }
+).fromEntropy(
+  new BIP39Entropy(
+    BIP39Entropy.generate(
+      BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+    )
   )
-)).fromDerivation(new CustomDerivation({
-  path: 'm/0\'/0/0-1'  // Cryptocurrency.DEFAULT_PATH
-}));
+).fromDerivation(
+  new CustomDerivation({
+    path: 'm/0\'/0/0-1'  // Cryptocurrency.DEFAULT_PATH
+  })
+);
 
 // console.log(JSON.stringify(hdwallet.getDump(['indexes']), null, 4));
 console.log(JSON.stringify(hdwallet.getDumps(['indexes']), null, 4));
@@ -179,6 +189,207 @@ console.log(JSON.stringify(hdwallet.getDumps(['indexes']), null, 4));
 }
 ```
 </details>
+
+Explore more [Examples](https://github.com/hdwallet-io/hdwallet.js/blob/master/examples)
+
+### Clients
+
+[MetaMask](https://github.com/MetaMask/metamask-extension), [Ganache-CLI](https://github.com/trufflesuite/ganache) or [Hardhat](https://github.com/nomicfoundation/hardhat) wallet look's like:
+
+```node
+// SPDX-License-Identifier: MIT
+
+import { HDWallet } from '@hdwallet/core';
+import {
+  BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS
+} from '@hdwallet/core/mnemonics';
+import { Ethereum as Cryptocurrency } from '@hdwallet/core/cryptocurrencies';
+import { BIP44Derivation, CHANGES } from '@hdwallet/core/derivations';
+import { BIP44HD } from '@hdwallet/core/hds';
+
+const hdwallet: HDWallet = new HDWallet(
+  Cryptocurrency, {
+    hd: BIP44HD,
+    network: Cryptocurrency.NETWORKS.MAINNET,
+    passphrase: null
+  }
+).fromMnemonic(
+  new BIP39Mnemonic(
+    BIP39Mnemonic.fromWords(
+      BIP39_MNEMONIC_WORDS.TWELVE, 
+      BIP39_MNEMONIC_LANGUAGES.ENGLISH
+    )
+  )
+).fromDerivation(
+  new BIP44Derivation({
+    coinType: Cryptocurrency.COIN_TYPE,
+    account: 0,
+    change: CHANGES.EXTERNAL_CHAIN,
+    address: [0, 10]  // or '0-10'
+  })
+);
+
+console.log('Mnemonic:', hdwallet.getMnemonic())
+console.log('Base HD Path:  m/44\'/60\'/0\'/0/{address}', '\n')
+
+for (const derivation of hdwallet.getDumps(['root', 'indexes'])) {
+  console.log(`${derivation['at']['path']} ${derivation['address']} 0x${derivation['private-key']}`)
+}
+```
+
+<details open>
+  <summary>Output</summary><br/>
+
+```shell
+Mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about
+Base HD Path:  m/44'/60'/0'/0/{address} 
+
+m/44'/60'/0'/0/0 0x9858EfFD232B4033E47d90003D41EC34EcaEda94 0x1ab42cc412b618bdea3a599e3c9bae199ebf030895b039e9db1e30dafb12b727
+m/44'/60'/0'/0/1 0x6Fac4D18c912343BF86fa7049364Dd4E424Ab9C0 0x9a983cb3d832fbde5ab49d692b7a8bf5b5d232479c99333d0fc8e1d21f1b55b6
+m/44'/60'/0'/0/2 0xb6716976A3ebe8D39aCEB04372f22Ff8e6802D7A 0x5b824bd1104617939cd07c117ddc4301eb5beeca0904f964158963d69ab9d831
+m/44'/60'/0'/0/3 0xF3f50213C1d2e255e4B2bAD430F8A38EEF8D718E 0x9ffce93c14680776a0c319c76b4c25e7ad03bd780bf47f27ae9153324dcac585
+m/44'/60'/0'/0/4 0x51cA8ff9f1C0a99f88E86B8112eA3237F55374cA 0xbd443149113127d73c350d0baeceedd2c83be3f10e3d57613a730649ddfaf0c0
+m/44'/60'/0'/0/5 0xA40cFBFc8534FFC84E20a7d8bBC3729B26a35F6f 0x5a8787e6b7e11a74a22ee97b8164c7d69cd5668c6065bbfbc87e6a34a24b135c
+m/44'/60'/0'/0/6 0xB191a13bfE648B61002F2e2135867015B71816a6 0x56e506258e5b0e3b6023b17941d84f8a13d655c525419b9ff0a52999a2c687a3
+m/44'/60'/0'/0/7 0x593814d3309e2dF31D112824F0bb5aa7Cb0D7d47 0xdfb0930bcb8f6ca83296c1870e941998c641d3d0d413013c890b8b255dd537b5
+m/44'/60'/0'/0/8 0xB14c391e2bf19E5a26941617ab546FA620A4f163 0x66014718190fedba55dc3f4709f6b5b34b9b1feebb110e7b87391054cbbffdd2
+m/44'/60'/0'/0/9 0x4C1C56443AbFe6dD33de31dAaF0a6E929DBc4971 0x22fb8f2fe3b2dbf632bc5eb450a96ec56185733234f17e49c2483bb337ebf145
+m/44'/60'/0'/0/10 0xEf4ba16373841C53a9Ba168873fC3967118C1d37 0x1d8e676c6da57922d80336cffc5bf9020d0cce4730cff872aeb2dcce08320ce6
+```
+</details>
+
+[Phantom](https://github.com/phantom) wallet look's like:
+
+```node
+// SPDX-License-Identifier: MIT
+
+import { HDWallet } from '@hdwallet/core';
+import { BIP39Mnemonic } from '@hdwallet/core/mnemonics';
+import { Cryptocurrency, Bitcoin, Ethereum, Solana } from '@hdwallet/core/cryptocurrencies';
+import {
+  Derivation, CustomDerivation, BIP44Derivation, BIP49Derivation, BIP84Derivation
+} from '@hdwallet/core/derivations';
+import { HD, BIP32HD, BIP44HD, BIP49HD, BIP84HD } from '@hdwallet/core/hds';
+import { PUBLIC_KEY_TYPES } from '@hdwallet/core/consts';
+import { encode } from '@hdwallet/core/libs/base58';
+import { getBytes } from '@hdwallet/core/utils';
+
+const mnemonic: BIP39Mnemonic = new BIP39Mnemonic(
+  'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
+)
+
+const standards: any = {
+  'solana': {
+    'hd': BIP32HD,
+    'derivation': new CustomDerivation({ path: Solana.DEFAULT_PATH })
+  },
+  'ethereum': {
+    'hd': BIP44HD,
+    'derivation': new BIP44Derivation({ coinType: Ethereum.COIN_TYPE })
+  },
+  'bitcoin': {
+    'legacy': {
+      'hd': BIP44HD,
+      'derivation': new BIP44Derivation({ coinType: Bitcoin.COIN_TYPE })
+    },
+    'nested-segwit': {
+      'hd': BIP49HD,
+      'derivation': new BIP49Derivation({ coinType: Bitcoin.COIN_TYPE })
+    },
+    'native-segwit': {
+      'hd': BIP84HD,
+      'derivation': new BIP84Derivation({ coinType: Bitcoin.COIN_TYPE })
+    }
+  }
+}
+
+function generatePhantomHDWallet(cryptocurrency: typeof Cryptocurrency, hd: typeof HD, network: string, derivation: Derivation, options = { }): HDWallet {
+  return new HDWallet(cryptocurrency, { hd: hd, network: network, ...options }).fromMnemonic(mnemonic).fromDerivation(derivation)
+}
+
+console.log('Mnemonic:', mnemonic.getMnemonic(), '\n')
+
+const solanaHDWallet: HDWallet = generatePhantomHDWallet(
+  Solana, standards['solana']['hd'], Solana.NETWORKS.MAINNET, standards['solana']['derivation']
+)
+console.log(`${solanaHDWallet.getCryptocurrency()} (${solanaHDWallet.getSymbol()}) wallet:`, JSON.stringify({
+  path: solanaHDWallet.getPath(),
+  base58: encode(getBytes(
+      solanaHDWallet.getPrivateKey() + solanaHDWallet.getPublicKey().slice(2)
+  )),
+  privateKey: solanaHDWallet.getPrivateKey(),
+  publicKey: solanaHDWallet.getPublicKey().slice(2),
+  address: solanaHDWallet.getAddress()
+}, null, 4))
+
+const ethereumHDWallet: HDWallet = generatePhantomHDWallet(
+  Ethereum, standards['ethereum']['hd'], Ethereum.NETWORKS.MAINNET, standards['ethereum']['derivation']
+)
+console.log(`${ethereumHDWallet.getCryptocurrency()} (${ethereumHDWallet.getSymbol()}) wallet:`, JSON.stringify({
+  path: ethereumHDWallet.getPath(),
+  privateKey: `0x${ethereumHDWallet.getPrivateKey()}`,
+  publicKey: ethereumHDWallet.getPublicKey(),
+  address: ethereumHDWallet.getAddress()
+}, null, 4))
+
+for (const addressType of ['legacy', 'nested-segwit', 'native-segwit']) {
+  let bitcoinHDWallet: HDWallet = generatePhantomHDWallet(
+    Bitcoin, standards['bitcoin'][addressType]['hd'], Bitcoin.NETWORKS.MAINNET, standards['bitcoin'][addressType]['derivation'], { publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED }
+  )
+  console.log(`${bitcoinHDWallet.getCryptocurrency()} (${bitcoinHDWallet.getSymbol()}) ${addressType} wallet:`, JSON.stringify({
+    path: bitcoinHDWallet.getPath(),
+    wif: bitcoinHDWallet.getWIF(),
+    privateKey: bitcoinHDWallet.getPrivateKey(),
+    publicKey: bitcoinHDWallet.getPublicKey(),
+    address: bitcoinHDWallet.getAddress()
+  }, null, 4))
+}
+```
+
+<details open>
+  <summary>Output</summary><br/>
+
+```shell
+Mnemonic: abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about 
+
+Solana (SOL) wallet: {
+    "path": "m/44'/501'/0'/0'",
+    "base58": "27npWoNE4HfmLeQo1TyWcW7NEA28qnsnDK7kcttDQEWrCWnro83HMJ97rMmpvYYZRwDAvG4KRuB7hTBacvwD7bgi",
+    "privateKey": "37df573b3ac4ad5b522e064e25b63ea16bcbe79d449e81a0268d1047948bb445",
+    "publicKey": "f036276246a75b9de3349ed42b15e232f6518fc20f5fcd4f1d64e81f9bd258f7",
+    "address": "HAgk14JpMQLgt6rVgv7cBQFJWFto5Dqxi472uT3DKpqk"
+}
+Ethereum (ETH) wallet: {
+    "path": "m/44'/60'/0'/0/0",
+    "privateKey": "0x1ab42cc412b618bdea3a599e3c9bae199ebf030895b039e9db1e30dafb12b727",
+    "publicKey": "0237b0bb7a8288d38ed49a524b5dc98cff3eb5ca824c9f9dc0dfdb3d9cd600f299",
+    "address": "0x9858EfFD232B4033E47d90003D41EC34EcaEda94"
+}
+Bitcoin (BTC) legacy wallet: {
+    "path": "m/44'/0'/0'/0/0",
+    "wif": "L4p2b9VAf8k5aUahF1JCJUzZkgNEAqLfq8DDdQiyAprQAKSbu8hf",
+    "privateKey": "e284129cc0922579a535bbf4d1a3b25773090d28c909bc0fed73b5e0222cc372",
+    "publicKey": "03aaeb52dd7494c361049de67cc680e83ebcbbbdbeb13637d92cd845f70308af5e",
+    "address": "1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA"
+}
+Bitcoin (BTC) nested-segwit wallet: {
+    "path": "m/49'/0'/0'/0/0",
+    "wif": "KyvHbRLNXfXaHuZb3QRaeqA5wovkjg4RuUpFGCxdH5UWc1Foih9o",
+    "privateKey": "508c73a06f6b6c817238ba61be232f5080ea4616c54f94771156934666d38ee3",
+    "publicKey": "039b3b694b8fc5b5e07fb069c783cac754f5d38c3e08bed1960e31fdb1dda35c24",
+    "address": "37VucYSaXLCAsxYyAPfbSi9eh4iEcbShgf"
+}
+Bitcoin (BTC) native-segwit wallet: {
+    "path": "m/84'/0'/0'/0/0",
+    "wif": "KyZpNDKnfs94vbrwhJneDi77V6jF64PWPF8x5cdJb8ifgg2DUc9d",
+    "privateKey": "4604b4b710fe91f584fff084e1a9159fe4f8408fff380596a604948474ce4fa3",
+    "publicKey": "0330d54fd0dd420a6e5f8d3624f5f3482cae350f79d5f0753bf5beef9c2d91af3c",
+    "address": "bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu"
+}
+```
+</details>
+
+Explore more [Clients](https://github.com/hdwallet-io/hdwallet.js/blob/master/clients)
 
 ## Contributing
 
