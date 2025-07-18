@@ -8,8 +8,8 @@
   <div class="fixed bottom-4 right-4">
     <fieldset [disabled]="!toBoolean(storageService.getStorage('disclaimer'))">
       <div class="flex gap-2.5">
-        <fieldset [disabled]="toBoolean(storageService.getStorage('stop'))">
-          <button type="button" class="custom-button uppercase" (click)="storageService.setStorage('stop', true)">Stop</button>
+        <fieldset [disabled]="terminalService.stopDerivation()">
+          <button type="button" class="custom-button uppercase" (click)="terminalService.stopDerivation.set(true)">Stop</button>
         </fieldset>
         <button type="button" class="custom-button uppercase" (click)="clear()">Clear</button>
       </div>

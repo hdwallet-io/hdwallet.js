@@ -7,6 +7,7 @@ export class TerminalService {
 
   public data: WritableSignal<any> = signal<any>('');
   showTerminal: WritableSignal<boolean> = signal(false);
+  stopDerivation: WritableSignal<boolean> = signal(true);
 
   update(
     data: any, format: 'json' | 'csv' | 'warning' | 'error' | null = 'json', showTerminal: boolean = window.innerWidth < 640

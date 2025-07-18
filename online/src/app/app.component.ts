@@ -5,15 +5,6 @@ import { info } from '@hdwallet/core';
 
 import { TerminalService } from './services/terminal/terminal.service';
 import { StorageService } from './services/storage/storage.service';
-import {
-  __changelog__,
-  __description__,
-  __keywords__,
-  __license__,
-  __name__,
-  __tracker__,
-  __url__, __websites__
-} from '../../../src/info';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +25,6 @@ export class AppComponent implements OnInit {
     if (!this.storageService.getStorage('disclaimer')) {
       this.storageService.setStorage('disclaimer', false);
     }
-    this.storageService.setStorage('stop', true);
   }
 
   getInfo(): void {

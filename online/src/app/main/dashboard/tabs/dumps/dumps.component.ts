@@ -1279,13 +1279,10 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       async function driveHelper(
         derivations: Array<[number, number, boolean] | [number, boolean]>,
         current: Array<[number, boolean]> = [],
-        terminal: any, storage: any
+        terminalService: any
       ): Promise<void> {
 
-        const stop = await new Promise<boolean>((resolve) => {
-          resolve(toBoolean(storage.getStorage('stop')));
-        });
-        if (stop) return;
+        if (terminalService.stopDerivation()) return;
 
         if (derivations.length === 0) {
           let derivation: Derivation;
@@ -1346,7 +1343,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
 
           dumps.push(newDump);
           await new Promise(resolve => setTimeout(() => {
-            terminal.update(newDump, data.format);
+            terminalService.update(newDump, data.format);
             resolve(null);
           }, 0));
           return;
@@ -1356,13 +1353,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
           const [start, end, hardened] = derivations[0] as [number, number, boolean];
           for (let value = start; value <= end; value++) {
             await driveHelper(
-              derivations.slice(1), current.concat([[value, hardened]]), terminal, storage
+              derivations.slice(1), current.concat([[value, hardened]]), terminalService
             );
           }
         } else {
           const [value, hardened] = derivations[0] as [number, boolean];
           await driveHelper(
-            derivations.slice(1), current.concat([[value, hardened]]), terminal, storage
+            derivations.slice(1), current.concat([[value, hardened]]), terminalService
           );
         }
         return;
@@ -1370,12 +1367,9 @@ export class DumpsComponent implements OnInit, AfterViewInit {
 
       (async () => {
         if (hdwallet.derivation) {
-          await new Promise<void>((resolve) => {
-            this.storageService.setStorage('stop', false);
-            resolve();
-          });
+          this.terminalService.stopDerivation.set(false);
           await driveHelper(
-            hdwallet.derivation.getDerivations(), [], this.terminalService, this.storageService
+            hdwallet.derivation.getDerivations(), [], this.terminalService
           );
           if (dumpsType === 'save') {
             if (data.format == 'json') {
@@ -1386,11 +1380,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
           }
           this.groupBoxService.update(null, null);
           this.isLoading = false;
+          this.terminalService.stopDerivation.set(true);
           this.changeDetectorRef.detectChanges();
         } else {
           this.terminalService.update(hdwallet.getDump(data.exclude.split(',')), 'json');
           this.groupBoxService.update(null, null);
           this.isLoading = false;
+          this.terminalService.stopDerivation.set(true);
           this.changeDetectorRef.detectChanges();
         }
       })();
