@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
 
-import { HDWallet } from '../src';
-import { BIP39Mnemonic } from '../src/mnemonics';
-import { Cryptocurrency, Bitcoin, Ethereum, Solana } from '../src/cryptocurrencies';
+import { HDWallet } from '@hdwallet/core';
+import { BIP39Mnemonic } from '@hdwallet/core/mnemonics';
+import { Cryptocurrency, Bitcoin, Ethereum, Solana } from '@hdwallet/core/cryptocurrencies';
 import {
   Derivation, CustomDerivation, BIP44Derivation, BIP49Derivation, BIP84Derivation
-} from '../src/derivations';
-import { HD, BIP32HD, BIP44HD, BIP49HD, BIP84HD } from '../src/hds';
-import { PUBLIC_KEY_TYPES } from '../src/consts';
-import { encode } from '../src/libs/base58';
-import { getBytes } from '../src/utils';
+} from '@hdwallet/core/derivations';
+import { HD, BIP32HD, BIP44HD, BIP49HD, BIP84HD } from '@hdwallet/core/hds';
+import { PUBLIC_KEY_TYPES } from '@hdwallet/core/consts';
+import { encode } from '@hdwallet/core/libs/base58';
+import { getBytes } from '@hdwallet/core/utils';
 
 const mnemonic: BIP39Mnemonic = new BIP39Mnemonic(
   'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'
