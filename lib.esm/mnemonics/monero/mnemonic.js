@@ -69,12 +69,13 @@ export class MoneroMnemonic extends Mnemonic {
     static getName() {
         return 'Monero';
     }
-    static fromWords(count, language, options = {}) {
+    static fromWords(count, language) {
         if (!this.wordsList.includes(count)) {
             throw new MnemonicError('Invalid word count', { expected: this.wordsList, got: count });
         }
-        if (this.checksumWordCounts.includes(count) && !options.checksum) {
-            options = { ...options, checksum: true };
+        let options = {};
+        if (this.checksumWordCounts.includes(count)) {
+            options = { checksum: true };
         }
         const strength = this.wordsToStrength[count];
         const entropyBytes = MoneroEntropy.generate(strength);

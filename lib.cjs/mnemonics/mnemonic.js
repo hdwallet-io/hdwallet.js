@@ -32,6 +32,9 @@ class Mnemonic {
     getMnemonic() {
         return this.mnemonic.join(' ');
     }
+    getMnemonicType() {
+        throw new Error('Not implemented');
+    }
     getWords() {
         return this.words;
     }

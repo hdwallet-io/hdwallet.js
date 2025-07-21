@@ -31,7 +31,7 @@ class CardanoHD extends bip32_1.BIP32HD {
     }
     fromSeed(seed, passphrase) {
         try {
-            this.seed = (0, utils_1.toBuffer)(seed instanceof seeds_1.Seed ? seed.getSeed() : seed);
+            this.seed = (0, utils_1.getBytes)(seed instanceof seeds_1.Seed ? seed.getSeed() : seed);
         }
         catch {
             throw new exceptions_1.SeedError('Invalid seed data');
@@ -46,10 +46,9 @@ class CardanoHD extends bip32_1.BIP32HD {
             return d;
         };
         if (this.cardanoType === cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY) {
-            if (this.seed.length !== 64) {
+            if (this.seed.length !== 32) {
                 throw new exceptions_1.BaseError('Invalid seed length', {
-                    expected: 64,
-                    got: this.seed.length
+                    expected: 32, got: this.seed.length
                 });
             }
             const digestSize = 64;
@@ -168,6 +167,7 @@ class CardanoHD extends bip32_1.BIP32HD {
                     const sum = (zrInt + krInt) % (BigInt(1) << BigInt(256));
                     return (0, utils_1.integerToBytes)(sum, eccs_1.KholawEd25519PrivateKey.getLength() / 2, 'little');
                 })();
+            this.parentFingerprint = (0, utils_1.getBytes)(this.getFingerprint());
             const newPrivateKey = this.ecc.PRIVATE_KEY.fromBytes((0, utils_1.concatBytes)(left, right));
             this.privateKey = newPrivateKey;
             this.chainCode = _hmacr;
@@ -188,10 +188,10 @@ class CardanoHD extends bip32_1.BIP32HD {
             if (newPoint.getX() === BigInt(0) && newPoint.getY() === BigInt(1)) {
                 throw new exceptions_1.BaseError('Computed public child key is not valid, very unlucky index');
             }
+            this.parentFingerprint = (0, utils_1.getBytes)(this.getFingerprint());
             this.publicKey = this.ecc.PUBLIC_KEY.fromPoint(newPoint);
             this.chainCode = hmac.slice(digestHalf);
         }
-        this.parentFingerprint = (0, utils_1.getBytes)(this.getFingerprint());
         this.depth += 1;
         this.index = index;
         this.fingerprint = (0, utils_1.getBytes)(this.getFingerprint());

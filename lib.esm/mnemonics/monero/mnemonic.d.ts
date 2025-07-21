@@ -12,7 +12,7 @@ export declare class MoneroMnemonic extends Mnemonic {
     static languageUniquePrefixLengths: Record<string, number>;
     static wordLists: Record<string, string[]>;
     static getName(): string;
-    static fromWords(count: number, language: string, options?: MnemonicOptionsInterface): string;
+    static fromWords(count: number, language: string): string;
     static fromEntropy(entropy: string | Uint8Array | Entropy, language: string, options?: MnemonicOptionsInterface): string;
     static encode(entropy: string | Uint8Array, language: string, options?: MnemonicOptionsInterface): string;
     static decode(input: string | string[], options?: MnemonicOptionsInterface): string;

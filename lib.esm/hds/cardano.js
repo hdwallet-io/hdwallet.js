@@ -28,7 +28,7 @@ export class CardanoHD extends BIP32HD {
     }
     fromSeed(seed, passphrase) {
         try {
-            this.seed = toBuffer(seed instanceof Seed ? seed.getSeed() : seed);
+            this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
         }
         catch {
             throw new SeedError('Invalid seed data');
@@ -43,10 +43,9 @@ export class CardanoHD extends BIP32HD {
             return d;
         };
         if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
-            if (this.seed.length !== 64) {
+            if (this.seed.length !== 32) {
                 throw new BaseError('Invalid seed length', {
-                    expected: 64,
-                    got: this.seed.length
+                    expected: 32, got: this.seed.length
                 });
             }
             const digestSize = 64;
@@ -165,6 +164,7 @@ export class CardanoHD extends BIP32HD {
                     const sum = (zrInt + krInt) % (BigInt(1) << BigInt(256));
                     return integerToBytes(sum, KholawEd25519PrivateKey.getLength() / 2, 'little');
                 })();
+            this.parentFingerprint = getBytes(this.getFingerprint());
             const newPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(concatBytes(left, right));
             this.privateKey = newPrivateKey;
             this.chainCode = _hmacr;
@@ -185,10 +185,10 @@ export class CardanoHD extends BIP32HD {
             if (newPoint.getX() === BigInt(0) && newPoint.getY() === BigInt(1)) {
                 throw new BaseError('Computed public child key is not valid, very unlucky index');
             }
+            this.parentFingerprint = getBytes(this.getFingerprint());
             this.publicKey = this.ecc.PUBLIC_KEY.fromPoint(newPoint);
             this.chainCode = hmac.slice(digestHalf);
         }
-        this.parentFingerprint = getBytes(this.getFingerprint());
         this.depth += 1;
         this.index = index;
         this.fingerprint = getBytes(this.getFingerprint());

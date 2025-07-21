@@ -1,7 +1,7 @@
 const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 'undefined' ? window: typeof global !== 'undefined' ? global: typeof self !== 'undefined' ? self: {});
 // SPDX-License-Identifier: MIT
 const __name__ = 'hdwallet';
-const __version__ = '1.0.0-beta.6';
+const __version__ = '1.0.0-beta.7';
 const __license__ = 'MIT';
 const __author__ = 'Meheret Tesfaye Batu';
 const __email__ = 'meherett.batu@gmail.com';
@@ -23629,6 +23629,9 @@ class Mnemonic {
     }
     getMnemonic() {
         return this.mnemonic.join(' ');
+    }
+    getMnemonicType() {
+        throw new Error('Not implemented');
     }
     getWords() {
         return this.words;
@@ -77117,12 +77120,13 @@ class MoneroMnemonic extends Mnemonic {
     static getName() {
         return 'Monero';
     }
-    static fromWords(count, language, options = {}) {
+    static fromWords(count, language) {
         if (!this.wordsList.includes(count)) {
             throw new MnemonicError('Invalid word count', { expected: this.wordsList, got: count });
         }
-        if (this.checksumWordCounts.includes(count) && !options.checksum) {
-            options = { ...options, checksum: true };
+        let options = {};
+        if (this.checksumWordCounts.includes(count)) {
+            options = { checksum: true };
         }
         const strength = this.wordsToStrength[count];
         const entropyBytes = MoneroEntropy.generate(strength);
@@ -79840,7 +79844,7 @@ class ErgoAddress extends Address {
     }) {
         const network = options.networkType ?? this.networkType;
         const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const networkType = this.networkTypes[networkName];
         if (networkType === undefined) {
             throw new NetworkError('Invalid Ergo network type', {
@@ -79865,7 +79869,7 @@ class ErgoAddress extends Address {
     }) {
         const network = options.networkType ?? this.networkType;
         const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const networkType = this.networkTypes[networkName];
         if (networkType === undefined) {
             throw new NetworkError('Invalid Ergo network type', {
@@ -80285,7 +80289,7 @@ class MoneroAddress extends Address {
         }
         const network = options.network ?? this.network;
         const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const version = integerToBytes(this.networks[networkName].addressTypes[addressType]);
         const payload = concatBytes(version, spend.getRawCompressed(), view.getRawCompressed(), getBytes(paymentID ?? new Uint8Array(0)));
         const checksum = this.computeChecksum(getBytes(payload));
@@ -80307,7 +80311,7 @@ class MoneroAddress extends Address {
         }
         const network = options.network ?? this.network;
         const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const version = integerToBytes(this.networks[networkName].addressTypes[addressType]);
         const versionGot = payloadWithPrefix.subarray(0, version.length);
         if (!equalBytes(versionGot, version)) {
@@ -80877,44 +80881,26 @@ function getWIFType(wif, wifPrefix = Bitcoin.NETWORKS.MAINNET.WIF_PREFIX) {
 // SPDX-License-Identifier: MIT
 function serialize(version, depth, parentFingerprint, index, chainCode, key, encoded = false) {
     try {
-        // 1. versionBytes: exactly 4 bytes
         const versionBytes = typeof version === 'number'
             ? integerToBytes(version, 4)
             : getBytes(version);
-        // 2. depthByte: 1 byte
         if (depth < 0 || depth > 0xff) {
             throw new ExtendedKeyError(`Depth must be 0–255; got ${depth}`);
         }
         const depthByte = integerToBytes(depth, 1);
-        // 3. parentFingerprintBytes: exactly 4 bytes
         const parentBytes = getBytes(parentFingerprint);
         if (parentBytes.length !== 4) {
             throw new ExtendedKeyError(`Parent fingerprint must be 4 bytes; got ${parentBytes.length}`);
         }
-        // 4. indexBytes: exactly 4 bytes, big-endian
         if (!Number.isInteger(index) || index < 0 || index > 0xffffffff) {
             throw new ExtendedKeyError(`Index must be 0–2^32-1; got ${index}`);
         }
         const indexBytes = integerToBytes(index, 4);
-        // 5. chainCodeBytes: exactly 32 bytes
         const chainBytes = getBytes(chainCode);
         if (chainBytes.length !== 32) {
             throw new ExtendedKeyError(`Chain code must be 32 bytes; got ${chainBytes.length}`);
         }
-        // 6. keyBytes: exactly 33 bytes
-        const keyBytes = getBytes(key);
-        if (keyBytes.length !== 33) {
-            throw new ExtendedKeyError(`Key data must be 33 bytes; got ${keyBytes.length}`);
-        }
-        // 7. Concatenate all parts in order
-        const raw = concatBytes(versionBytes, // 4 bytes
-        depthByte, // 1 byte
-        parentBytes, // 4 bytes
-        indexBytes, // 4 bytes
-        chainBytes, // 32 bytes
-        keyBytes // 33 bytes
-        );
-        // 8. Return Base58Check if requested, else hex string
+        const raw = concatBytes(versionBytes, depthByte, parentBytes, indexBytes, chainBytes, getBytes(key));
         return encoded ? checkEncode(raw) : bytesToString(raw);
     }
     catch (err) {
@@ -80922,20 +80908,16 @@ function serialize(version, depth, parentFingerprint, index, chainCode, key, enc
     }
 }
 function deserialize(key, encoded = true) {
-    // 1. Decode Base58Check if needed, otherwise parse hex
     const rawBytes = encoded ? checkDecode(key) : getBytes(key);
-    // 2. Ensure total length is exactly 78 bytes
     if (![78, 110].includes(rawBytes.length)) {
         throw new ExtendedKeyError('Invalid extended key length', { expected: [78, 110], got: rawBytes.length });
     }
-    // 3. Parse fields at known offsets
-    const version = rawBytes.slice(0, 4); // 4 bytes
-    const depth = rawBytes[4]; // 1 byte
-    const parentFingerprint = rawBytes.slice(5, 9); // 4 bytes
-    // Index: bytes 9..13 → big-endian uint32
+    const version = rawBytes.slice(0, 4);
+    const depth = rawBytes[4];
+    const parentFingerprint = rawBytes.slice(5, 9);
     const indexView = new DataView(rawBytes.buffer, rawBytes.byteOffset + 9, 4);
-    const index = indexView.getUint32(0, false); // false = big-endian
-    const chainCode = rawBytes.slice(13, 45); // 32 bytes
+    const index = indexView.getUint32(0, false);
+    const chainCode = rawBytes.slice(13, 45);
     const keyData = rawBytes.slice(45);
     return [version, depth, parentFingerprint, index, chainCode, keyData];
 }
@@ -81910,7 +81892,7 @@ class CardanoHD extends BIP32HD {
     }
     fromSeed(seed, passphrase) {
         try {
-            this.seed = toBuffer(seed instanceof Seed ? seed.getSeed() : seed);
+            this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
         }
         catch {
             throw new SeedError('Invalid seed data');
@@ -81925,10 +81907,9 @@ class CardanoHD extends BIP32HD {
             return d;
         };
         if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
-            if (this.seed.length !== 64) {
+            if (this.seed.length !== 32) {
                 throw new BaseError('Invalid seed length', {
-                    expected: 64,
-                    got: this.seed.length
+                    expected: 32, got: this.seed.length
                 });
             }
             const digestSize = 64;
@@ -82047,6 +82028,7 @@ class CardanoHD extends BIP32HD {
                     const sum = (zrInt + krInt) % (BigInt(1) << BigInt(256));
                     return integerToBytes(sum, KholawEd25519PrivateKey.getLength() / 2, 'little');
                 })();
+            this.parentFingerprint = getBytes(this.getFingerprint());
             const newPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(concatBytes(left, right));
             this.privateKey = newPrivateKey;
             this.chainCode = _hmacr;
@@ -82067,10 +82049,10 @@ class CardanoHD extends BIP32HD {
             if (newPoint.getX() === BigInt(0) && newPoint.getY() === BigInt(1)) {
                 throw new BaseError('Computed public child key is not valid, very unlucky index');
             }
+            this.parentFingerprint = getBytes(this.getFingerprint());
             this.publicKey = this.ecc.PUBLIC_KEY.fromPoint(newPoint);
             this.chainCode = hmac.slice(digestHalf);
         }
-        this.parentFingerprint = getBytes(this.getFingerprint());
         this.depth += 1;
         this.index = index;
         this.fingerprint = getBytes(this.getFingerprint());

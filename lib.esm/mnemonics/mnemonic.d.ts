@@ -12,6 +12,7 @@ export declare class Mnemonic {
     static getName(): string;
     getName(): string;
     getMnemonic(): string;
+    getMnemonicType(): string;
     getWords(): number;
     getLanguage(): string;
     static fromWords(words: number, language: string, options?: MnemonicOptionsInterface): string;

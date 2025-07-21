@@ -31,7 +31,7 @@ export class ErgoAddress extends Address {
     }) {
         const network = options.networkType ?? this.networkType;
         const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const networkType = this.networkTypes[networkName];
         if (networkType === undefined) {
             throw new NetworkError('Invalid Ergo network type', {
@@ -56,7 +56,7 @@ export class ErgoAddress extends Address {
     }) {
         const network = options.networkType ?? this.networkType;
         const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const networkType = this.networkTypes[networkName];
         if (networkType === undefined) {
             throw new NetworkError('Invalid Ergo network type', {

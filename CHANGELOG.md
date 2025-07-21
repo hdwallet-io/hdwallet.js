@@ -1,10 +1,24 @@
 # Changelog
 
+## [1.0.0-beta.7](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.7) (2025-07-21)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.6...1.0.0-beta.7)
+
+**Improvements:**
+
+- Drop: `checksome` param in MoneroMnemonic `fromWords` func
+
+**Fix Bugs:**
+
+- Fix: serialize issue for Cardano extended private-key
+- Fix: `Ergo` & `Monero` address network name
+- Fix: CardanoHD `from_seed` bytes & `parentFingerprint` issue
+
 ## [1.0.0-beta.6](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.6) (2025-07-18)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.5...1.0.0-beta.6)
 
-**Enhancement:**
+**Enhancements:**
 
 - Add: default address setup based on HDs in hdwallet.ts
 - Update: Solana default derivation path to `m/44'/${Solana.COIN_TYPE}'/0'/0'`
@@ -14,7 +28,7 @@
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.4...1.0.0-beta.5)
 
-**Enhancement:**
+**Enhancements:**
 
 - Update: separate import to reduce bundle size of @taichunmin/crc package by [@taichunmin](https://github.com/taichunmin)
 

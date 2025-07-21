@@ -59,7 +59,7 @@ class MoneroAddress extends address_1.Address {
         }
         const network = options.network ?? this.network;
         const resolvedNetwork = (0, utils_1.ensureTypeMatch)(network, cryptocurrency_1.Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const version = (0, utils_1.integerToBytes)(this.networks[networkName].addressTypes[addressType]);
         const payload = (0, utils_1.concatBytes)(version, spend.getRawCompressed(), view.getRawCompressed(), (0, utils_1.getBytes)(paymentID ?? new Uint8Array(0)));
         const checksum = this.computeChecksum((0, utils_1.getBytes)(payload));
@@ -81,7 +81,7 @@ class MoneroAddress extends address_1.Address {
         }
         const network = options.network ?? this.network;
         const resolvedNetwork = (0, utils_1.ensureTypeMatch)(network, cryptocurrency_1.Network, { otherTypes: ['string'] });
-        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+        const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
         const version = (0, utils_1.integerToBytes)(this.networks[networkName].addressTypes[addressType]);
         const versionGot = payloadWithPrefix.subarray(0, version.length);
         if (!(0, utils_1.equalBytes)(versionGot, version)) {

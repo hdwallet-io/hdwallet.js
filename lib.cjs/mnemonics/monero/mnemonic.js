@@ -72,12 +72,13 @@ class MoneroMnemonic extends mnemonic_1.Mnemonic {
     static getName() {
         return 'Monero';
     }
-    static fromWords(count, language, options = {}) {
+    static fromWords(count, language) {
         if (!this.wordsList.includes(count)) {
             throw new exceptions_1.MnemonicError('Invalid word count', { expected: this.wordsList, got: count });
         }
-        if (this.checksumWordCounts.includes(count) && !options.checksum) {
-            options = { ...options, checksum: true };
+        let options = {};
+        if (this.checksumWordCounts.includes(count)) {
+            options = { checksum: true };
         }
         const strength = this.wordsToStrength[count];
         const entropyBytes = entropies_1.MoneroEntropy.generate(strength);

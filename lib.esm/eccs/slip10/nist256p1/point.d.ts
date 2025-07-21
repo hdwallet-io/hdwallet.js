@@ -1,8 +1,8 @@
 import { Point } from '../../point';
 export declare class SLIP10Nist256p1Point extends Point {
     getName(): string;
-    static fromBytes(point: Uint8Array): SLIP10Nist256p1Point;
-    static fromCoordinates(x: bigint, y: bigint): SLIP10Nist256p1Point;
+    static fromBytes(point: Uint8Array): Point;
+    static fromCoordinates(x: bigint, y: bigint): Point;
     getUnderlyingObject(): any;
     getX(): bigint;
     getY(): bigint;
