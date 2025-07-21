@@ -74,7 +74,7 @@ export class MoneroAddress extends Address {
     }
     const network = options.network ?? this.network;
     const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
     const version = integerToBytes(
       this.networks[networkName].addressTypes[addressType]
     );
@@ -108,7 +108,7 @@ export class MoneroAddress extends Address {
 
     const network = options.network ?? this.network;
     const resolvedNetwork = ensureTypeMatch(network, Network, { otherTypes: ['string'] });
-    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.getName() : network;
+    const networkName = resolvedNetwork.isValid ? resolvedNetwork.value.NAME : network;
     const version = integerToBytes(
       this.networks[networkName].addressTypes[addressType]
     );
