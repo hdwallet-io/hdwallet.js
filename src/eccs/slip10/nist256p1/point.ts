@@ -12,7 +12,7 @@ export class SLIP10Nist256p1Point extends Point {
     return 'SLIP10-Nist256p1';
   }
 
-  static fromBytes(point: Uint8Array): SLIP10Nist256p1Point {
+  static fromBytes(point: Uint8Array): Point {
     try {
       const pt = p256.Point.fromHex(getBytes(point));
       return new SLIP10Nist256p1Point(pt);
@@ -26,7 +26,7 @@ export class SLIP10Nist256p1Point extends Point {
     }
   }
 
-  static fromCoordinates(x: bigint, y: bigint): SLIP10Nist256p1Point {
+  static fromCoordinates(x: bigint, y: bigint): Point {
     const pt = new p256.Point(BigInt(x), BigInt(y), 1n);
     return new SLIP10Nist256p1Point(pt);
   }
