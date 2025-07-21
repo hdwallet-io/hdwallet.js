@@ -101,7 +101,7 @@ export class MoneroMnemonic extends Mnemonic {
   }
 
   static fromWords(
-    count: number, language: string, options: MnemonicOptionsInterface = { }
+    count: number, language: string
   ): string {
 
     if (!this.wordsList.includes(count)) {
@@ -109,8 +109,9 @@ export class MoneroMnemonic extends Mnemonic {
         'Invalid word count', { expected: this.wordsList, got: count }
       );
     }
-    if (this.checksumWordCounts.includes(count) && !options.checksum) {
-      options = { ...options, checksum: true };
+    let options = { };
+    if (this.checksumWordCounts.includes(count)) {
+      options = { checksum: true };
     }
     const strength = this.wordsToStrength[count];
     const entropyBytes = MoneroEntropy.generate(strength);

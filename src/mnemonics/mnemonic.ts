@@ -46,6 +46,10 @@ export class Mnemonic {
     return this.mnemonic.join(' ');
   }
 
+  getMnemonicType(): string {
+    throw new Error('Not implemented');
+  }
+
   getWords(): number {
     return this.words;
   }
