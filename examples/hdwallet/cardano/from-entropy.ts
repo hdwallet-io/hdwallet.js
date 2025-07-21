@@ -11,7 +11,9 @@ const hdwallet: HDWallet = new HDWallet(
   Cryptocurrency, {
     hd: CardanoHD,
     language: BIP39_MNEMONIC_LANGUAGES.CZECH,
-    cardanoType: Cryptocurrency.TYPES.BYRON_ICARUS
+    cardanoType: Cryptocurrency.TYPES.BYRON_ICARUS,
+    addressType: Cryptocurrency.ADDRESS_TYPES.PUBLIC_KEY,
+    passphrase: 'meherett'
   }
 ).fromEntropy(new BIP39Entropy(
   BIP39Entropy.generate(

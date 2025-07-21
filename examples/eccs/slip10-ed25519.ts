@@ -2,8 +2,9 @@
 
 import {
   EllipticCurveCryptography,
-  PublicKey,
   PrivateKey,
+  PublicKey,
+  Point,
   ECCS,
   validateAndGetPublicKey,
   SLIP10Ed25519ECC,
@@ -44,8 +45,8 @@ console.log(
   )
 );
 
-const rawSLIP10Ed25519Point = SLIP10Ed25519Point.fromBytes(data.point.raw);
-const coordinatesSLIP10Ed25519Point = SLIP10Ed25519Point.fromCoordinates(data.point.x, data.point.y);
+const rawSLIP10Ed25519Point: Point = SLIP10Ed25519Point.fromBytes(data.point.raw);
+const coordinatesSLIP10Ed25519Point: Point = SLIP10Ed25519Point.fromCoordinates(data.point.x, data.point.y);
 
 console.log(
   'Point:',

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  MNEMONICS, BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS
+  MNEMONICS, Mnemonic, BIP39Mnemonic, BIP39_MNEMONIC_LANGUAGES, BIP39_MNEMONIC_WORDS
 } from '../../src/mnemonics';
 import { isAllEqual } from '../../src/utils';
 
@@ -13,10 +13,10 @@ const data = {
   words: BIP39_MNEMONIC_WORDS.TWENTY_FOUR
 }
 
-const BIP39MnemonicClass: typeof BIP39Mnemonic = MNEMONICS.getMnemonicClass(data.name);
+const BIP39MnemonicClass: typeof Mnemonic = MNEMONICS.getMnemonicClass(data.name);
 
-const bip39MnemonicClass: BIP39Mnemonic = new BIP39MnemonicClass(data.mnemonic);
-const bip39Mnemonic: BIP39Mnemonic = new BIP39Mnemonic(data.mnemonic);
+const bip39MnemonicClass = new BIP39MnemonicClass(data.mnemonic);
+const bip39Mnemonic = new BIP39Mnemonic(data.mnemonic);
 
 console.log(
   isAllEqual(
@@ -44,6 +44,7 @@ console.log(
   ), '\n'
 );
 
+console.log('Client:', data.name);
 console.log('Mnemonic:', data.mnemonic);
 console.log('Language:', data.language);
 console.log('Words:', data.words);

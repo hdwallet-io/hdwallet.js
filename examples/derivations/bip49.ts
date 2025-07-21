@@ -6,8 +6,8 @@ import { isAllEqual } from '../../src/utils';
 
 const data = {
   name: 'BIP49',
-  purpose: Qtum.COIN_TYPE,
-  coinType: 2301,
+  purpose: 49,
+  coinType: Qtum.COIN_TYPE,
   account: 0,
   change: 'external-chain',
   address: 0,

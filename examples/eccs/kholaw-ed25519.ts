@@ -2,8 +2,9 @@
 
 import {
   EllipticCurveCryptography,
-  PublicKey,
   PrivateKey,
+  PublicKey,
+  Point,
   ECCS,
   validateAndGetPublicKey,
   KholawEd25519ECC,
@@ -44,8 +45,8 @@ console.log(
   )
 );
 
-const rawKholawEd25519Point = KholawEd25519Point.fromBytes(data.point.raw);
-const coordinatesKholawEd25519Point = KholawEd25519Point.fromCoordinates(data.point.x, data.point.y);
+const rawKholawEd25519Point: Point = KholawEd25519Point.fromBytes(data.point.raw);
+const coordinatesKholawEd25519Point: Point = KholawEd25519Point.fromCoordinates(data.point.x, data.point.y);
 
 console.log(
   'Point:',

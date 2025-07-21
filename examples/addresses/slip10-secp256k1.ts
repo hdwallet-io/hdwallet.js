@@ -152,7 +152,7 @@ const blsFilecoinAddress: string = FilecoinAddress.encode(publicKey, {
 const blsFilecoinAddressHash: string = FilecoinAddress.decode(blsFilecoinAddress, {
   addressType: Filecoin.ADDRESS_TYPES.BLS
 });
-console.log('(BLX) Filecoin Address:', blsFilecoinAddress, blsFilecoinAddressHash);
+console.log('(BLS) Filecoin Address:', blsFilecoinAddress, blsFilecoinAddressHash);
 
 const pAvalancheAddress: string = AvalancheAddress.encode(publicKey, {
   addressType: Avalanche.ADDRESS_TYPES.P_CHAIN
@@ -171,24 +171,24 @@ const xAvalancheAddressHash: string = AvalancheAddress.decode(xAvalancheAddress,
 console.log('(X-Chain) Avalanche Address:', xAvalancheAddress, xAvalancheAddressHash);
 
 const eosAddress: string = EOSAddress.encode(publicKey);
-const eosAddressHash: string = EOSAddress.decode(eosAddress);
-console.log("EOS Address:", eosAddress, eosAddressHash);
+const eosPublicKey: string = EOSAddress.decode(eosAddress);
+console.log("EOS Address:", eosAddress, eosPublicKey);
 
 const p2pkhErgoAddress: string = ErgoAddress.encode(publicKey, {
   addressType: Ergo.ADDRESS_TYPES.P2PKH, networkType: Ergo.NETWORKS.TESTNET
 });
-const p2pkhErgoAddressHash: string = ErgoAddress.decode(p2pkhErgoAddress, {
+const p2pkhErgoPublicKey: string = ErgoAddress.decode(p2pkhErgoAddress, {
   addressType: Ergo.ADDRESS_TYPES.P2PKH, networkType: Ergo.NETWORKS.TESTNET
 });
-console.log("(P2PKH) Ergo Address:", p2pkhErgoAddress, p2pkhErgoAddressHash);
+console.log("(P2PKH) Ergo Address:", p2pkhErgoAddress, p2pkhErgoPublicKey);
 
 const p2shErgoAddress: string = ErgoAddress.encode(publicKey, {
   addressType: Ergo.ADDRESS_TYPES.P2SH, networkType: Ergo.NETWORKS.TESTNET
 });
-const p2shErgoAddressHash: string = ErgoAddress.decode(p2shErgoAddress, {
+const p2shErgoPublicKey: string = ErgoAddress.decode(p2shErgoAddress, {
   addressType: Ergo.ADDRESS_TYPES.P2SH, networkType: Ergo.NETWORKS.TESTNET
 });
-console.log("(P2SH) Ergo Address:", p2shErgoAddress, p2shErgoAddressHash);
+console.log("(P2SH) Ergo Address:", p2shErgoAddress, p2shErgoPublicKey);
 
 const iconAddress: string = IconAddress.encode(publicKey);
 const iconAddressHash: string = IconAddress.decode(iconAddress);

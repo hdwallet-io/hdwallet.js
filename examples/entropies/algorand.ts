@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
+  ENTROPIES, Entropy, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { isAllEqual } from '../../src/utils';
 
@@ -11,10 +11,10 @@ const data = {
   strength: ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
 }
 
-const AlgorandEntropyClass: typeof AlgorandEntropy = ENTROPIES.getEntropyClass(data.name);
+const AlgorandEntropyClass: typeof Entropy = ENTROPIES.getEntropyClass(data.name);
 
-const algorandEntropyClass: AlgorandEntropy = new AlgorandEntropyClass(data.entropy);
-const algorandEntropy: AlgorandEntropy = new AlgorandEntropy(data.entropy);
+const algorandEntropyClass = new AlgorandEntropyClass(data.entropy);
+const algorandEntropy = new AlgorandEntropy(data.entropy);
 
 console.log(
   isAllEqual(algorandEntropyClass.getStrength(), algorandEntropy.getStrength(), data.strength),
@@ -27,5 +27,6 @@ console.log(
   ), '\n'
 );
 
+console.log('Client:', data.name);
 console.log('Entropy:', data.entropy);
 console.log('Strength:', data.strength);

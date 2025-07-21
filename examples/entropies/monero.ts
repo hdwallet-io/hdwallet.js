@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES, MoneroEntropy, MONERO_ENTROPY_STRENGTHS
+  ENTROPIES, Entropy, MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { isAllEqual } from '../../src/utils';
 
@@ -11,10 +11,10 @@ const data = {
   strength: MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
 }
 
-const MoneroEntropyClass: typeof MoneroEntropy = ENTROPIES.getEntropyClass(data.name);
+const MoneroEntropyClass: typeof Entropy = ENTROPIES.getEntropyClass(data.name);
 
-const moneroEntropyClass: MoneroEntropy = new MoneroEntropyClass(data.entropy);
-const moneroEntropy: MoneroEntropy = new MoneroEntropy(data.entropy);
+const moneroEntropyClass = new MoneroEntropyClass(data.entropy);
+const moneroEntropy = new MoneroEntropy(data.entropy);
 
 console.log(
   isAllEqual(moneroEntropyClass.getStrength(), moneroEntropy.getStrength(), data.strength),
@@ -27,5 +27,6 @@ console.log(
   ),'\n'
 );
 
+console.log('Client:', data.name);
 console.log('Entropy:', data.entropy);
 console.log('Strength:', data.strength);

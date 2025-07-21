@@ -16,5 +16,5 @@ console.log('Uncompressed Public Key:', bytesToString(publicKey.getRawUncompress
 console.log('Compressed Public Key:', bytesToString(publicKey.getRawCompressed()), '\n');
 
 const nanoAddress = NanoAddress.encode(publicKey);
-const nanoAddressHash = NanoAddress.decode(nanoAddress);
-console.log('Nano Address:', nanoAddress, nanoAddressHash);
+const nanoPublicKey = NanoAddress.decode(nanoAddress);
+console.log('Nano Address:', nanoAddress, nanoPublicKey);

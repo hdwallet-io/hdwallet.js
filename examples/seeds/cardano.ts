@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { SEEDS, CardanoSeed } from '../../src/seeds';
+import { SEEDS, Seed, CardanoSeed } from '../../src/seeds';
 import { isAllEqual } from '../../src/utils';
 import { Cardano } from '../../src/cryptocurrencies';
 
@@ -41,12 +41,12 @@ const data = {
   ]
 }
 
-const CardanoSeedClass: typeof CardanoSeed = SEEDS.getSeedClass(data.name);
+const CardanoSeedClass: typeof Seed = SEEDS.getSeedClass(data.name);
 
 for (const seed of data.seeds) {
 
-  const cardanoSeedClass: CardanoSeed = new CardanoSeedClass(seed.seed);
-  const cardanoSeed: CardanoSeed = new CardanoSeed(seed.seed);
+  const cardanoSeedClass = new CardanoSeedClass(seed.seed);
+  const cardanoSeed = new CardanoSeed(seed.seed);
 
   console.log(
     isAllEqual(
@@ -62,7 +62,7 @@ for (const seed of data.seeds) {
     ), '\n'
   );
 
-  console.log('Name:', data.name);
+  console.log('Client:', data.name);
   console.log('Mnemonic:', data.mnemonic);
   console.log('Seed:', seed.seed);
   console.log('Cardano Type:', seed.cardanoType, '\n');

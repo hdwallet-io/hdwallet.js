@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  MNEMONICS, MoneroMnemonic, MONERO_MNEMONIC_LANGUAGES, MONERO_MNEMONIC_WORDS
+  MNEMONICS, Mnemonic, MoneroMnemonic, MONERO_MNEMONIC_LANGUAGES, MONERO_MNEMONIC_WORDS
 } from '../../src/mnemonics';
 import { isAllEqual } from '../../src/utils';
 
@@ -23,12 +23,12 @@ const data = {
   ]
 }
 
-const MoneroMnemonicClass: typeof MoneroMnemonic = MNEMONICS.getMnemonicClass(data.name);
+const MoneroMnemonicClass: typeof Mnemonic = MNEMONICS.getMnemonicClass(data.name);
 
 for (const mnemonic of data.mnemonics) {
 
-  const moneroMnemonicClass: MoneroMnemonic = new MoneroMnemonicClass(mnemonic.mnemonic);
-  const moneroMnemonic: MoneroMnemonic = new MoneroMnemonic(mnemonic.mnemonic);
+  const moneroMnemonicClass = new MoneroMnemonicClass(mnemonic.mnemonic);
+  const moneroMnemonic = new MoneroMnemonic(mnemonic.mnemonic);
 
   console.log(
     isAllEqual(
@@ -54,11 +54,12 @@ for (const mnemonic of data.mnemonics) {
     isAllEqual(MoneroMnemonicClass.isValidLanguage(data.language), MoneroMnemonic.isValidLanguage(data.language)),
     isAllEqual(MoneroMnemonicClass.isValidWords(mnemonic.words), MoneroMnemonic.isValidWords(mnemonic.words)),
     isAllEqual(
-      MoneroMnemonicClass.fromWords(mnemonic.words, data.language, { checksum: mnemonic.checksum }).split(' ').length,
-      MoneroMnemonic.fromWords(mnemonic.words, data.language, { checksum: mnemonic.checksum }).split(' ').length
+      MoneroMnemonicClass.fromWords(mnemonic.words, data.language).split(' ').length,
+      MoneroMnemonic.fromWords(mnemonic.words, data.language).split(' ').length
     ), '\n'
   );
 
+  console.log('Client:', data.name);
   console.log('Mnemonic:', mnemonic.mnemonic);
   console.log('Language:', data.language);
   console.log('Words:', mnemonic.words);

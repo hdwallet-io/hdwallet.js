@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES, BIP39Entropy, BIP39_ENTROPY_STRENGTHS
+  ENTROPIES, Entropy, BIP39Entropy, BIP39_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { isAllEqual } from '../../src/utils';
 
@@ -11,10 +11,10 @@ const data = {
   strength: BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
 }
 
-const BIP39EntropyClass: typeof BIP39Entropy = ENTROPIES.getEntropyClass(data.name);
+const BIP39EntropyClass: typeof Entropy = ENTROPIES.getEntropyClass(data.name);
 
-const bip39EntropyClass: BIP39Entropy = new BIP39EntropyClass(data.entropy);
-const bip39Entropy: BIP39Entropy = new BIP39Entropy(data.entropy);
+const bip39EntropyClass = new BIP39EntropyClass(data.entropy);
+const bip39Entropy = new BIP39Entropy(data.entropy);
 
 console.log(
   isAllEqual(bip39EntropyClass.getStrength(), bip39Entropy.getStrength(), data.strength),
@@ -27,5 +27,6 @@ console.log(
   ),'\n'
 );
 
+console.log('Client:', data.name);
 console.log('Entropy:', data.entropy);
 console.log('Strength:', data.strength);

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { SEEDS, ElectrumV1Seed } from '../../../src/seeds';
+import { SEEDS, Seed, ElectrumV1Seed } from '../../../src/seeds';
 import { isAllEqual } from '../../../src/utils';
 
 const data = {
@@ -9,10 +9,10 @@ const data = {
   seed: '7c2548ab89ffea8a6579931611969ffc0ed580ccf6048d4230762b981195abe5'
 }
 
-const ElectrumV1SeedClass: typeof ElectrumV1Seed = SEEDS.getSeedClass(data.name);
+const ElectrumV1SeedClass: typeof Seed = SEEDS.getSeedClass(data.name);
 
-const electrumV1SeedClass: ElectrumV1Seed = new ElectrumV1SeedClass(data.seed);
-const electrumV1Seed: ElectrumV1Seed = new ElectrumV1Seed(data.seed);
+const electrumV1SeedClass = new ElectrumV1SeedClass(data.seed);
+const electrumV1Seed = new ElectrumV1Seed(data.seed);
 
 console.log(
   isAllEqual(
@@ -24,6 +24,6 @@ console.log(
   ), '\n'
 );
 
-console.log('Name:', data.name);
+console.log('Client:', data.name);
 console.log('Mnemonic:', data.mnemonic);
 console.log('Seed:', data.seed);

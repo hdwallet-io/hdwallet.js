@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  MNEMONICS, ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_LANGUAGES, ELECTRUM_V1_MNEMONIC_WORDS
+  MNEMONICS, Mnemonic, ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_LANGUAGES, ELECTRUM_V1_MNEMONIC_WORDS
 } from '../../../src/mnemonics';
 import { isAllEqual } from '../../../src/utils';
 
@@ -13,10 +13,10 @@ const data = {
   words: ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
 }
 
-const ElectrumV1MnemonicClass: typeof ElectrumV1Mnemonic = MNEMONICS.getMnemonicClass(data.name);
+const ElectrumV1MnemonicClass: typeof Mnemonic = MNEMONICS.getMnemonicClass(data.name);
 
-const electrumV1MnemonicClass: ElectrumV1Mnemonic = new ElectrumV1MnemonicClass(data.mnemonic);
-const electrumV1Mnemonic: ElectrumV1Mnemonic = new ElectrumV1Mnemonic(data.mnemonic);
+const electrumV1MnemonicClass = new ElectrumV1MnemonicClass(data.mnemonic);
+const electrumV1Mnemonic = new ElectrumV1Mnemonic(data.mnemonic);
 
 console.log(
   isAllEqual(
@@ -44,6 +44,7 @@ console.log(
   ), '\n'
 );
 
+console.log('Client:', data.mnemonic);
 console.log('Mnemonic:', data.mnemonic);
 console.log('Language:', data.language);
 console.log('Words:', data.words);

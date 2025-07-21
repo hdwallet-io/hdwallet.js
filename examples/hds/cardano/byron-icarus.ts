@@ -10,8 +10,8 @@ const cardanoHD: CardanoHD = new CardanoHD({
 
 const seed = 'dd585f208c3adf2726d6437bf5278d05';
 const passphrase = 'talonlab';
-const xPrivateKey = 'xprv3QESAWYc9vDdZLxk8ma2q6k6uiDpnf7s8g2c7atpYWnUfEMsn8khuT4GpKRZ9BnmF25dnPZ53Yv9rmb8AhGVv4Bm53UZYq7Vf6KVQZcGpok6kVWD3P66qABDhcF1F25y4d3bXY4hZgZWtRZWNVeNFxD';
-const xPublicKey = 'xpub661MyMwAqRbcEojCTV9kmWZMJPpDX53Gw5d3Ep1dbNzzX9bML9fXeDaGRoeZncQX9kDtqy7b17AA17JjZtoctuRq9qmRTb2UnQcPsxwNSkN';
+const xPrivateKey = 'xprv3QESAWYc9vDdZHc7GX4AJ4mMjpZwYbbJyvi8WdtfbQSfSTL3fxPsEQJnRFuyGD15Q1GCndAmQfRM2bRypVoo1SSuyLAQaKhUuRxCStbeHU6wMCQowdVa22eHFeMCPuNDM6GMFy2CDQ99x2HPSupCtFR';
+const xPublicKey = 'xpub661MyMwAqRbcEcRzkCoVUx3mnm2P2u5zuv9Y6Aa7n1NiRbCBbDgSVrsY5uZurNsLzTanEA7GQg9PivUexXH5yNncFvAzj5VhtNWjbiKH2zz';
 
 cardanoHD.fromSeed(seed, passphrase);
 // cardanoHD.fromXPrivateKey(xPrivateKey);

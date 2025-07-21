@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-import { SEEDS, BIP39Seed } from '../../src/seeds';
+import { SEEDS, Seed, BIP39Seed } from '../../src/seeds';
 import { isAllEqual } from '../../src/utils';
 
 const data = {
@@ -18,12 +18,12 @@ const data = {
   ]
 }
 
-const BIP39SeedClass: typeof BIP39Seed = SEEDS.getSeedClass(data.name);
+const BIP39SeedClass: typeof Seed = SEEDS.getSeedClass(data.name);
 
 for (const seed of data.seeds) {
 
-  const bip39SeedClass: BIP39Seed = new BIP39SeedClass(seed.seed);
-  const bip39Seed: BIP39Seed = new BIP39Seed(seed.seed);
+  const bip39SeedClass = new BIP39SeedClass(seed.seed);
+  const bip39Seed = new BIP39Seed(seed.seed);
 
   console.log(
     isAllEqual(
@@ -35,7 +35,7 @@ for (const seed of data.seeds) {
     ), '\n'
   );
 
-  console.log('Name:', data.name);
+  console.log('Client:', data.name);
   console.log('Mnemonic:', data.mnemonic);
   console.log('Seed:', BIP39Seed.fromMnemonic(data.mnemonic, { passphrase: seed.passphrase }));
   console.log('Passphrase:', seed.passphrase, '\n');

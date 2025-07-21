@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  MNEMONICS, AlgorandMnemonic, ALGORAND_MNEMONIC_LANGUAGES, ALGORAND_MNEMONIC_WORDS
+  MNEMONICS, Mnemonic, AlgorandMnemonic, ALGORAND_MNEMONIC_LANGUAGES, ALGORAND_MNEMONIC_WORDS
 } from '../../src/mnemonics';
 import { isAllEqual } from '../../src/utils';
 
@@ -13,10 +13,10 @@ const data = {
   words: ALGORAND_MNEMONIC_WORDS.TWENTY_FIVE
 }
 
-const AlgorandMnemonicClass: typeof AlgorandMnemonic = MNEMONICS.getMnemonicClass(data.name);
+const AlgorandMnemonicClass: typeof Mnemonic = MNEMONICS.getMnemonicClass(data.name);
 
-const algorandMnemonicClass: AlgorandMnemonic = new AlgorandMnemonicClass(data.mnemonic);
-const algorandMnemonic: AlgorandMnemonic = new AlgorandMnemonic(data.mnemonic);
+const algorandMnemonicClass = new AlgorandMnemonicClass(data.mnemonic);
+const algorandMnemonic = new AlgorandMnemonic(data.mnemonic);
 
 console.log(
   isAllEqual(
@@ -44,6 +44,7 @@ console.log(
   ), '\n'
 );
 
+console.log('Client:', data.name);
 console.log('Mnemonic:', data.mnemonic);
 console.log('Language:', data.language);
 console.log('Words:', data.words);

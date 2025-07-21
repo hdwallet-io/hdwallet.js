@@ -29,7 +29,7 @@ const moneroAddress = MoneroAddress.encode(
   { spendPublicKey: spendPublicKey, viewPublicKey: viewPublicKey },
   { network: Monero.NETWORKS.MAINNET, addressType: Monero.ADDRESS_TYPES.STANDARD }
 );
-const moneroAddressHash = MoneroAddress.decode(moneroAddress, {
+const moneroPublicKey = MoneroAddress.decode(moneroAddress, {
   network: Monero.NETWORKS.MAINNET, addressType: Monero.ADDRESS_TYPES.STANDARD
 });
-console.log('Monero Address:', moneroAddress, moneroAddressHash);
+console.log('Monero Address:', moneroAddress, moneroPublicKey);

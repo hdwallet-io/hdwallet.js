@@ -26,28 +26,28 @@ console.log('Uncompressed Public Key:', bytesToString(publicKey.getRawUncompress
 console.log('Compressed Public Key:', bytesToString(publicKey.getRawCompressed()), '\n');
 
 const algorandAddress = AlgorandAddress.encode(publicKey);
-const algorandAddressHash = AlgorandAddress.decode(algorandAddress);
-console.log('Algorand Address:', algorandAddress, algorandAddressHash);
+const algorandPublicKey = AlgorandAddress.decode(algorandAddress);
+console.log('Algorand Address:', algorandAddress, algorandPublicKey);
 
 const multiversXAddress = MultiversXAddress.encode(publicKey, {
   hrp: MultiversX.NETWORKS.MAINNET.HRP
 });
-const multiversXAddressHash = MultiversXAddress.decode(multiversXAddress, {
+const multiversXPublicKey = MultiversXAddress.decode(multiversXAddress, {
   hrp: MultiversX.NETWORKS.MAINNET.HRP
 });
-console.log('MultiversX Address:', multiversXAddress, multiversXAddressHash);
+console.log('MultiversX Address:', multiversXAddress, multiversXPublicKey);
 
 const solanaAddress = SolanaAddress.encode(publicKey);
-const solanaAddressHash = SolanaAddress.decode(solanaAddress);
-console.log('Solana Address:', solanaAddress, solanaAddressHash);
+const solanaPublicKey = SolanaAddress.decode(solanaAddress);
+console.log('Solana Address:', solanaAddress, solanaPublicKey);
 
 const stellarAddress = StellarAddress.encode(publicKey, {
   addressType: Stellar.ADDRESS_TYPES.PRIVATE_KEY
 });
-const stellarAddressHash = StellarAddress.decode(stellarAddress, {
+const stellarPublicKey = StellarAddress.decode(stellarAddress, {
   addressType: Stellar.ADDRESS_TYPES.PRIVATE_KEY
 });
-console.log('Stellar Address:', stellarAddress, stellarAddressHash);
+console.log('Stellar Address:', stellarAddress, stellarPublicKey);
 
 const tezosAddress = TezosAddress.encode(publicKey, {
   addressPrefix: Tezos.ADDRESS_PREFIXES.TZ1
@@ -58,13 +58,13 @@ const tezosAddressHash = TezosAddress.decode(tezosAddress, {
 console.log('Tezos Address:', tezosAddress, tezosAddressHash);
 
 const suiAddress = SuiAddress.encode(publicKey);
-const suiAddressHash = SuiAddress.decode(suiAddress);
-console.log('Sui Address:', suiAddress, suiAddressHash);
+const suiPublicKey = SuiAddress.decode(suiAddress);
+console.log('Sui Address:', suiAddress, suiPublicKey);
 
 const aptosAddress = AptosAddress.encode(publicKey);
 const aptosAddressHash = AptosAddress.decode(aptosAddress);
 console.log('Aptos Address:', aptosAddress, aptosAddressHash);
 
 const nearAddress = NearAddress.encode(publicKey);
-const nearAddressHash = NearAddress.decode(nearAddress);
-console.log('Near Address:', nearAddress, nearAddressHash);
+const nearPublicKey = NearAddress.decode(nearAddress);
+console.log('Near Address:', nearAddress, nearPublicKey);

@@ -63,6 +63,4 @@ console.log('Depth:', bip86HD.getDepth());
 console.log('Path:', bip86HD.getPath());
 console.log('Index:', bip86HD.getIndex());
 console.log('Indexes:', bip86HD.getIndexes());
-console.log('Address:', bip86HD.getAddress(
-  Cryptocurrency.ADDRESSES.P2TR
-));
+console.log('Address:', bip86HD.getAddress());
