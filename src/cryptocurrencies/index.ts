@@ -17,6 +17,7 @@ import { Avian } from './avian';
 import { Axe } from './axe';
 import { Axelar } from './axelar';
 import { BandProtocol } from './bandprotocol';
+import { Base } from './base';
 import { Bata } from './bata';
 import { BeetleCoin } from './beetlecoin';
 import { BelaCoin } from './belacoin';
@@ -232,6 +233,7 @@ export class CRYPTOCURRENCIES {
     [Axe.NAME]: Axe,
     [Axelar.NAME]: Axelar,
     [BandProtocol.NAME]: BandProtocol,
+    [Base.NAME]: Base,
     [Bata.NAME]: Bata,
     [BeetleCoin.NAME]: BeetleCoin,
     [BelaCoin.NAME]: BelaCoin,
@@ -480,6 +482,7 @@ export {
   Axe,
   Axelar,
   BandProtocol,
+  Base,
   Bata,
   BeetleCoin,
   BelaCoin,
