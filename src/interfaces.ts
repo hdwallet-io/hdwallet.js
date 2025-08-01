@@ -206,6 +206,7 @@ export interface EnsureTypeMatchOptionsInterface {
 }
 
 export interface HDWalletOptionsInterface {
+  ecc?: any,
   hd?: any,
   network?: any,
   address?: any,

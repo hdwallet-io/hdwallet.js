@@ -2,6 +2,7 @@
 
 import { HD } from './hd'
 import { BaseError } from '../exceptions';
+import { AlgorandHD } from './algorand';
 import { BIP32HD } from './bip32';
 import { BIP44HD } from './bip44';
 import { BIP49HD } from './bip49';
@@ -16,6 +17,7 @@ import { MoneroHD } from './monero';
 export class HDS {
 
   private static dictionary: Record<string, typeof HD> = {
+    [AlgorandHD.getName()]: AlgorandHD,
     [BIP32HD.getName()]: BIP32HD,
     [BIP44HD.getName()]: BIP44HD,
     [BIP49HD.getName()]: BIP49HD,
@@ -52,6 +54,7 @@ export class HDS {
 
 export {
   HD,
+  AlgorandHD,
   BIP32HD,
   BIP44HD,
   BIP49HD,
