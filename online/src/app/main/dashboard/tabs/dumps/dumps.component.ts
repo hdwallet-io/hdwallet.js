@@ -245,19 +245,17 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['dumps', toLowerCase(this.ecc), this.cryptocurrency.SYMBOL], { replaceUrl: true });
     this.networks = this.getNetworks(this.cryptocurrency.SYMBOL);
     this.hds = this.getHDs(this.cryptocurrency.SYMBOL);
-    this.hd = objectIsIncluded(this.hds, this.hd) ? this.hd : {
-      name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
-    };
     if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'Kholaw-Ed25519') {
-      this.hds.splice(1, 2);
       this.hd = { name: 'Algorand', value: 'Algorand' };
     } else if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'SLIP10-Ed25519') {
-      this.hds.splice(0, 1);
       this.hd = { name: 'BIP44', value: 'BIP44' };
+    } else {
+      this.hd = objectIsIncluded(this.hds, this.hd) ? this.hd : {
+        name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
+      };
     }
-    console.log(this.symbol, this.hd.value)
-    this.updateFormGroup('symbol', this.symbol, true, 1);
-    this.updateFormGroup('hd', this.hd.value, true, 1);
+    this.updateFormGroup('symbol', this.symbol, emitEvent, 1);
+    this.updateFormGroup('hd', this.hd.value, emitEvent, 1);
   }
 
   updateSymbol(symbol: string, emitEvent: boolean = true, timeout: number = 0): void {
@@ -266,15 +264,14 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['dumps', toLowerCase(this.ecc), this.cryptocurrency.SYMBOL], { replaceUrl: true });
     this.networks = this.getNetworks(this.cryptocurrency.SYMBOL);
     this.hds = this.getHDs(this.cryptocurrency.SYMBOL);
-    this.hd = objectIsIncluded(this.hds, this.hd) ? this.hd : {
-      name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
-    };
     if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'Kholaw-Ed25519') {
-      this.hds.splice(1, 2);
       this.hd = { name: 'Algorand', value: 'Algorand' };
     } else if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'SLIP10-Ed25519') {
-      this.hds.splice(0, 1);
       this.hd = { name: 'BIP44', value: 'BIP44' };
+    } else {
+      this.hd = objectIsIncluded(this.hds, this.hd) ? this.hd : {
+        name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
+      };
     }
     this.froms = this.getFroms(this.hd.value);
     this.from = objectIsIncluded(this.froms, this.from) ? this.from : this.froms[1];
@@ -467,11 +464,17 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   }
 
   getHDs(symbol: string): ComboboxInterface[] {
-    return CRYPTOCURRENCIES.getClasses().find(
+    let cryptocurrencies =  CRYPTOCURRENCIES.getClasses().find(
       (item: typeof Cryptocurrency): boolean => item.SYMBOL === symbol
     )?.HDS.getHDS().map((item: string): ComboboxInterface => ({
         name: item, value: item
     })) || [];
+    if (symbol === 'ALGO' && this.ecc === 'Kholaw-Ed25519') {
+      cryptocurrencies.splice(1, 2);
+    } else if (symbol === 'ALGO' && this.ecc === 'SLIP10-Ed25519') {
+      cryptocurrencies.splice(0, 1);
+    }
+    return cryptocurrencies;
   }
 
   getFroms(hd: string): ComboboxInterface[] {
@@ -1414,6 +1417,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       (async () => {
         if (hdwallet.derivation) {
           this.terminalService.stopDerivation.set(false);
+          this.changeDetectorRef.detectChanges();
           await driveHelper(
             hdwallet.derivation.getDerivations(), [], this.terminalService
           );
