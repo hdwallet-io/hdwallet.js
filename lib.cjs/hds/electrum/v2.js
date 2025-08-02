@@ -11,6 +11,7 @@ const cryptocurrencies_1 = require("../../cryptocurrencies");
 const bip32_1 = require("../bip32");
 const utils_1 = require("../../utils");
 const exceptions_1 = require("../../exceptions");
+const eccs_1 = require("../../eccs");
 class ElectrumV2HD extends hd_1.HD {
     mode;
     wifType;
@@ -21,7 +22,7 @@ class ElectrumV2HD extends hd_1.HD {
         publicKeyType: consts_1.PUBLIC_KEY_TYPES.UNCOMPRESSED,
         mode: consts_1.MODES.STANDARD
     }) {
-        super(options);
+        super({ ecc: eccs_1.SLIP10Secp256k1ECC, ...options });
         this.mode = options.mode ?? consts_1.MODES.STANDARD;
         if (!consts_1.MODES.getTypes().includes(this.mode)) {
             throw new exceptions_1.BaseError(`Invalid ${this.getName()} mode`, {

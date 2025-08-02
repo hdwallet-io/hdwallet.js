@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 import { CoinTypes } from '../slip44';
-import { SLIP10Ed25519ECC } from '../eccs';
+import { KholawEd25519ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export class Mainnet extends Network {
     static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
-        P2PKH: 0x0488ade4
+        P2PKH: 0x0f4331d4
     });
     static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
         P2PKH: 0x0488b21e
@@ -23,7 +23,7 @@ export class Algorand extends Cryptocurrency {
             'https://www.algorand.com'
         ]
     });
-    static ECC = SLIP10Ed25519ECC;
+    static ECC = KholawEd25519ECC;
     static COIN_TYPE = CoinTypes.Algorand;
     static SUPPORT_BIP38 = false;
     static NETWORKS = new Networks({
@@ -43,10 +43,11 @@ export class Algorand extends Cryptocurrency {
         'BIP39'
     ]);
     static HDS = new HDs([
+        { ALGORAND: 'Algorand' },
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = Algorand.HDS.BIP44;
+    static DEFAULT_HD = Algorand.HDS.ALGORAND;
     static DEFAULT_PATH = `m/44'/${Algorand.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new Addresses({
         ALGORAND: 'Algorand'

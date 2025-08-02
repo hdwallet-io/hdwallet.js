@@ -1,6 +1,8 @@
 import { Derivation } from '../derivations';
 import { HDOptionsInterface } from '../interfaces';
+import { EllipticCurveCryptography } from '../eccs';
 export declare class HD {
+    ecc: typeof EllipticCurveCryptography;
     protected derivation: any;
     constructor(options?: HDOptionsInterface);
     static getName(): string;

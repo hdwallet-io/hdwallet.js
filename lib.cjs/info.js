@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.__websites__ = exports.__keywords__ = exports.__tracker__ = exports.__changelog__ = exports.__source__ = exports.__url__ = exports.__description__ = exports.__email__ = exports.__author__ = exports.__license__ = exports.__version__ = exports.__name__ = void 0;
 exports.__name__ = 'hdwallet';
-exports.__version__ = '1.0.0-beta.7';
+exports.__version__ = '1.0.0-beta.8';
 exports.__license__ = 'MIT';
 exports.__author__ = 'Meheret Tesfaye Batu';
 exports.__email__ = 'meherett.batu@gmail.com';

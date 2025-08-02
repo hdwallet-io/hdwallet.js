@@ -183,6 +183,7 @@ export interface EnsureTypeMatchOptionsInterface {
     otherTypes?: any[];
 }
 export interface HDWalletOptionsInterface {
+    ecc?: any;
     hd?: any;
     network?: any;
     address?: any;

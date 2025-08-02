@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 import { HD } from './hd';
 import { BaseError } from '../exceptions';
+import { AlgorandHD } from './algorand';
 import { BIP32HD } from './bip32';
 import { BIP44HD } from './bip44';
 import { BIP49HD } from './bip49';
@@ -13,6 +14,7 @@ import { ElectrumV2HD } from './electrum/v2';
 import { MoneroHD } from './monero';
 export class HDS {
     static dictionary = {
+        [AlgorandHD.getName()]: AlgorandHD,
         [BIP32HD.getName()]: BIP32HD,
         [BIP44HD.getName()]: BIP44HD,
         [BIP49HD.getName()]: BIP49HD,
@@ -40,5 +42,5 @@ export class HDS {
         return this.getNames().includes(name);
     }
 }
-export { HD, BIP32HD, BIP44HD, BIP49HD, BIP84HD, BIP86HD, BIP141HD, CardanoHD, ElectrumV1HD, ElectrumV2HD, MoneroHD };
+export { HD, AlgorandHD, BIP32HD, BIP44HD, BIP49HD, BIP84HD, BIP86HD, BIP141HD, CardanoHD, ElectrumV1HD, ElectrumV2HD, MoneroHD };
 //# sourceMappingURL=index.js.map

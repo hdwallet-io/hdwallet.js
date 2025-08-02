@@ -10,10 +10,9 @@ import { hmacSha256, hmacSha512, ripemd160, sha256 } from '../crypto';
 import { privateKeyToWIF, wifToPrivateKey, getWIFType } from '../wif';
 import { serialize, deserialize, isValidKey, isRootKey } from '../keys';
 import { getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits, concatBytes, ensureTypeMatch, hexToBytes } from '../utils';
-import { AddressError, DerivationError, BaseError, PrivateKeyError, PublicKeyError, SeedError, WIFError, XPrivateKeyError, XPublicKeyError, ECCError } from '../exceptions';
+import { AddressError, DerivationError, BaseError, PrivateKeyError, PublicKeyError, SeedError, WIFError, XPrivateKeyError, XPublicKeyError } from '../exceptions';
 import { checkDecode } from '../libs/base58';
 export class BIP32HD extends HD {
-    ecc;
     seed;
     rootPrivateKey;
     rootChainCode;
@@ -35,10 +34,6 @@ export class BIP32HD extends HD {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
         super(options);
-        if (!options.ecc) {
-            throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
-        }
-        this.ecc = options.ecc;
         this.publicKeyType = options.publicKeyType ?? PUBLIC_KEY_TYPES.COMPRESSED;
         if (this.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
             this.wifType = WIF_TYPES.WIF;
@@ -51,7 +46,7 @@ export class BIP32HD extends HD {
                 expected: PUBLIC_KEY_TYPES.getTypes(), got: this.publicKeyType
             });
         }
-        this.wifPrefix = options.wifPrefix ?? Bitcoin.NETWORKS.MAINNET.WIF_PREFIX;
+        this.wifPrefix = options.wifPrefix;
         this.derivation = new CustomDerivation({
             path: options.path, indexes: options.indexes
         });
@@ -173,7 +168,7 @@ export class BIP32HD extends HD {
         return this;
     }
     fromWIF(wif) {
-        if (this.wifPrefix === null || this.wifPrefix === null) {
+        if (!this.wifPrefix) {
             throw new WIFError('WIF prefix is required');
         }
         const wifType = getWIFType(wif, this.wifPrefix);
@@ -389,7 +384,7 @@ export class BIP32HD extends HD {
         return this.rootPrivateKey ? bytesToString(this.rootPrivateKey.getRaw()) : null;
     }
     getRootWIF(wifType) {
-        if (this.wifPrefix == null || !this.getRootPrivateKey())
+        if (!this.wifPrefix || !this.getRootPrivateKey())
             return null;
         const type = wifType ?? this.wifType;
         if (!Object.values(WIF_TYPES).includes(type)) {
@@ -431,7 +426,7 @@ export class BIP32HD extends HD {
         return this.privateKey ? bytesToString(this.privateKey.getRaw()) : null;
     }
     getWIF(wifType) {
-        if (this.wifPrefix == null)
+        if (!this.wifPrefix || !this.getPrivateKey())
             return null;
         const type = wifType ?? this.wifType;
         if (!Object.values(WIF_TYPES).includes(type)) {
@@ -439,9 +434,7 @@ export class BIP32HD extends HD {
                 expected: Object.values(WIF_TYPES), got: type
             });
         }
-        return this.getPrivateKey()
-            ? privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix)
-            : null;
+        return privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix);
     }
     getWIFType() {
         return this.getWIF() ? this.wifType : null;

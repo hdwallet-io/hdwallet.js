@@ -1,5 +1,29 @@
 # Changelog
 
+## [1.0.0-beta.8](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.8) (2025-08-02)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.7...1.0.0-beta.8)
+
+**New Cryptocurrencies:**
+
+| Name                     | Symbol | Coin Type | Networks  |
+|:-------------------------|:------:|:---------:|:---------:|
+| [Base](https://base.org) |  BASE  |    60     | `mainnet` |
+
+**New Additions:**
+
+- Add: Algorand foundation xHD (AlgorandHD) implementation
+
+**Enhancements:**
+
+- Modify: BIP32 HD to accept custom ECC on HDWallet class
+- Change: default Algorand cryptocurrency ECC to `Kholaw-Ed25519`
+- Update: retrieve ECC name from HD class in HDWallet
+
+**Fix Bugs:**
+
+- Fix: Wallet Import Format (WIF) default value in `BIP32HD`
+
 ## [1.0.0-beta.7](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.7) (2025-07-21)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.6...1.0.0-beta.7)

@@ -25,7 +25,7 @@ class MoneroHD extends hd_1.HD {
     constructor(options = {
         minor: 1, major: 0
     }) {
-        super(options);
+        super({ ecc: eccs_1.SLIP10Ed25519MoneroECC, ...options });
         const network = (0, utils_1.ensureTypeMatch)(options.network, cryptocurrency_1.Network, { otherTypes: ['string'] });
         const networkType = network.isValid ? network.value.NAME : options.network;
         if (!cryptocurrencies_1.Monero.NETWORKS.isNetwork(networkType)) {

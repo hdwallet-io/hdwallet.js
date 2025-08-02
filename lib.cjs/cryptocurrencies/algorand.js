@@ -9,7 +9,7 @@ const cryptocurrency_1 = require("./cryptocurrency");
 class Mainnet extends cryptocurrency_1.Network {
     static NAME = 'mainnet';
     static XPRIVATE_KEY_VERSIONS = new consts_1.XPrivateKeyVersions({
-        P2PKH: 0x0488ade4
+        P2PKH: 0x0f4331d4
     });
     static XPUBLIC_KEY_VERSIONS = new consts_1.XPublicKeyVersions({
         P2PKH: 0x0488b21e
@@ -27,7 +27,7 @@ class Algorand extends cryptocurrency_1.Cryptocurrency {
             'https://www.algorand.com'
         ]
     });
-    static ECC = eccs_1.SLIP10Ed25519ECC;
+    static ECC = eccs_1.KholawEd25519ECC;
     static COIN_TYPE = slip44_1.CoinTypes.Algorand;
     static SUPPORT_BIP38 = false;
     static NETWORKS = new consts_1.Networks({
@@ -47,10 +47,11 @@ class Algorand extends cryptocurrency_1.Cryptocurrency {
         'BIP39'
     ]);
     static HDS = new consts_1.HDs([
+        { ALGORAND: 'Algorand' },
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = Algorand.HDS.BIP44;
+    static DEFAULT_HD = Algorand.HDS.ALGORAND;
     static DEFAULT_PATH = `m/44'/${Algorand.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new consts_1.Addresses({
         ALGORAND: 'Algorand'

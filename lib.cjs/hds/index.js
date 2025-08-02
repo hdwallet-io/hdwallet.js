@@ -1,10 +1,12 @@
 "use strict";
 // SPDX-License-Identifier: MIT
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MoneroHD = exports.ElectrumV2HD = exports.ElectrumV1HD = exports.CardanoHD = exports.BIP141HD = exports.BIP86HD = exports.BIP84HD = exports.BIP49HD = exports.BIP44HD = exports.BIP32HD = exports.HD = exports.HDS = void 0;
+exports.MoneroHD = exports.ElectrumV2HD = exports.ElectrumV1HD = exports.CardanoHD = exports.BIP141HD = exports.BIP86HD = exports.BIP84HD = exports.BIP49HD = exports.BIP44HD = exports.BIP32HD = exports.AlgorandHD = exports.HD = exports.HDS = void 0;
 const hd_1 = require("./hd");
 Object.defineProperty(exports, "HD", { enumerable: true, get: function () { return hd_1.HD; } });
 const exceptions_1 = require("../exceptions");
+const algorand_1 = require("./algorand");
+Object.defineProperty(exports, "AlgorandHD", { enumerable: true, get: function () { return algorand_1.AlgorandHD; } });
 const bip32_1 = require("./bip32");
 Object.defineProperty(exports, "BIP32HD", { enumerable: true, get: function () { return bip32_1.BIP32HD; } });
 const bip44_1 = require("./bip44");
@@ -27,6 +29,7 @@ const monero_1 = require("./monero");
 Object.defineProperty(exports, "MoneroHD", { enumerable: true, get: function () { return monero_1.MoneroHD; } });
 class HDS {
     static dictionary = {
+        [algorand_1.AlgorandHD.getName()]: algorand_1.AlgorandHD,
         [bip32_1.BIP32HD.getName()]: bip32_1.BIP32HD,
         [bip44_1.BIP44HD.getName()]: bip44_1.BIP44HD,
         [bip49_1.BIP49HD.getName()]: bip49_1.BIP49HD,

@@ -1,10 +1,9 @@
 import { HD } from './hd';
 import { Derivation } from '../derivations';
-import { EllipticCurveCryptography, PublicKey, PrivateKey } from '../eccs';
+import { PublicKey, PrivateKey } from '../eccs';
 import { Seed } from '../seeds';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
 export declare class BIP32HD extends HD {
-    protected ecc: EllipticCurveCryptography;
     protected seed?: Uint8Array;
     protected rootPrivateKey?: PrivateKey;
     protected rootChainCode?: Uint8Array;

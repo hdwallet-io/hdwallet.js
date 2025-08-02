@@ -2,9 +2,16 @@
 // SPDX-License-Identifier: MIT
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HD = void 0;
+const exceptions_1 = require("../exceptions");
 class HD {
+    ecc;
     derivation;
-    constructor(options = {}) { }
+    constructor(options = {}) {
+        if (!options.ecc) {
+            throw new exceptions_1.ECCError('Elliptic Curve Cryptography (ECC) is required');
+        }
+        this.ecc = options.ecc;
+    }
     static getName() {
         throw new Error('Must override getName()');
     }

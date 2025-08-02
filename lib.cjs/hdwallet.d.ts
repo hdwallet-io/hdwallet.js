@@ -5,6 +5,7 @@ import { Cryptocurrency } from './cryptocurrencies/cryptocurrency';
 import { HDWalletAddressOptionsInterface, HDWalletOptionsInterface } from './interfaces';
 import { Derivation } from './derivations';
 export declare class HDWallet {
+    private ecc;
     private cryptocurrency;
     private network;
     private address;

@@ -25,7 +25,7 @@ class ElectrumV1HD extends hd_1.HD {
     constructor(options = {
         publicKeyType: consts_1.PUBLIC_KEY_TYPES.UNCOMPRESSED
     }) {
-        super(options);
+        super({ ecc: eccs_1.SLIP10Secp256k1ECC, ...options });
         this.publicKeyType = options.publicKeyType ?? consts_1.PUBLIC_KEY_TYPES.UNCOMPRESSED;
         if (this.publicKeyType === consts_1.PUBLIC_KEY_TYPES.UNCOMPRESSED) {
             this.wifType = consts_1.WIF_TYPES.WIF;

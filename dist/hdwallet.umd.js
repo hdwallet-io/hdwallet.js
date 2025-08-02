@@ -7,7 +7,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
 
     // SPDX-License-Identifier: MIT
     const __name__ = 'hdwallet';
-    const __version__ = '1.0.0-beta.7';
+    const __version__ = '1.0.0-beta.8';
     const __license__ = 'MIT';
     const __author__ = 'Meheret Tesfaye Batu';
     const __email__ = 'meherett.batu@gmail.com';
@@ -10065,7 +10065,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     });
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3h extends Network {
+    class Mainnet$3i extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
         static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -10094,7 +10094,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Adcoin;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3h
+            MAINNET: Mainnet$3i
         });
         static DEFAULT_NETWORK = Adcoin.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10122,7 +10122,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3g extends Network {
+    class Mainnet$3h extends Network {
         static NAME = 'mainnet';
         static HRP = 'akash';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10146,7 +10146,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.AkashNetwork;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3g
+            MAINNET: Mainnet$3h
         });
         static DEFAULT_NETWORK = AkashNetwork.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10173,10 +10173,10 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3f extends Network {
+    class Mainnet$3g extends Network {
         static NAME = 'mainnet';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
-            P2PKH: 0x0488ade4
+            P2PKH: 0x0f4331d4
         });
         static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
             P2PKH: 0x0488b21e
@@ -10193,11 +10193,11 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
                 'https://www.algorand.com'
             ]
         });
-        static ECC = SLIP10Ed25519ECC;
+        static ECC = KholawEd25519ECC;
         static COIN_TYPE = CoinTypes.Algorand;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3f
+            MAINNET: Mainnet$3g
         });
         static DEFAULT_NETWORK = Algorand.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10213,10 +10213,11 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
             'BIP39'
         ]);
         static HDS = new HDs([
+            { ALGORAND: 'Algorand' },
             'BIP32',
             'BIP44'
         ]);
-        static DEFAULT_HD = Algorand.HDS.BIP44;
+        static DEFAULT_HD = Algorand.HDS.ALGORAND;
         static DEFAULT_PATH = `m/44'/${Algorand.COIN_TYPE}'/0'/0/0`;
         static ADDRESSES = new Addresses({
             ALGORAND: 'Algorand'
@@ -10230,7 +10231,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3e extends Network {
+    class Mainnet$3f extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x00000582;
         static SCRIPT_ADDRESS_PREFIX = 0x00005389;
@@ -10259,7 +10260,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Anon;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3e
+            MAINNET: Mainnet$3f
         });
         static DEFAULT_NETWORK = Anon.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10287,7 +10288,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3d extends Network {
+    class Mainnet$3e extends Network {
         static NAME = 'mainnet';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
             P2PKH: 0x0488ade4
@@ -10310,7 +10311,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Aptos;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3d
+            MAINNET: Mainnet$3e
         });
         static DEFAULT_NETWORK = Aptos.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10341,7 +10342,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3c extends Network {
+    class Mainnet$3d extends Network {
         static NAME = 'mainnet';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
             P2PKH: 0x0488ade4
@@ -10365,7 +10366,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Arbitrum;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3c
+            MAINNET: Mainnet$3d
         });
         static DEFAULT_NETWORK = Arbitrum.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10392,7 +10393,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3b extends Network {
+    class Mainnet$3c extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x32;
         static SCRIPT_ADDRESS_PREFIX = 0x61;
@@ -10420,7 +10421,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Argoneum;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3b
+            MAINNET: Mainnet$3c
         });
         static DEFAULT_NETWORK = Argoneum.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10448,7 +10449,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$3a extends Network {
+    class Mainnet$3b extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
         static SCRIPT_ADDRESS_PREFIX = 0x00001cbd;
@@ -10476,7 +10477,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Artax;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$3a
+            MAINNET: Mainnet$3b
         });
         static DEFAULT_NETWORK = Artax.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10504,7 +10505,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$39 extends Network {
+    class Mainnet$3a extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
         static SCRIPT_ADDRESS_PREFIX = 0x6f;
@@ -10532,7 +10533,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Aryacoin;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$39
+            MAINNET: Mainnet$3a
         });
         static DEFAULT_NETWORK = Aryacoin.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10560,7 +10561,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$38 extends Network {
+    class Mainnet$39 extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
         static SCRIPT_ADDRESS_PREFIX = 0x08;
@@ -10587,7 +10588,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Asiacoin;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$38
+            MAINNET: Mainnet$39
         });
         static DEFAULT_NETWORK = Asiacoin.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10615,7 +10616,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$37 extends Network {
+    class Mainnet$38 extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x17;
         static SCRIPT_ADDRESS_PREFIX = 0x05;
@@ -10643,7 +10644,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Auroracoin;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$37
+            MAINNET: Mainnet$38
         });
         static DEFAULT_NETWORK = Auroracoin.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10671,7 +10672,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$36 extends Network {
+    class Mainnet$37 extends Network {
         static NAME = 'mainnet';
         static HRP = 'avax';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10697,7 +10698,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Avalanche;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$36
+            MAINNET: Mainnet$37
         });
         static DEFAULT_NETWORK = Avalanche.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10737,7 +10738,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$35 extends Network {
+    class Mainnet$36 extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x3c;
         static SCRIPT_ADDRESS_PREFIX = 0x7a;
@@ -10779,7 +10780,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Avian;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$35
+            MAINNET: Mainnet$36
         });
         static DEFAULT_NETWORK = Avian.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10811,7 +10812,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$34 extends Network {
+    class Mainnet$35 extends Network {
         static NAME = 'mainnet';
         static PUBLIC_KEY_ADDRESS_PREFIX = 0x37;
         static SCRIPT_ADDRESS_PREFIX = 0x10;
@@ -10839,7 +10840,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Axe;
         static SUPPORT_BIP38 = true;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$34
+            MAINNET: Mainnet$35
         });
         static DEFAULT_NETWORK = Axe.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10867,7 +10868,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$33 extends Network {
+    class Mainnet$34 extends Network {
         static NAME = 'mainnet';
         static HRP = 'axelar';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10893,7 +10894,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.Axelar;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$33
+            MAINNET: Mainnet$34
         });
         static DEFAULT_NETWORK = Axelar.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10920,7 +10921,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
     }
 
     // SPDX-License-Identifier: MIT
-    class Mainnet$32 extends Network {
+    class Mainnet$33 extends Network {
         static NAME = 'mainnet';
         static HRP = 'band';
         static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
@@ -10945,7 +10946,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         static COIN_TYPE = CoinTypes.BandProtocol;
         static SUPPORT_BIP38 = false;
         static NETWORKS = new Networks({
-            MAINNET: Mainnet$32
+            MAINNET: Mainnet$33
         });
         static DEFAULT_NETWORK = BandProtocol.NETWORKS.MAINNET;
         static ENTROPIES = new Entropies([
@@ -10967,6 +10968,57 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
             COSMOS: 'Cosmos'
         });
         static DEFAULT_ADDRESS = BandProtocol.ADDRESSES.COSMOS;
+        static SEMANTICS = ['p2pkh'];
+        static DEFAULT_SEMANTIC = 'p2pkh';
+    }
+
+    // SPDX-License-Identifier: MIT
+    class Mainnet$32 extends Network {
+        static NAME = 'mainnet';
+        static XPRIVATE_KEY_VERSIONS = new XPrivateKeyVersions({
+            P2PKH: 0x0488ade4
+        });
+        static XPUBLIC_KEY_VERSIONS = new XPublicKeyVersions({
+            P2PKH: 0x0488b21e
+        });
+        static WIF_PREFIX = 0x80;
+    }
+    class Base extends Cryptocurrency {
+        static NAME = 'Base';
+        static SYMBOL = 'BASE';
+        static INFO = new Info({
+            WHITEPAPER: 'https://base.mirror.xyz',
+            WEBSITES: [
+                'https://base.org',
+                'https://docs.base.org'
+            ]
+        });
+        static ECC = SLIP10Secp256k1ECC;
+        static COIN_TYPE = CoinTypes.Arbitrum;
+        static SUPPORT_BIP38 = false;
+        static NETWORKS = new Networks({
+            MAINNET: Mainnet$32
+        });
+        static DEFAULT_NETWORK = Base.NETWORKS.MAINNET;
+        static ENTROPIES = new Entropies([
+            'BIP39'
+        ]);
+        static MNEMONICS = new Mnemonics([
+            'BIP39'
+        ]);
+        static SEEDS = new Seeds([
+            'BIP39'
+        ]);
+        static HDS = new HDs([
+            'BIP32',
+            'BIP44'
+        ]);
+        static DEFAULT_HD = Base.HDS.BIP44;
+        static DEFAULT_PATH = `m/44'/${Base.COIN_TYPE}'/0'/0/0`;
+        static ADDRESSES = new Addresses({
+            ETHEREUM: 'Ethereum'
+        });
+        static DEFAULT_ADDRESS = Base.ADDRESSES.ETHEREUM;
         static SEMANTICS = ['p2pkh'];
         static DEFAULT_SEMANTIC = 'p2pkh';
     }
@@ -22970,6 +23022,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
             [Axe.NAME]: Axe,
             [Axelar.NAME]: Axelar,
             [BandProtocol.NAME]: BandProtocol,
+            [Base.NAME]: Base,
             [Bata.NAME]: Bata,
             [BeetleCoin.NAME]: BeetleCoin,
             [BelaCoin.NAME]: BelaCoin,
@@ -23211,6 +23264,7 @@ const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 
         Axe: Axe,
         Axelar: Axelar,
         BandProtocol: BandProtocol,
+        Base: Base,
         Bata: Bata,
         BeetleCoin: BeetleCoin,
         BelaCoin: BelaCoin,
@@ -78371,8 +78425,14 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
 
     // SPDX-License-Identifier: MIT
     class HD {
+        ecc;
         derivation;
-        constructor(options = {}) { }
+        constructor(options = {}) {
+            if (!options.ecc) {
+                throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
+            }
+            this.ecc = options.ecc;
+        }
         static getName() {
             throw new Error('Must override getName()');
         }
@@ -80948,7 +81008,6 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
 
     // SPDX-License-Identifier: MIT
     class BIP32HD extends HD {
-        ecc;
         seed;
         rootPrivateKey;
         rootChainCode;
@@ -80970,10 +81029,6 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
         }) {
             super(options);
-            if (!options.ecc) {
-                throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
-            }
-            this.ecc = options.ecc;
             this.publicKeyType = options.publicKeyType ?? PUBLIC_KEY_TYPES.COMPRESSED;
             if (this.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
                 this.wifType = WIF_TYPES.WIF;
@@ -80986,7 +81041,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                     expected: PUBLIC_KEY_TYPES.getTypes(), got: this.publicKeyType
                 });
             }
-            this.wifPrefix = options.wifPrefix ?? Bitcoin.NETWORKS.MAINNET.WIF_PREFIX;
+            this.wifPrefix = options.wifPrefix;
             this.derivation = new CustomDerivation({
                 path: options.path, indexes: options.indexes
             });
@@ -81108,7 +81163,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this;
         }
         fromWIF(wif) {
-            if (this.wifPrefix === null || this.wifPrefix === null) {
+            if (!this.wifPrefix) {
                 throw new WIFError('WIF prefix is required');
             }
             const wifType = getWIFType(wif, this.wifPrefix);
@@ -81324,7 +81379,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this.rootPrivateKey ? bytesToString(this.rootPrivateKey.getRaw()) : null;
         }
         getRootWIF(wifType) {
-            if (this.wifPrefix == null || !this.getRootPrivateKey())
+            if (!this.wifPrefix || !this.getRootPrivateKey())
                 return null;
             const type = wifType ?? this.wifType;
             if (!Object.values(WIF_TYPES).includes(type)) {
@@ -81366,7 +81421,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this.privateKey ? bytesToString(this.privateKey.getRaw()) : null;
         }
         getWIF(wifType) {
-            if (this.wifPrefix == null)
+            if (!this.wifPrefix || !this.getPrivateKey())
                 return null;
             const type = wifType ?? this.wifType;
             if (!Object.values(WIF_TYPES).includes(type)) {
@@ -81374,9 +81429,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                     expected: Object.values(WIF_TYPES), got: type
                 });
             }
-            return this.getPrivateKey()
-                ? privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix)
-                : null;
+            return privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix);
         }
         getWIFType() {
             return this.getWIF() ? this.wifType : null;
@@ -81496,6 +81549,120 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 ],
                 got: address
             });
+        }
+    }
+
+    // SPDX-License-Identifier: MIT
+    class AlgorandHD extends BIP32HD {
+        constructor() {
+            super({ ecc: KholawEd25519ECC });
+        }
+        static getName() {
+            return 'Algorand';
+        }
+        fromSeed(seed) {
+            const rawSeed = getBytes(seed.getSeed?.() ?? seed);
+            if (rawSeed.length < 16) {
+                throw new SeedError('Invalid seed length: expected >= 16 bytes');
+            }
+            const k = sha512(rawSeed);
+            let kL = new Uint8Array(k.slice(0, 32));
+            let kR = k.slice(32, 64);
+            const clampKL = (kL) => {
+                kL[0] &= 0b11111000;
+                kL[31] &= 0b01111111;
+                kL[31] |= 0b01000000;
+                return kL;
+            };
+            while ((kL[31] & 0b00100000) !== 0) {
+                const updated = hmacSha512(kL, kR);
+                kL = new Uint8Array(updated.slice(0, 32));
+                kR = updated.slice(32, 64);
+            }
+            kL = clampKL(kL);
+            const chainCode = sha256(Uint8Array.from([0x01, ...rawSeed]));
+            this.seed = rawSeed;
+            this.rootPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(new Uint8Array([...kL, ...kR]));
+            this.rootChainCode = chainCode;
+            this.privateKey = this.rootPrivateKey;
+            this.chainCode = chainCode;
+            this.parentFingerprint = new Uint8Array(4); // 0x00000000
+            this.rootPublicKey = this.privateKey.getPublicKey();
+            this.publicKey = this.rootPublicKey;
+            this.strict = true;
+            return this;
+        }
+        drive(index) {
+            const G = 9;
+            const indexBytes = integerToBytes(index, 4, 'little');
+            const cc = this.chainCode;
+            if (!cc)
+                throw new DerivationError('Chain code is not set');
+            const trunc256MinusGBits = (buf, g) => {
+                const out = buf.slice();
+                let remaining = g;
+                for (let i = out.length - 1; i >= 0 && remaining > 0; i--) {
+                    if (remaining >= 8) {
+                        out[i] = 0;
+                        remaining -= 8;
+                    }
+                    else {
+                        out[i] &= 0xff >> remaining;
+                        break;
+                    }
+                }
+                return out;
+            };
+            let childCC;
+            // Hardened
+            if (index & 0x80000000) {
+                if (!this.privateKey)
+                    throw new DerivationError('Private key required for hardened derivation');
+                const rawKey = this.privateKey.getRaw();
+                const kL = rawKey.slice(0, 32);
+                const kR = rawKey.slice(32);
+                const z = hmacSha512(cc, Uint8Array.from([0x00, ...kL, ...kR, ...indexBytes]));
+                const zL = trunc256MinusGBits(z.slice(0, 32), G);
+                const zR = z.slice(32);
+                childCC = hmacSha512(cc, Uint8Array.from([0x01, ...kL, ...kR, ...indexBytes])).slice(32);
+                const kLInt = bytesToInteger(kL, true);
+                const zLInt = bytesToInteger(zL, true);
+                const newKL = integerToBytes(kLInt + BigInt(8) * zLInt, 32, 'little');
+                const newKR = integerToBytes((bytesToInteger(kR, true) + bytesToInteger(zR, true)) % BigInt(2 ** 256), 32, 'little');
+                if (bytesToInteger(newKL, true) >= 2 ** 255) {
+                    throw new DerivationError('zL * 8 + kL exceeds Ed25519 scalar limit');
+                }
+                const childKey = this.ecc.PRIVATE_KEY.fromBytes(new Uint8Array([...newKL, ...newKR]));
+                this.privateKey = childKey;
+                this.parentFingerprint = getBytes(this.getFingerprint());
+                this.publicKey = childKey.getPublicKey();
+            }
+            else {
+                if (!this.publicKey)
+                    throw new DerivationError('Public key required for non-hardened derivation');
+                const A = this.publicKey.getRawCompressed().slice(1);
+                const z = hmacSha512(cc, Uint8Array.from([0x02, ...A, ...indexBytes]));
+                const zL = trunc256MinusGBits(z.slice(0, 32), G);
+                childCC = hmacSha512(cc, Uint8Array.from([0x03, ...A, ...indexBytes])).slice(32);
+                const scalar = BigInt(8) * bytesToInteger(zL, true);
+                const point = this.publicKey.getPoint().add(this.ecc.GENERATOR.multiply(scalar));
+                this.parentFingerprint = getBytes(this.getFingerprint());
+                this.publicKey = this.ecc.PUBLIC_KEY.fromPoint(point);
+            }
+            this.chainCode = childCC;
+            this.depth += 1;
+            this.index = index;
+            this.fingerprint = getBytes(this.getFingerprint());
+            return this;
+        }
+        getRootXPrivateKey(version = Algorand.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
+            return super.getRootXPrivateKey(version, encoded);
+        }
+        getXPrivateKey(version = Algorand.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
+            return super.getXPrivateKey(version, encoded);
+        }
+        getAddress() {
+            return AlgorandAddress.encode(this.publicKey);
         }
     }
 
@@ -82124,7 +82291,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
         constructor(options = {
             publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED
         }) {
-            super(options);
+            super({ ecc: SLIP10Secp256k1ECC, ...options });
             this.publicKeyType = options.publicKeyType ?? PUBLIC_KEY_TYPES.UNCOMPRESSED;
             if (this.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
                 this.wifType = WIF_TYPES.WIF;
@@ -82281,7 +82448,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED,
             mode: MODES.STANDARD
         }) {
-            super(options);
+            super({ ecc: SLIP10Secp256k1ECC, ...options });
             this.mode = options.mode ?? MODES.STANDARD;
             if (!MODES.getTypes().includes(this.mode)) {
                 throw new BaseError(`Invalid ${this.getName()} mode`, {
@@ -82419,7 +82586,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
         constructor(options = {
             minor: 1, major: 0
         }) {
-            super(options);
+            super({ ecc: SLIP10Ed25519MoneroECC, ...options });
             const network = ensureTypeMatch(options.network, Network, { otherTypes: ['string'] });
             const networkType = network.isValid ? network.value.NAME : options.network;
             if (!Monero.NETWORKS.isNetwork(networkType)) {
@@ -82595,6 +82762,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
     // SPDX-License-Identifier: MIT
     class HDS {
         static dictionary = {
+            [AlgorandHD.getName()]: AlgorandHD,
             [BIP32HD.getName()]: BIP32HD,
             [BIP44HD.getName()]: BIP44HD,
             [BIP49HD.getName()]: BIP49HD,
@@ -82627,6 +82795,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
         __proto__: null,
         HDS: HDS,
         HD: HD,
+        AlgorandHD: AlgorandHD,
         BIP32HD: BIP32HD,
         BIP44HD: BIP44HD,
         BIP49HD: BIP49HD,
@@ -82641,6 +82810,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
 
     // SPDX-License-Identifier: MIT
     class HDWallet {
+        ecc;
         cryptocurrency;
         network;
         address;
@@ -82664,6 +82834,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
         paymentID;
         constructor(cryptocurrency, options = {}) {
             this.cryptocurrency = ensureTypeMatch(cryptocurrency, Cryptocurrency, { errorClass: CryptocurrencyError });
+            this.ecc = options.ecc ?? this.cryptocurrency.ECC;
             const _hd = options.hd ?? this.cryptocurrency.DEFAULT_HD;
             const resolvedHD = ensureTypeMatch(_hd, HD, { otherTypes: ['string'] });
             const hdName = resolvedHD.isValid ? resolvedHD.value.getName() : _hd;
@@ -82682,7 +82853,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 });
             }
             this.network = this.cryptocurrency.NETWORKS.getNetwork(networkName);
-            if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
+            if (['Algorand', 'BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
                 this.semantic = options.semantic ?? this.cryptocurrency.DEFAULT_SEMANTIC;
             }
             else if (hdName === 'BIP49') {
@@ -82753,7 +82924,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 this.addressPrefix = options.addressPrefix ?? this.cryptocurrency.DEFAULT_ADDRESS_PREFIX;
             }
             this.hd = new hdClass({
-                ecc: this.cryptocurrency.ECC,
+                ecc: this.ecc,
                 publicKeyType: this.publicKeyType,
                 semantic: this.semantic,
                 coinType: this.cryptocurrency.COIN_TYPE,
@@ -82896,7 +83067,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this;
         }
         fromWIF(wif) {
-            if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+            if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
                 throw new WIFError(`WIF is not supported by ${this.hd.getName()} HD type`);
             }
             if (this.network.WIF_PREFIX === null) {
@@ -82963,7 +83134,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this.hd.getSeed();
         }
         getECC() {
-            return this.cryptocurrency.ECC.NAME;
+            return this.hd.ecc.NAME;
         }
         getHD() {
             return this.hd.getName();
@@ -83010,7 +83181,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this.hd.getRootPrivateKey();
         }
         getRootWIF(wifType) {
-            if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+            if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
                 return null;
             }
             if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
@@ -83034,7 +83205,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this.hd.getRootPrivateKey();
         }
         getMasterWIF(wifType) {
-            if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+            if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
                 return null;
             }
             if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
@@ -83081,7 +83252,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             return this.hd.getViewPrivateKey();
         }
         getWIF(wifType) {
-            if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+            if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
                 return null;
             }
             return this.hd.getWIF(wifType);
@@ -83274,7 +83445,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                 derivationDump['at'] = at;
             }
             if ([
-                'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
+                'Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
             ].includes(hdName)) {
                 Object.assign(derivationDump, {
                     'xprivate-key': this.getXPrivateKey(),
@@ -83289,7 +83460,7 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                     'parent-fingerprint': this.getParentFingerprint(),
                     'hash': this.getHash()
                 });
-                if (hdName === 'Cardano') {
+                if (['Algorand', 'Cardano'].includes(hdName)) {
                     delete derivationDump.wif;
                     delete derivationDump.uncompressed;
                     delete derivationDump.compressed;
@@ -83421,7 +83592,9 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
             if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
                 delete root['passphrase'];
             }
-            if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'].includes(hdName)) {
+            if ([
+                'Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
+            ].includes(hdName)) {
                 if (hdName === 'Cardano') {
                     root['cardano-type'] = this.getCardanoType();
                 }
@@ -83438,8 +83611,9 @@ ${O$2.repeat(r.depth)}}`:r.close="}";break}case f$4.TAG:e+=String(i),e+=a(f$4.PO
                     'public-key-type': this.getPublicKeyType(),
                     'wif-type': this.getWIFType()
                 });
-                if (hdName === 'Cardano') {
+                if (['Algorand', 'Cardano'].includes(hdName)) {
                     delete root['root-wif'];
+                    delete root['public-key-type'];
                     delete root['root-type'];
                     if (this.cardanoType !== Cardano.TYPES.BYRON_LEGACY) {
                         delete root['path-key'];

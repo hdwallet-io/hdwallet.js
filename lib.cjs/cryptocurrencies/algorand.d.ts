@@ -1,4 +1,4 @@
-import { SLIP10Ed25519ECC } from '../eccs';
+import { KholawEd25519ECC } from '../eccs';
 import { Info, Entropies, Mnemonics, Seeds, HDs, Addresses, Networks, Params, XPrivateKeyVersions, XPublicKeyVersions } from '../consts';
 import { Cryptocurrency, Network } from './cryptocurrency';
 export declare class Mainnet extends Network {
@@ -10,7 +10,7 @@ export declare class Algorand extends Cryptocurrency {
     static NAME: string;
     static SYMBOL: string;
     static INFO: Info;
-    static ECC: typeof SLIP10Ed25519ECC;
+    static ECC: typeof KholawEd25519ECC;
     static COIN_TYPE: number;
     static SUPPORT_BIP38: boolean;
     static NETWORKS: Networks;

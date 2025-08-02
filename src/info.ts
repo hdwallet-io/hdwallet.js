@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 export const __name__: string = 'hdwallet';
-export const __version__: string = '1.0.0-beta.7';
+export const __version__: string = '1.0.0-beta.8';
 export const __license__: string = 'MIT';
 export const __author__: string = 'Meheret Tesfaye Batu';
 export const __email__: string = 'meherett.batu@gmail.com';

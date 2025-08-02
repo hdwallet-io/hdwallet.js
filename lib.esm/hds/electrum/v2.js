@@ -8,6 +8,7 @@ import { Bitcoin } from '../../cryptocurrencies';
 import { BIP32HD } from '../bip32';
 import { ensureTypeMatch } from '../../utils';
 import { BaseError, AddressError, DerivationError } from '../../exceptions';
+import { SLIP10Secp256k1ECC } from '../../eccs';
 export class ElectrumV2HD extends HD {
     mode;
     wifType;
@@ -18,7 +19,7 @@ export class ElectrumV2HD extends HD {
         publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED,
         mode: MODES.STANDARD
     }) {
-        super(options);
+        super({ ecc: SLIP10Secp256k1ECC, ...options });
         this.mode = options.mode ?? MODES.STANDARD;
         if (!MODES.getTypes().includes(this.mode)) {
             throw new BaseError(`Invalid ${this.getName()} mode`, {

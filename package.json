@@ -1,6 +1,6 @@
 {
   "name": "@hdwallet/core",
-  "version": "1.0.0-beta.7",
+  "version": "1.0.0-beta.8",
   "description": "A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.",
   "author": "Meheret Tesfaye Batu",
   "email": "meherett.batu@gmail.com",
@@ -79,7 +79,7 @@
     "dist": "rollup -c && uglifyjs ./dist/hdwallet.js -o ./dist/hdwallet.min.js && uglifyjs ./dist/hdwallet.umd.js -o ./dist/hdwallet.umd.min.js",
     "dist:stats": "gzip -k9f -S '.gz' ./dist/hdwallet.min.js && gzip -k9f -S '.gz' ./dist/hdwallet.umd.min.js && du -hs ./dist/*.gz && echo '' && du -hs ./dist/*.js",
     "build:dist": "npm run dist && npm run dist:stats",
-    "build:compression": "tar -czf hdwallet-1.0.0-beta.7.tar.gz -C dist . && 7z a -tzip -mx=9 hdwallet-1.0.0-beta.7.zip dist/*",
+    "build:compression": "tar -czf hdwallet-1.0.0-beta.8.tar.gz -C dist . && 7z a -tzip -mx=9 hdwallet-1.0.0-beta.8.zip dist/*",
     "docs": "typedoc",
     "test": "jest"
   },

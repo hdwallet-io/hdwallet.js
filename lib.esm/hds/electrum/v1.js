@@ -22,7 +22,7 @@ export class ElectrumV1HD extends HD {
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED
     }) {
-        super(options);
+        super({ ecc: SLIP10Secp256k1ECC, ...options });
         this.publicKeyType = options.publicKeyType ?? PUBLIC_KEY_TYPES.UNCOMPRESSED;
         if (this.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
             this.wifType = WIF_TYPES.WIF;

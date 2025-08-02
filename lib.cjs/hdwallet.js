@@ -16,6 +16,7 @@ const addresses_1 = require("./addresses");
 const base58_1 = require("./libs/base58");
 const cryptocurrencies_1 = require("./cryptocurrencies");
 class HDWallet {
+    ecc;
     cryptocurrency;
     network;
     address;
@@ -39,6 +40,7 @@ class HDWallet {
     paymentID;
     constructor(cryptocurrency, options = {}) {
         this.cryptocurrency = (0, utils_1.ensureTypeMatch)(cryptocurrency, cryptocurrency_1.Cryptocurrency, { errorClass: exceptions_1.CryptocurrencyError });
+        this.ecc = options.ecc ?? this.cryptocurrency.ECC;
         const _hd = options.hd ?? this.cryptocurrency.DEFAULT_HD;
         const resolvedHD = (0, utils_1.ensureTypeMatch)(_hd, hds_1.HD, { otherTypes: ['string'] });
         const hdName = resolvedHD.isValid ? resolvedHD.value.getName() : _hd;
@@ -57,7 +59,7 @@ class HDWallet {
             });
         }
         this.network = this.cryptocurrency.NETWORKS.getNetwork(networkName);
-        if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
+        if (['Algorand', 'BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(hdName)) {
             this.semantic = options.semantic ?? this.cryptocurrency.DEFAULT_SEMANTIC;
         }
         else if (hdName === 'BIP49') {
@@ -128,7 +130,7 @@ class HDWallet {
             this.addressPrefix = options.addressPrefix ?? this.cryptocurrency.DEFAULT_ADDRESS_PREFIX;
         }
         this.hd = new hdClass({
-            ecc: this.cryptocurrency.ECC,
+            ecc: this.ecc,
             publicKeyType: this.publicKeyType,
             semantic: this.semantic,
             coinType: this.cryptocurrency.COIN_TYPE,
@@ -271,7 +273,7 @@ class HDWallet {
         return this;
     }
     fromWIF(wif) {
-        if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+        if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             throw new exceptions_1.WIFError(`WIF is not supported by ${this.hd.getName()} HD type`);
         }
         if (this.network.WIF_PREFIX === null) {
@@ -338,7 +340,7 @@ class HDWallet {
         return this.hd.getSeed();
     }
     getECC() {
-        return this.cryptocurrency.ECC.NAME;
+        return this.hd.ecc.NAME;
     }
     getHD() {
         return this.hd.getName();
@@ -385,7 +387,7 @@ class HDWallet {
         return this.hd.getRootPrivateKey();
     }
     getRootWIF(wifType) {
-        if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+        if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             return null;
         }
         if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
@@ -409,7 +411,7 @@ class HDWallet {
         return this.hd.getRootPrivateKey();
     }
     getMasterWIF(wifType) {
-        if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+        if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             return null;
         }
         if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
@@ -456,7 +458,7 @@ class HDWallet {
         return this.hd.getViewPrivateKey();
     }
     getWIF(wifType) {
-        if (['Cardano', 'Monero'].includes(this.hd.getName())) {
+        if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             return null;
         }
         return this.hd.getWIF(wifType);
@@ -649,7 +651,7 @@ class HDWallet {
             derivationDump['at'] = at;
         }
         if ([
-            'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
+            'Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
         ].includes(hdName)) {
             Object.assign(derivationDump, {
                 'xprivate-key': this.getXPrivateKey(),
@@ -664,7 +666,7 @@ class HDWallet {
                 'parent-fingerprint': this.getParentFingerprint(),
                 'hash': this.getHash()
             });
-            if (hdName === 'Cardano') {
+            if (['Algorand', 'Cardano'].includes(hdName)) {
                 delete derivationDump.wif;
                 delete derivationDump.uncompressed;
                 delete derivationDump.compressed;
@@ -796,7 +798,9 @@ class HDWallet {
         if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
             delete root['passphrase'];
         }
-        if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'].includes(hdName)) {
+        if ([
+            'Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
+        ].includes(hdName)) {
             if (hdName === 'Cardano') {
                 root['cardano-type'] = this.getCardanoType();
             }
@@ -813,8 +817,9 @@ class HDWallet {
                 'public-key-type': this.getPublicKeyType(),
                 'wif-type': this.getWIFType()
             });
-            if (hdName === 'Cardano') {
+            if (['Algorand', 'Cardano'].includes(hdName)) {
                 delete root['root-wif'];
+                delete root['public-key-type'];
                 delete root['root-type'];
                 if (this.cardanoType !== cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY) {
                     delete root['path-key'];

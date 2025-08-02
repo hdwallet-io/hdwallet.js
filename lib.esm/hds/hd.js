@@ -1,7 +1,14 @@
 // SPDX-License-Identifier: MIT
+import { ECCError } from '../exceptions';
 export class HD {
+    ecc;
     derivation;
-    constructor(options = {}) { }
+    constructor(options = {}) {
+        if (!options.ecc) {
+            throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
+        }
+        this.ecc = options.ecc;
+    }
     static getName() {
         throw new Error('Must override getName()');
     }
