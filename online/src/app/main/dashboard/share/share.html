@@ -16,10 +16,12 @@
 <div *ngIf="shareFormGroup" style="border-top: 1px solid rgba(128, 128, 128, 0.25);" class="mt-4 pt-3">
   <form [formGroup]="shareFormGroup" class="grid grid-cols-4 max-2xl:grid-cols-2 gap-4">
     <!-- Share - ECC -->
-    <div *ngIf="shareData.ecc" class="custom-checkbox">
-      <input (change)="makeURL()" type="checkbox" formControlName="ecc">
-      <label class="ml-2">ECC</label>
-    </div>
+    <fieldset disabled>
+      <div *ngIf="shareData.ecc" class="custom-checkbox">
+        <input (change)="makeURL()" type="checkbox" formControlName="ecc">
+        <label class="ml-2">ECC</label>
+      </div>
+    </fieldset>
     <!-- Share - Symbol -->
     <fieldset disabled>
       <div *ngIf="shareData.symbol" class="custom-checkbox">

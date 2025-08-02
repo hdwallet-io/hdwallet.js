@@ -8,9 +8,10 @@ import {
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
-import { Cryptocurrency, CRYPTOCURRENCIES, getCryptocurrency } from '@hdwallet/core/cryptocurrencies';
+import { Cryptocurrency, CRYPTOCURRENCIES, getCryptocurrency, Algorand } from '@hdwallet/core/cryptocurrencies';
 import { Mnemonic, MNEMONICS } from '@hdwallet/core/mnemonics';
 import { Derivation, DERIVATIONS } from '@hdwallet/core/derivations';
+import { ECCS, EllipticCurveCryptography } from '@hdwallet/core/eccs';
 import { HDS } from '@hdwallet/core/hds';
 import { ENTROPIES } from '@hdwallet/core/entropies';
 import { SEEDS } from '@hdwallet/core/seeds';
@@ -51,9 +52,10 @@ import {
 })
 export class DumpsComponent implements OnInit, AfterViewInit {
 
-  ecc: string = 'ALL';
+  ecc: string = 'SLIP10-Secp256k1';
   symbol: string = 'BTC';
   isLoading: boolean = false;
+  eccs: ComboboxInterface[] = ECCS.getClasses().map((item: typeof EllipticCurveCryptography): ComboboxInterface => ({ name: item.NAME, value: item.NAME }));
   cryptocurrency: typeof Cryptocurrency = getCryptocurrency(this.symbol);
   networks: ComboboxInterface[] = this.getNetworks(this.cryptocurrency.SYMBOL);
   hds: ComboboxInterface[] = this.getHDs(this.cryptocurrency.SYMBOL);
@@ -79,21 +81,17 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   dumpsFormGroup: FormGroup;
 
   getSymbols(ecc: string): ComboboxInterface[] {
-    if (toUpperCase(ecc) === 'ALL') {
-      return CRYPTOCURRENCIES.getClasses().map(
-        (item: typeof Cryptocurrency): ComboboxInterface => (
-          { name: item.NAME, value: item.SYMBOL }
-        )
-      );
-    } else {
-      return CRYPTOCURRENCIES.getClasses().filter(
-        (item: typeof Cryptocurrency): boolean => item.ECC.NAME === toTitleCase(ecc)
-      ).map(
-        (item: typeof Cryptocurrency): ComboboxInterface => (
-          { name: item.NAME, value: item.SYMBOL }
-        )
-      );
+    let cryptocurrencies = CRYPTOCURRENCIES.getClasses().filter(
+      (item: typeof Cryptocurrency): boolean => item.ECC.NAME === toTitleCase(ecc)
+    ).map(
+      (item: typeof Cryptocurrency): ComboboxInterface => (
+        { name: item.NAME, value: item.SYMBOL }
+      )
+    );
+    if (ecc === 'SLIP10-Ed25519') {
+      cryptocurrencies.push({ name: Algorand.NAME, value: Algorand.SYMBOL });
     }
+    return cryptocurrencies.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   indexValidator(control: AbstractControl) {
@@ -128,7 +126,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   }
 
   getSemantics(hd: string): ComboboxInterface[] {
-    if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'Cardano'].includes(hd)) {
+    if (['Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'Cardano'].includes(hd)) {
       return this.cryptocurrency.SEMANTICS?.map((item: string) => ({name: toTitleCase(item), value: item})) || [];
     } else if (hd == 'BIP141') {
       return semantics.map((item: KeyValuePairInterface) => ({name: item.key, value: item.value}));
@@ -148,6 +146,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     private router: Router
   ) {
     this.dumpsFormGroup = this.formBuilder.group({
+      ecc: [this.ecc, [Validators.required]],
       symbol: [this.cryptocurrency.SYMBOL, [Validators.required]],
       network: [this.cryptocurrency.DEFAULT_NETWORK.NAME, [Validators.required]],
       hd: [this.hd.value, [Validators.required]],
@@ -210,7 +209,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       this.updateFormGroup('include', 'at:path,address,public-key,wif', emitEvent, timeout);
     } else if (hd === 'BIP141') {
       this.updateFormGroup('include', 'at:path,addresses:p2wpkh,public-key,wif', emitEvent, timeout);
-    } else if (hd === 'Cardano') {
+    } else if (['Algorand', 'Cardano'].includes(hd)) {
       this.updateFormGroup('include', 'at:path,address,public-key,private-key', emitEvent, timeout);
     } else if (['Electrum-V1', 'Electrum-V2'].includes(hd)) {
       this.updateFormGroup('include', 'at:change,at:address,address,public-key,wif', emitEvent, timeout);
@@ -228,6 +227,22 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     }
   }
 
+  updateECC(ecc: string, emitEvent: boolean = true, timeout: number = 0): void {
+    this.ecc = ecc;
+    this.symbols = this.getSymbols(this.ecc);
+    if (['Kholaw-Ed25519', 'SLIP10-Ed25519'].includes(this.ecc)) {
+      this.updateFormGroup('symbol', 'ALGO', emitEvent, timeout);
+    } else if (this.ecc === 'SLIP10-Ed25519-Blake2b') {
+      this.updateFormGroup('symbol', 'XNO', emitEvent, timeout);
+    } else if (this.ecc === 'SLIP10-Ed25519-Monero') {
+      this.updateFormGroup('symbol', 'XMR', emitEvent, timeout);
+    } else if (this.ecc === 'SLIP10-Nist256p1') {
+      this.updateFormGroup('symbol', 'NEO', emitEvent, timeout);
+    } else if (this.ecc === 'SLIP10-Secp256k1') {
+      this.updateFormGroup('symbol', 'BTC', emitEvent, timeout);
+    }
+  }
+
   updateSymbol(symbol: string, emitEvent: boolean = true, timeout: number = 0): void {
     this.symbol = symbol;
     this.cryptocurrency = getCryptocurrency(this.symbol);
@@ -237,6 +252,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.hd = objectIsIncluded(this.hds, this.hd) ? this.hd : {
       name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
     };
+    if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'Kholaw-Ed25519') {
+      this.hds.splice(1, 2);
+      this.hd = { name: 'Algorand', value: 'Algorand' };
+    } else if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'SLIP10-Ed25519') {
+      this.hds.splice(0, 1);
+      this.hd = { name: 'BIP44', value: 'BIP44' };
+    }
     this.froms = this.getFroms(this.hd.value);
     this.from = objectIsIncluded(this.froms, this.from) ? this.from : this.froms[1];
     this.currentAllowedDerivations = getAllowedDerivations(this.hd.value, this.from.value);
@@ -307,6 +329,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.dumpsFormGroup.get('ecc')?.valueChanges.subscribe((ecc: string) => { this.updateECC(ecc, true, 1); });
     this.dumpsFormGroup.get('symbol')?.valueChanges.subscribe((symbol: string) => { this.updateSymbol(symbol, true, 1); });
     this.dumpsFormGroup.get('hd')?.valueChanges.subscribe((hd: string) => { this.updateHD(hd, true, 1); });
     this.dumpsFormGroup.get('from')?.valueChanges.subscribe((from: string) => {  this.updateFrom(from, true, 1); });
@@ -336,9 +359,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       let ecc: string | undefined = ECC ? ECC : params.get('ecc')?.toString();
       let symbol: string | undefined = SYMBOL ? SYMBOL : params.get('symbol')?.toString();
       this.ecc = toTitleCase(ecc || default_ecc);
-      if (this.ecc === 'Kholaw-Ed25519') {
-        default_symbol = 'ADA';
-      } else if (this.ecc === 'SLIP10-Ed25519') {
+      if (['Kholaw-Ed25519', 'SLIP10-Ed25519'].includes(this.ecc)) {
         default_symbol = 'ALGO';
       } else if (this.ecc === 'SLIP10-Ed25519-Blake2b') {
         default_symbol = 'XNO';
@@ -346,20 +367,27 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         default_symbol = 'XMR';
       } else if (this.ecc === 'SLIP10-Nist256p1') {
         default_symbol = 'NEO';
-      } else if (['ALL', 'SLIP10-Secp256k1'].includes(this.ecc)) {
+      } else if (this.ecc === 'SLIP10-Secp256k1') {
         default_symbol = 'BTC';
       } else {
         this.ecc = default_ecc;
         setTimeout((): void => { this.terminalService.update(`Unknown '${ecc}' ECC, defaulting to '${this.ecc}'`, 'warning'); }, 10)
         this.groupBoxService.update('cryptocurrency', 'warning');
       }
+      this.updateFormGroup('ecc', this.ecc, false);
+      this.updateECC(this.ecc, false, 0);
       this.symbols = this.getSymbols(this.ecc);
-      this.cryptocurrency = getCryptocurrency(toUpperCase(symbol || default_symbol));
-      if (!this.cryptocurrency) {
+      try {
+        this.cryptocurrency = getCryptocurrency(toUpperCase(symbol || default_symbol));
+      } catch {
         this.cryptocurrency = getCryptocurrency(default_symbol);
         setTimeout((): void => { this.terminalService.update(`Unknown '${symbol}' symbol, defaulting to '${this.cryptocurrency.SYMBOL}'`, 'warning'); }, 10)
         this.groupBoxService.update('cryptocurrency', 'warning');
-      } else if (this.ecc !== 'ALL' && this.cryptocurrency.ECC.NAME !== this.ecc) {
+      }
+      if (
+        (this.cryptocurrency.NAME === 'Algorand' && !['Kholaw-Ed25519', 'SLIP10-Ed25519'].includes(this.ecc)) ||
+        (this.cryptocurrency.NAME !== 'Algorand' && this.cryptocurrency.ECC.NAME !== this.ecc)
+      ) {
         this.cryptocurrency = getCryptocurrency(default_symbol);
         setTimeout((): void => { this.terminalService.update(`Unsupported '${symbol}' symbol by ${this.ecc} ECC, defaulting to '${this.cryptocurrency.SYMBOL}'`, 'warning'); }, 10)
         this.groupBoxService.update('cryptocurrency', 'warning');
@@ -432,7 +460,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   }
 
   getFroms(hd: string): ComboboxInterface[] {
-    if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141'].includes(hd)) {
+    if (['Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141'].includes(hd)) {
       let forms: ComboboxInterface[] = [
         { name: 'Entropy', value: 'bip-entropy' },
         { name: 'Mnemonic', value: 'bip-mnemonic' },
@@ -442,8 +470,11 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         { name: 'WIF', value: 'bip-wif' },
         { name: 'XPrivate Key', value: 'bip-xprivate-key' }
       ];
-      if (['BIP32', 'BIP141'].includes(hd)) {
+      if (['Algorand', 'BIP32', 'BIP141'].includes(hd)) {
         forms.push({ name: 'XPublic Key', value: 'bip-xpublic-key'})
+      }
+      if (hd === 'Algorand') {
+        forms.splice(5, 1);
       }
       return forms;
     } else if (hd === 'Cardano') {
@@ -880,7 +911,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     const data: ComboboxInterface[] = clients.map(
       (item: string): ComboboxInterface => ({name: item, value: item})
     );
-    if (['BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141'].includes(hd)) {
+    if (['Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141'].includes(hd)) {
       if (symbol === 'ALGO') {
         return [data[0], data[1]];
       } else {
@@ -1126,7 +1157,6 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   share(data: any): void {
     this.onShareModalOpen.emit({
       ecc: this.ecc,
-      cryptoECC: this.cryptocurrency.ECC.NAME,
       symbol: this.symbol,
       network: data.network,
       hd: data.hd,
@@ -1165,7 +1195,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     const cryptocurrency: typeof Cryptocurrency = getCryptocurrency(data.symbol);
     let semantic = data.semantic;
     if (!semantic) {
-      if (['BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(data.hd)) {
+      if (['Algorand', 'BIP32', 'BIP44', 'BIP86', 'Cardano'].includes(data.hd)) {
         semantic = 'p2pkh';
       } else if ('BIP49' === data.hd) {
         semantic = 'p2wpkh-in-p2sh';
@@ -1176,6 +1206,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
 
     try {
       hdwallet = new HDWallet(cryptocurrency, {
+        ecc: ECCS.getECCClass(data.ecc),
         hd: HDS.getHDClass(data.hd),
         network: data.network,
         language: data.language,

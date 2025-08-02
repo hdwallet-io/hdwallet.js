@@ -36,8 +36,6 @@ export class ShareComponent {
       if (controls.hasOwnProperty(control)) {
         if (['generate', 'save', 'clear'].includes(control)) {
           groupControls[control] = [false, Validators.required];
-        } else if (control === 'ecc') {
-          groupControls[control] = [controls[control] !== 'ALL', Validators.required];
         } else {
           groupControls[control] = [controls[control], Validators.required];
         }
@@ -57,11 +55,11 @@ export class ShareComponent {
   makeURL(): void {
     const controls = this.shareFormGroup?.value;
     this.changeDetectorRef.detectChanges();
-    const ecc: string = controls['ecc'] ? toLowerCase(this.shareData['cryptoECC']) : 'all';
-    const symbol: string = controls['symbol'] ? toUpperCase(this.shareData['symbol']) : 'BTC';
+    const ecc: string = toLowerCase(this.shareData['ecc']);
+    const symbol: string = toUpperCase(this.shareData['symbol']);
     let url: URL = new URL(`${endpoint}/${ecc}/${symbol}`);
     for (let control in controls) {
-      if (controls[control] && !['ecc', 'cryptoECC', 'symbol'].includes(control)) {
+      if (controls[control] && !['ecc', 'symbol'].includes(control)) {
         if (['hd', 'client', 'derivation'].includes(control)) {
           url.searchParams.set(toLowerCase(control), toTitleCase(this.shareData[control]));
         } else if (['format'].includes(control)) {

@@ -66,6 +66,7 @@ export interface PassphraseInterface {
 }
 
 export interface DumpsInterface {
+  ecc: string;
   symbol: string;
   network: string;
   hd: string;

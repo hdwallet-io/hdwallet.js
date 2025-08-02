@@ -5,7 +5,7 @@ import { MainComponent } from './main/main.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dumps/all/BTC',
+    redirectTo: 'dumps/SLIP10-Secp256k1/BTC',
     pathMatch: 'full'
   },
   {
@@ -35,7 +35,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dumps/all/BTC',
+    redirectTo: 'dumps/SLIP10-Secp256k1/BTC',
     pathMatch: 'full'
   }
 ];

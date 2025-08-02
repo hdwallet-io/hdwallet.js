@@ -6,30 +6,37 @@
     <div class="description-font mb-2">
       This section sets the scope for how keys will be derived — defining the target cryptocurrency, network, HD standard, and the source of input data.
     </div>
-    <div class="grid grid-cols-9 max-xl:grid-cols-4 gap-2.5">
+    <div class="grid grid-cols-3 max-xl:grid-cols-2 gap-2.5">
+      <!-- Dumps - ECC -->
+      <fieldset class="col-span-1 max-xl:col-span-2">
+        <label class="uppercase">ECC</label>
+        <div class="mt-2">
+          <custom-combobox [customOptions]="eccs" formControlName="ecc"></custom-combobox>
+        </div>
+      </fieldset>
       <!-- Dumps - Cryptocurrency -->
-      <fieldset class="col-span-3 max-xl:col-span-2">
+      <fieldset class="col-span-1">
         <label class="uppercase">Cryptocurrency</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="symbols" formControlName="symbol"></custom-combobox>
         </div>
       </fieldset>
       <!-- Dumps - Network -->
-      <fieldset class="col-span-2">
+      <fieldset class="col-span-1">
         <label class="uppercase">Network</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="networks" formControlName="network"></custom-combobox>
         </div>
       </fieldset>
       <!-- Dumps - HD -->
-      <fieldset class="col-span-2">
+      <fieldset class="col-span-1">
         <label class="uppercase">HD</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="hds" formControlName="hd"></custom-combobox>
         </div>
       </fieldset>
       <!-- Dumps - From -->
-      <fieldset class="col-span-2">
+      <fieldset class="col-span-1">
         <label class="uppercase">From</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="froms" formControlName="from"></custom-combobox>

@@ -65,7 +65,7 @@ export const derivations: string[] = [
 ];
 
 export function getAllowedDerivations(hd: string, from: string): string[] {
-  if (['BIP32', 'BIP141'].includes(hd)) {
+  if (['Algorand', 'BIP32', 'BIP141'].includes(hd)) {
     if (from === 'bip-xpublic-key') {
       return ['Custom'];
     } else {
