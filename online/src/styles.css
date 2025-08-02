@@ -87,7 +87,7 @@ button:focus {
 
 fieldset[disabled] .custom-button,
 .custom-button:hover {
-  background-color: rgba(25, 30, 36, 0.7);
+  /*background-color: rgba(25, 30, 36, 0.7);*/
 }
 
 fieldset[disabled] img {

@@ -1,11 +1,13 @@
 <div class="relative">
-  <pre class="h-screen overflow-auto px-3 pb-3 text-white">{{ terminalOutputWithOperations() }}</pre>
+  <div id="pre-terminal" class="h-screen overflow-auto pb-9">
+    <pre class="px-3 pb-5 text-white">{{ terminalOutputWithOperations() }}</pre>
+  </div>
   <div class="fixed top-4 right-4">
     <button class="custom-button sm:hidden terminal-close" (click)="terminalService.showTerminal.set(false)">
       <svg style="width: 15px" id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 98 98"><defs><style>.terminal-close{fill:#fff;}</style></defs><polygon class="terminal-close" points="98 19.6 68.6 49 98 78.4 98 98 78.4 98 49 68.6 19.6 98 0 98 0 78.4 29.4 49 0 19.6 0 0 19.6 0 49 29.4 78.4 0 98 0 98 19.6"/></svg>
     </button>
   </div>
-  <div class="fixed bottom-4 right-4">
+  <div class="fixed bottom-3 right-4">
     <fieldset [disabled]="!toBoolean(storageService.getStorage('disclaimer'))">
       <div class="flex gap-2.5">
         <fieldset [disabled]="terminalService.stopDerivation()">

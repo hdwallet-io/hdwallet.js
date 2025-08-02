@@ -78,7 +78,7 @@ export class TerminalComponent implements AfterViewInit {
   }
 
   scrollToBottom(): void {
-    const element: any = this.elementRef.nativeElement.querySelector('pre');
+    const element: any = this.elementRef.nativeElement.querySelector('#pre-terminal');
     this.renderer2.setProperty(
       element, 'scrollTop', element.scrollHeight
     );
