@@ -66,7 +66,7 @@ export class BIP32HD extends HD {
       });
     }
 
-    this.wifPrefix = options.wifPrefix ?? Bitcoin.NETWORKS.MAINNET.WIF_PREFIX;
+    this.wifPrefix = options.wifPrefix;
     this.derivation = new CustomDerivation({
       path: options.path, indexes: options.indexes
     });
@@ -217,7 +217,7 @@ export class BIP32HD extends HD {
   }
 
   fromWIF(wif: string): this {
-    if (this.wifPrefix === null || this.wifPrefix === null) {
+    if (!this.wifPrefix) {
       throw new WIFError('WIF prefix is required');
     }
 
@@ -514,7 +514,7 @@ export class BIP32HD extends HD {
   }
 
   getRootWIF(wifType?: string): string | null {
-    if (this.wifPrefix == null || !this.getRootPrivateKey()) return null;
+    if (!this.wifPrefix || !this.getRootPrivateKey()) return null;
 
     const type = wifType ?? this.wifType;
     if (!Object.values(WIF_TYPES).includes(type)) {
@@ -583,7 +583,7 @@ export class BIP32HD extends HD {
   }
 
   getWIF(wifType?: string): string | null {
-    if (this.wifPrefix == null) return null;
+    if (!this.wifPrefix || !this.getPrivateKey()) return null;
 
     const type = wifType ?? this.wifType;
     if (!Object.values(WIF_TYPES).includes(type)) {
@@ -592,9 +592,7 @@ export class BIP32HD extends HD {
       });
     }
 
-    return this.getPrivateKey()
-      ? privateKeyToWIF(this.getPrivateKey()!, type, this.wifPrefix)
-      : null;
+    return privateKeyToWIF(this.getPrivateKey()!, type, this.wifPrefix);
   }
 
   getWIFType(): string | null {
