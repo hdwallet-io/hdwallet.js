@@ -43,7 +43,7 @@ export class MoneroHD extends HD {
   constructor(options: HDOptionsInterface = {
     minor: 1, major: 0
   }) {
-    super(options);
+    super({ ecc: SLIP10Ed25519MoneroECC, ...options });
 
     const network = ensureTypeMatch(options.network, Network, { otherTypes: ['string'] });
     const networkType = network.isValid ? network.value.NAME : options.network;

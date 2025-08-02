@@ -11,6 +11,7 @@ import { ensureTypeMatch } from '../../utils';
 import { Seed } from '../../seeds';
 import { BaseError, AddressError, DerivationError } from '../../exceptions';
 import { HDAddressOptionsInterface, HDOptionsInterface } from '../../interfaces';
+import { SLIP10Secp256k1ECC } from '../../eccs';
 
 export class ElectrumV2HD extends HD {
 
@@ -24,7 +25,7 @@ export class ElectrumV2HD extends HD {
     publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED,
     mode: MODES.STANDARD
   }) {
-    super(options);
+    super({ ecc: SLIP10Secp256k1ECC, ...options });
 
     this.mode = options.mode ?? MODES.STANDARD;
     if (!MODES.getTypes().includes(this.mode)) {

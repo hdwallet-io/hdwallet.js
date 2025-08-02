@@ -4,6 +4,7 @@ import { Entropy, ENTROPIES } from './entropies';
 import { Mnemonic, ElectrumV2Mnemonic, MoneroMnemonic, ELECTRUM_V2_MNEMONIC_TYPES, MNEMONICS } from './mnemonics';
 import { Seed, BIP39Seed, CardanoSeed, ElectrumV2Seed, SEEDS } from './seeds';
 import { HD, HDS } from './hds';
+import { EllipticCurveCryptography } from './eccs';
 import { PUBLIC_KEY_TYPES, SEMANTICS, MODES } from './consts';
 import { Cryptocurrency, Network } from './cryptocurrencies/cryptocurrency';
 import { deserialize, isValidKey } from './keys';
@@ -20,6 +21,7 @@ import { Cardano } from './cryptocurrencies';
 
 export class HDWallet {
 
+  private ecc: typeof EllipticCurveCryptography;
   private cryptocurrency: typeof Cryptocurrency;
   private network: typeof Network;
   private address: typeof Address;
@@ -52,6 +54,7 @@ export class HDWallet {
     this.cryptocurrency = ensureTypeMatch(
       cryptocurrency, Cryptocurrency, { errorClass: CryptocurrencyError }
     );
+    this.ecc = options.ecc ?? this.cryptocurrency.ECC;
 
     const _hd = options.hd ?? this.cryptocurrency.DEFAULT_HD;
     const resolvedHD = ensureTypeMatch(_hd, HD, { otherTypes: ['string'] });
@@ -139,7 +142,7 @@ export class HDWallet {
     }
 
     this.hd = new hdClass({
-      ecc: options.ecc ?? this.cryptocurrency.ECC,
+      ecc: this.ecc,
       publicKeyType: this.publicKeyType,
       semantic: this.semantic,
       coinType: this.cryptocurrency.COIN_TYPE,
@@ -415,7 +418,7 @@ export class HDWallet {
   }
 
   getECC(): string {
-    return this.cryptocurrency.ECC.NAME;
+    return this.hd.ecc.NAME;
   }
 
   getHD(): string {

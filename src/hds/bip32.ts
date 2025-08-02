@@ -27,7 +27,6 @@ import { HDAddressOptionsInterface, HDOptionsInterface } from '../interfaces';
 
 export class BIP32HD extends HD {
 
-  protected ecc: EllipticCurveCryptography;
   protected seed?: Uint8Array;
   protected rootPrivateKey?: PrivateKey;
   protected rootChainCode?: Uint8Array;
@@ -51,10 +50,6 @@ export class BIP32HD extends HD {
   }) {
     super(options);
 
-    if(!options.ecc) {
-      throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
-    }
-    this.ecc = options.ecc;
     this.publicKeyType = options.publicKeyType ?? PUBLIC_KEY_TYPES.COMPRESSED;
     if (this.publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
       this.wifType = WIF_TYPES.WIF;

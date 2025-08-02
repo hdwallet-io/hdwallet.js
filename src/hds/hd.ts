@@ -2,12 +2,20 @@
 
 import { Derivation } from '../derivations';
 import { HDOptionsInterface } from '../interfaces';
+import { EllipticCurveCryptography } from '../eccs';
+import { ECCError } from '../exceptions';
 
 export class HD {
 
+  public ecc: typeof EllipticCurveCryptography;
   protected derivation!: any;
 
-  constructor(options: HDOptionsInterface = { }) { }
+  constructor(options: HDOptionsInterface = { }) {
+    if(!options.ecc) {
+      throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
+    }
+    this.ecc = options.ecc;
+  }
 
   static getName(): string {
     throw new Error('Must override getName()');
