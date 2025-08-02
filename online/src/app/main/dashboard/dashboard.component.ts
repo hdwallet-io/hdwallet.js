@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     if (this.storageService.getStorage('disclaimer') !== 'true') {
       this.storageService.clearStorage('terminal');
-      this.terminalService.update('Read and understand the disclaimer before', 'warning', false);
+      this.terminalService.update('Read and understand the disclaimer before proceeding', 'warning', false);
       this.disabledStateService.setDisabledState(true);
     }
   }

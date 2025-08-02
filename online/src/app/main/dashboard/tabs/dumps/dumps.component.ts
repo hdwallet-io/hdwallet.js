@@ -227,20 +227,37 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateECC(ecc: string, emitEvent: boolean = true, timeout: number = 0): void {
+  updateECC(ecc: string, emitEvent: boolean = true, timeout: number = 0, symbol?: string): void {
     this.ecc = ecc;
     this.symbols = this.getSymbols(this.ecc);
     if (['Kholaw-Ed25519', 'SLIP10-Ed25519'].includes(this.ecc)) {
-      this.updateFormGroup('symbol', 'ALGO', emitEvent, timeout);
+      this.symbol = symbol ?? 'ALGO';
     } else if (this.ecc === 'SLIP10-Ed25519-Blake2b') {
-      this.updateFormGroup('symbol', 'XNO', emitEvent, timeout);
+      this.symbol = symbol ?? 'XNO';
     } else if (this.ecc === 'SLIP10-Ed25519-Monero') {
-      this.updateFormGroup('symbol', 'XMR', emitEvent, timeout);
+      this.symbol = symbol ?? 'XMR';
     } else if (this.ecc === 'SLIP10-Nist256p1') {
-      this.updateFormGroup('symbol', 'NEO', emitEvent, timeout);
+      this.symbol = symbol ?? 'NEO';
     } else if (this.ecc === 'SLIP10-Secp256k1') {
-      this.updateFormGroup('symbol', 'BTC', emitEvent, timeout);
+      this.symbol = symbol ?? 'BTC';
     }
+    this.cryptocurrency = getCryptocurrency(this.symbol);
+    this.router.navigate(['dumps', toLowerCase(this.ecc), this.cryptocurrency.SYMBOL], { replaceUrl: true });
+    this.networks = this.getNetworks(this.cryptocurrency.SYMBOL);
+    this.hds = this.getHDs(this.cryptocurrency.SYMBOL);
+    this.hd = objectIsIncluded(this.hds, this.hd) ? this.hd : {
+      name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
+    };
+    if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'Kholaw-Ed25519') {
+      this.hds.splice(1, 2);
+      this.hd = { name: 'Algorand', value: 'Algorand' };
+    } else if (this.cryptocurrency.NAME === 'Algorand' && this.ecc === 'SLIP10-Ed25519') {
+      this.hds.splice(0, 1);
+      this.hd = { name: 'BIP44', value: 'BIP44' };
+    }
+    console.log(this.symbol, this.hd.value)
+    this.updateFormGroup('symbol', this.symbol, true, 1);
+    this.updateFormGroup('hd', this.hd.value, true, 1);
   }
 
   updateSymbol(symbol: string, emitEvent: boolean = true, timeout: number = 0): void {
@@ -374,8 +391,6 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         setTimeout((): void => { this.terminalService.update(`Unknown '${ecc}' ECC, defaulting to '${this.ecc}'`, 'warning'); }, 10)
         this.groupBoxService.update('cryptocurrency', 'warning');
       }
-      this.updateFormGroup('ecc', this.ecc, false);
-      this.updateECC(this.ecc, false, 0);
       this.symbols = this.getSymbols(this.ecc);
       try {
         this.cryptocurrency = getCryptocurrency(toUpperCase(symbol || default_symbol));
@@ -392,8 +407,8 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         setTimeout((): void => { this.terminalService.update(`Unsupported '${symbol}' symbol by ${this.ecc} ECC, defaulting to '${this.cryptocurrency.SYMBOL}'`, 'warning'); }, 10)
         this.groupBoxService.update('cryptocurrency', 'warning');
       }
-      this.updateFormGroup('symbol', this.cryptocurrency.SYMBOL, false);
-      this.updateSymbol(this.cryptocurrency.SYMBOL, false, 0);
+      this.updateFormGroup('ecc', this.ecc, false);
+      this.updateECC(this.ecc, false, 0, this.cryptocurrency.SYMBOL);
       this.activatedRoute.queryParams.pipe(take(1)).subscribe((queries: Params) => {
         let queryParams: DictionaryInterface = replaceUnderscore2Hyphen(queries);
         for (let key of ['network', 'hd', 'from', 'derivation', 'format']) { queryParams = this.setQueryValues(queryParams, key); }
@@ -532,7 +547,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
   }
 
   getFromGroupBoxName(from: string, hd: string): string | null {
-    if (['bip32', 'bip44', 'bip49', 'bip84', 'bip86', 'bip141'].includes(hd.toLowerCase())) {
+    if (['algorand', 'bip32', 'bip44', 'bip49', 'bip84', 'bip86', 'bip141'].includes(hd.toLowerCase())) {
       return `bip-${from.toLowerCase()}`;
     } else if ('cardano' === hd.toLowerCase()) {
       return `cardano-${from.toLowerCase()}`;
