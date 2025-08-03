@@ -32,23 +32,10 @@ export class BIP84HD extends BIP44HD {
   }
 
   fromDerivation(derivation: BIP84Derivation): this {
+    this.cleanDerivation();
     this.derivation = ensureTypeMatch(
       derivation, BIP84Derivation, { errorClass: DerivationError }
     );
-    for (const index of this.derivation.getIndexes()) {
-      this.drive(index);
-    }
-    return this;
-  }
-
-  updateDerivation(derivation: BIP84Derivation): this {
-    this.cleanDerivation();
-    this.fromDerivation(derivation);
-    return this;
-  }
-
-  cleanDerivation(): this {
-    super.cleanDerivation();
     for (const index of this.derivation.getIndexes()) {
       this.drive(index);
     }
