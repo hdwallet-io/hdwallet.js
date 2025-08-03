@@ -8,7 +8,7 @@ import { ECCError } from '../exceptions';
 export class HD {
 
   public ecc: typeof EllipticCurveCryptography;
-  protected derivation!: any;
+  public derivation: any;
 
   constructor(options: HDOptionsInterface = { }) {
     if(!options.ecc) {

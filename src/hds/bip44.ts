@@ -23,7 +23,7 @@ export class BIP44HD extends BIP32HD {
       coinType: this.coinType,
       account: options.account ?? 0,
       change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-      address: options.account ?? 0
+      address: options.address ?? 0
     });
   }
 
@@ -32,31 +32,34 @@ export class BIP44HD extends BIP32HD {
   }
 
   fromCoinType(coinType: number): this {
+    super.cleanDerivation();
     this.derivation.fromCoinType(coinType);
     this.fromDerivation(this.derivation);
     return this;
   }
 
   fromAccount(account: number | [number, number]): this {
+    super.cleanDerivation();
     this.derivation.fromAccount(account);
     this.fromDerivation(this.derivation);
     return this;
   }
 
   fromChange(change: string | number): this {
+    super.cleanDerivation();
     this.derivation.fromChange(change);
     this.fromDerivation(this.derivation);
     return this;
   }
 
   fromAddress(address: number | [number, number]): this {
+    super.cleanDerivation();
     this.derivation.fromAddress(address);
     this.fromDerivation(this.derivation);
     return this;
   }
 
   fromDerivation(derivation: BIP44Derivation): this {
-    super.cleanDerivation();
     this.derivation = ensureTypeMatch(
       derivation, BIP44Derivation, { errorClass: DerivationError }
     );
@@ -67,12 +70,17 @@ export class BIP44HD extends BIP32HD {
   }
 
   updateDerivation(derivation: BIP44Derivation): this {
+    this.cleanDerivation();
     this.fromDerivation(derivation);
     return this;
   }
 
   cleanDerivation(): this {
     super.cleanDerivation();
+    this.derivation.fromCoinType(this.coinType);
+    this.derivation.fromAccount(0);
+    this.derivation.fromChange(CHANGES.EXTERNAL_CHAIN);
+    this.derivation.fromAddress(0);
     for (const index of this.derivation.getIndexes()) {
       this.drive(index);
     }

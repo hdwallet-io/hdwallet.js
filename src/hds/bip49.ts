@@ -23,7 +23,7 @@ export class BIP49HD extends BIP44HD {
       coinType: this.coinType,
       account: options.account ?? 0,
       change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-      address: options.account ?? 0
+      address: options.address ?? 0
     });
   }
 
@@ -32,7 +32,6 @@ export class BIP49HD extends BIP44HD {
   }
 
   fromDerivation(derivation: BIP49Derivation): this {
-    (Object.getPrototypeOf(BIP44HD.prototype) as BIP32HD).cleanDerivation.call(this);
     this.derivation = ensureTypeMatch(
       derivation, BIP49Derivation, { errorClass: DerivationError }
     );
@@ -43,12 +42,13 @@ export class BIP49HD extends BIP44HD {
   }
 
   updateDerivation(derivation: BIP49Derivation): this {
+    this.cleanDerivation();
     this.fromDerivation(derivation);
     return this;
   }
 
   cleanDerivation(): this {
-    (Object.getPrototypeOf(BIP44HD.prototype) as BIP32HD).cleanDerivation.call(this);
+    super.cleanDerivation();
     for (const index of this.derivation.getIndexes()) {
       this.drive(index);
     }
