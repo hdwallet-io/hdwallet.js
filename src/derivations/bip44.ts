@@ -100,7 +100,6 @@ export class BIP44Derivation extends Derivation {
   }
 
   clean(): this {
-    this.coinType = normalizeIndex(Bitcoin.COIN_TYPE, true);
     this.account = normalizeIndex(0, true);
     this.change = normalizeIndex(
       this.getChangeValue(CHANGES.EXTERNAL_CHAIN), false
