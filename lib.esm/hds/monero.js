@@ -65,6 +65,7 @@ export class MoneroHD extends HD {
         return this;
     }
     updateDerivation(derivation) {
+        this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
     cleanDerivation() {

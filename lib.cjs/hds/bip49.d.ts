@@ -5,8 +5,6 @@ export declare class BIP49HD extends BIP44HD {
     constructor(options?: HDOptionsInterface);
     static getName(): string;
     fromDerivation(derivation: BIP49Derivation): this;
-    updateDerivation(derivation: BIP49Derivation): this;
-    cleanDerivation(): this;
     getRootXPrivateKey(version?: Uint8Array | number, encoded?: boolean): string | null;
     getRootXPublicKey(version?: Uint8Array | number, encoded?: boolean): string | null;
     getXPrivateKey(version?: Uint8Array | number, encoded?: boolean): string | null;

@@ -20,26 +20,15 @@ class BIP84HD extends bip44_1.BIP44HD {
             coinType: this.coinType,
             account: options.account ?? 0,
             change: options.change ?? derivations_1.CHANGES.EXTERNAL_CHAIN,
-            address: options.account ?? 0
+            address: options.address ?? 0
         });
     }
     static getName() {
         return 'BIP84';
     }
     fromDerivation(derivation) {
-        Object.getPrototypeOf(bip44_1.BIP44HD.prototype).cleanDerivation.call(this);
+        this.cleanDerivation();
         this.derivation = (0, utils_1.ensureTypeMatch)(derivation, derivations_1.BIP84Derivation, { errorClass: exceptions_1.DerivationError });
-        for (const index of this.derivation.getIndexes()) {
-            this.drive(index);
-        }
-        return this;
-    }
-    updateDerivation(derivation) {
-        this.fromDerivation(derivation);
-        return this;
-    }
-    cleanDerivation() {
-        Object.getPrototypeOf(bip44_1.BIP44HD.prototype).cleanDerivation.call(this);
         for (const index of this.derivation.getIndexes()) {
             this.drive(index);
         }

@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0-beta.9](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.9) (2025-08-03)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.8...1.0.0-beta.9)
+
+**Enhancements:**
+
+- Remove: Coin-Type handling in `BIP44Derivation` cleanup
+
+**Fix Bugs:**
+
+- Fix: `fromDerivation`, `updateDerivation` & `cleanDerivation` funcs of HD implementation
+
 ## [1.0.0-beta.8](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.8) (2025-08-02)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.7...1.0.0-beta.8)

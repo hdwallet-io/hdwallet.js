@@ -81,7 +81,6 @@ class BIP44Derivation extends derivation_1.Derivation {
         return this;
     }
     clean() {
-        this.coinType = (0, utils_1.normalizeIndex)(cryptocurrencies_1.Bitcoin.COIN_TYPE, true);
         this.account = (0, utils_1.normalizeIndex)(0, true);
         this.change = (0, utils_1.normalizeIndex)(this.getChangeValue(exports.CHANGES.EXTERNAL_CHAIN), false);
         this.address = (0, utils_1.normalizeIndex)(0, false);

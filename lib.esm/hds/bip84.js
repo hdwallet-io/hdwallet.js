@@ -17,26 +17,15 @@ export class BIP84HD extends BIP44HD {
             coinType: this.coinType,
             account: options.account ?? 0,
             change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-            address: options.account ?? 0
+            address: options.address ?? 0
         });
     }
     static getName() {
         return 'BIP84';
     }
     fromDerivation(derivation) {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
+        this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP84Derivation, { errorClass: DerivationError });
-        for (const index of this.derivation.getIndexes()) {
-            this.drive(index);
-        }
-        return this;
-    }
-    updateDerivation(derivation) {
-        this.fromDerivation(derivation);
-        return this;
-    }
-    cleanDerivation() {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
         for (const index of this.derivation.getIndexes()) {
             this.drive(index);
         }

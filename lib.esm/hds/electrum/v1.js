@@ -84,6 +84,7 @@ export class ElectrumV1HD extends HD {
         return this;
     }
     updateDerivation(derivation) {
+        this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
     cleanDerivation() {

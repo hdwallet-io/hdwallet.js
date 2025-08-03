@@ -1,7 +1,7 @@
 const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 'undefined' ? window: typeof global !== 'undefined' ? global: typeof self !== 'undefined' ? self: {});
 // SPDX-License-Identifier: MIT
 const __name__ = 'hdwallet';
-const __version__ = '1.0.0-beta.8';
+const __version__ = '1.0.0-beta.9';
 const __license__ = 'MIT';
 const __author__ = 'Meheret Tesfaye Batu';
 const __email__ = 'meherett.batu@gmail.com';
@@ -78019,7 +78019,6 @@ class BIP44Derivation extends Derivation {
         return this;
     }
     clean() {
-        this.coinType = normalizeIndex(Bitcoin.COIN_TYPE, true);
         this.account = normalizeIndex(0, true);
         this.change = normalizeIndex(this.getChangeValue(CHANGES.EXTERNAL_CHAIN), false);
         this.address = normalizeIndex(0, false);
@@ -81672,46 +81671,39 @@ class BIP44HD extends BIP32HD {
             coinType: this.coinType,
             account: options.account ?? 0,
             change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-            address: options.account ?? 0
+            address: options.address ?? 0
         });
     }
     static getName() {
         return 'BIP44';
     }
     fromCoinType(coinType) {
+        this.cleanDerivation();
         this.derivation.fromCoinType(coinType);
         this.fromDerivation(this.derivation);
         return this;
     }
     fromAccount(account) {
+        this.cleanDerivation();
         this.derivation.fromAccount(account);
         this.fromDerivation(this.derivation);
         return this;
     }
     fromChange(change) {
+        this.cleanDerivation();
         this.derivation.fromChange(change);
         this.fromDerivation(this.derivation);
         return this;
     }
     fromAddress(address) {
+        this.cleanDerivation();
         this.derivation.fromAddress(address);
         this.fromDerivation(this.derivation);
         return this;
     }
     fromDerivation(derivation) {
-        super.cleanDerivation();
+        this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP44Derivation, { errorClass: DerivationError });
-        for (const index of this.derivation.getIndexes()) {
-            this.drive(index);
-        }
-        return this;
-    }
-    updateDerivation(derivation) {
-        this.fromDerivation(derivation);
-        return this;
-    }
-    cleanDerivation() {
-        super.cleanDerivation();
         for (const index of this.derivation.getIndexes()) {
             this.drive(index);
         }
@@ -81738,26 +81730,15 @@ class BIP49HD extends BIP44HD {
             coinType: this.coinType,
             account: options.account ?? 0,
             change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-            address: options.account ?? 0
+            address: options.address ?? 0
         });
     }
     static getName() {
         return 'BIP49';
     }
     fromDerivation(derivation) {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
+        this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP49Derivation, { errorClass: DerivationError });
-        for (const index of this.derivation.getIndexes()) {
-            this.drive(index);
-        }
-        return this;
-    }
-    updateDerivation(derivation) {
-        this.fromDerivation(derivation);
-        return this;
-    }
-    cleanDerivation() {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
         for (const index of this.derivation.getIndexes()) {
             this.drive(index);
         }
@@ -81804,26 +81785,15 @@ class BIP84HD extends BIP44HD {
             coinType: this.coinType,
             account: options.account ?? 0,
             change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-            address: options.account ?? 0
+            address: options.address ?? 0
         });
     }
     static getName() {
         return 'BIP84';
     }
     fromDerivation(derivation) {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
+        this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP84Derivation, { errorClass: DerivationError });
-        for (const index of this.derivation.getIndexes()) {
-            this.drive(index);
-        }
-        return this;
-    }
-    updateDerivation(derivation) {
-        this.fromDerivation(derivation);
-        return this;
-    }
-    cleanDerivation() {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
         for (const index of this.derivation.getIndexes()) {
             this.drive(index);
         }
@@ -81982,26 +81952,15 @@ class BIP86HD extends BIP44HD {
             coinType: this.coinType,
             account: options.account ?? 0,
             change: options.change ?? CHANGES.EXTERNAL_CHAIN,
-            address: options.account ?? 0
+            address: options.address ?? 0
         });
     }
     static getName() {
         return 'BIP86';
     }
     fromDerivation(derivation) {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
+        this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP86Derivation, { errorClass: DerivationError });
-        for (const index of this.derivation.getIndexes()) {
-            this.drive(index);
-        }
-        return this;
-    }
-    updateDerivation(derivation) {
-        this.fromDerivation(derivation);
-        return this;
-    }
-    cleanDerivation() {
-        Object.getPrototypeOf(BIP44HD.prototype).cleanDerivation.call(this);
         for (const index of this.derivation.getIndexes()) {
             this.drive(index);
         }
@@ -82347,6 +82306,7 @@ class ElectrumV1HD extends HD {
         return this;
     }
     updateDerivation(derivation) {
+        this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
     cleanDerivation() {
@@ -82484,6 +82444,7 @@ class ElectrumV2HD extends HD {
         return this;
     }
     updateDerivation(derivation) {
+        this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
     cleanDerivation() {
@@ -82623,6 +82584,7 @@ class MoneroHD extends HD {
         return this;
     }
     updateDerivation(derivation) {
+        this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
     cleanDerivation() {

@@ -64,6 +64,7 @@ class ElectrumV2HD extends hd_1.HD {
         return this;
     }
     updateDerivation(derivation) {
+        this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
     cleanDerivation() {
