@@ -254,8 +254,24 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         name: this.cryptocurrency.DEFAULT_HD, value: this.cryptocurrency.DEFAULT_HD
       };
     }
-    this.updateFormGroup('symbol', this.symbol, emitEvent, 1);
-    this.updateFormGroup('hd', this.hd.value, emitEvent, 0);
+    this.froms = this.getFroms(this.hd.value);
+    this.from = objectIsIncluded(this.froms, this.from) ? this.from : this.froms[1];
+    this.currentAllowedDerivations = getAllowedDerivations(this.hd.value, this.from.value);
+    this.publicKeyTypes = this.getPublicKeyTypes(this.hd.value);
+    this.cardanoTypes = this.getCardanoTypes(this.from.value);
+    this.clients = this.getClients(this.hd.value, this.symbol, this.from.value);
+    this.languages = this.getLanguages(this.clients[0].value);
+    this.updateFormGroup('symbol', this.symbol, emitEvent, timeout);
+    this.updateFormGroup('network', this.cryptocurrency.DEFAULT_NETWORK.NAME, emitEvent, timeout);
+    this.updateFormGroup('hd', this.hd.value, emitEvent, timeout);
+    this.updateFormGroup('from', this.from.value, emitEvent, timeout);
+    this.updateFormGroup('client', this.clients[0].value, emitEvent, timeout);
+    if (this.symbol == 'ADA') {
+      this.updateFormGroup('derivation', 'CIP1852', emitEvent, timeout);
+    } else {
+      this.updateFormGroup('derivation', this.currentAllowedDerivations[0], emitEvent, timeout);
+    }
+    this.updateFormInclude(this.hd.value, this.symbol, emitEvent, timeout);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -283,13 +299,13 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.updateFormGroup('hd', this.hd.value, emitEvent, timeout);
     this.updateFormGroup('from', this.from.value, emitEvent, timeout);
     this.updateFormGroup('client', this.clients[0].value, emitEvent, timeout);
-
     if (this.symbol == 'ADA') {
       this.updateFormGroup('derivation', 'CIP1852', emitEvent, timeout);
     } else {
       this.updateFormGroup('derivation', this.currentAllowedDerivations[0], emitEvent, timeout);
     }
     this.updateFormInclude(this.hd.value, this.symbol, emitEvent, timeout);
+    this.changeDetectorRef.detectChanges();
   }
 
   updateHD(hd: string, emitEvent: boolean = true, timeout: number = 0): void {
@@ -315,6 +331,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.semantics = this.getSemantics(this.hd.value);
     this.updateFormGroup('semantic', this.hd.value === 'BIP141' ? 'p2wpkh' : this.cryptocurrency.DEFAULT_SEMANTIC, emitEvent, timeout);
     this.updateFormInclude(this.hd.value, this.symbol, emitEvent, timeout);
+    this.changeDetectorRef.detectChanges();
   }
 
   updateFrom(from: string, emitEvent: boolean = true, timeout: number = 0): void {
@@ -335,10 +352,12 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     if (['bip-wif', 'bip-private-key', 'bip-public-key', 'cardano-private-key', 'cardano-public-key'].includes(this.from.value)) {
       this.updateFormGroup('format', 'json', emitEvent, timeout);
     }
+    this.changeDetectorRef.detectChanges();
   }
 
   updateCardanoType(cardanoType: string, emitEvent: boolean = true, timeout: number = 0): void {
     this.updateFormGroup('addressType', ['shelley-icarus', 'shelley-ledger'].includes(cardanoType) ? 'payment' : null, emitEvent, timeout);
+    this.changeDetectorRef.detectChanges();
   }
 
   ngOnInit(): void {
@@ -405,8 +424,11 @@ export class DumpsComponent implements OnInit, AfterViewInit {
         setTimeout((): void => { this.terminalService.update(`Unsupported '${symbol}' symbol by ${this.ecc} ECC, defaulting to '${this.cryptocurrency.SYMBOL}'`, 'warning'); }, 10)
         this.groupBoxService.update('cryptocurrency', 'warning');
       }
+      this.symbol = this.cryptocurrency.SYMBOL;
       this.updateFormGroup('ecc', this.ecc, false);
-      this.updateECC(this.ecc, false, 0, this.cryptocurrency.SYMBOL);
+      this.updateECC(this.ecc, false, 0, this.symbol);
+      this.updateFormGroup('symbol', this.symbol, false);
+      this.updateSymbol(this.symbol, false, 0);
       this.activatedRoute.queryParams.pipe(take(1)).subscribe((queries: Params) => {
         let queryParams: DictionaryInterface = replaceUnderscore2Hyphen(queries);
         for (let key of ['network', 'hd', 'from', 'derivation', 'format']) { queryParams = this.setQueryValues(queryParams, key); }
