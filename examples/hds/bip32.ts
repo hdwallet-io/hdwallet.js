@@ -58,7 +58,6 @@ console.log('Depth:', bip32HD.getDepth());
 console.log('Path:', bip32HD.getPath());
 console.log('Index:', bip32HD.getIndex());
 console.log('Indexes:', bip32HD.getIndexes());
-console.log('getStrict:', bip32HD.getStrict());
 console.log('Address:', bip32HD.getAddress({
   address: Cryptocurrency.ADDRESSES.P2TR
 }));

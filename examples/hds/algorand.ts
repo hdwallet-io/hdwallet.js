@@ -47,5 +47,4 @@ console.log('Depth:', algorandHD.getDepth());
 console.log('Path:', algorandHD.getPath());
 console.log('Index:', algorandHD.getIndex());
 console.log('Indexes:', algorandHD.getIndexes());
-console.log('getStrict:', algorandHD.getStrict());
 console.log('Address:', algorandHD.getAddress());
