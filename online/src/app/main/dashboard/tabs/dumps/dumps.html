@@ -79,7 +79,12 @@
         <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
       </fieldset>
       <!-- BIP Entropy - Public Key Type -->
-      <fieldset class="max-2xl:col-span-2">
+      <fieldset class="max-2xl:col-span-2" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
@@ -122,7 +127,12 @@
         <input type="text" class="custom-input" placeholder="(Optional)" formControlName="passphrase">
       </fieldset>
       <!-- BIP Mnemonic - Public Key Type -->
-      <fieldset class="max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
+      <fieldset class="max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
@@ -153,7 +163,12 @@
         <input type="text" class="custom-input" formControlName="privateKey">
       </fieldset>
       <!-- BIP Private Key - Public Key Type -->
-      <fieldset class="max-xl:col-span-2">
+      <fieldset class="max-xl:col-span-2" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
@@ -184,7 +199,12 @@
         <input type="text" class="custom-input" formControlName="publicKey">
       </fieldset>
       <!-- BIP Public Key - Public Key Type -->
-      <fieldset class="max-xl:col-span-2">
+      <fieldset class="max-xl:col-span-2" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
@@ -222,7 +242,12 @@
         <input type="text" class="custom-input" formControlName="seed">
       </fieldset>
       <!-- BIP Seed - Public Key Type -->
-      <fieldset class="col-span-1 max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3">
+      <fieldset class="col-span-1 max-2xl:col-span-2 max-2xl:row-start-1 max-2xl:col-start-3" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
@@ -303,7 +328,12 @@
         </div>
       </div>
       <!-- BIP XPrivate Key - Public Key Type -->
-      <fieldset class="max-xl:col-span-2">
+      <fieldset class="max-xl:col-span-2" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>
@@ -341,7 +371,12 @@
         </div>
       </div>
       <!--  BIP XPublic Key - Public Key Type  -->
-      <fieldset class="max-xl:col-span-2">
+      <fieldset class="max-xl:col-span-2" [disabled]="[
+                'Kholaw-Ed25519', 'SLIP10-Ed25519', 'SLIP10-Ed25519-Blake2b', 'SLIP10-Ed25519-Monero'
+                ].includes(ecc) || [
+                'ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC',
+                'AKT', 'ATOM', 'AXL', 'HUA', 'FET', 'CTK'
+                ].includes(symbol)">
         <label class="uppercase">Public Key Type</label>
         <div class="mt-2">
           <custom-combobox [customOptions]="publicKeyTypes" formControlName="publicKeyType"></custom-combobox>

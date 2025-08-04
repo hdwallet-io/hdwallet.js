@@ -216,7 +216,7 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     } else if (hd === 'Monero') {
       this.updateFormGroup('include', 'at:minor,at:major,sub-address', emitEvent, timeout);
     }
-    if (['ETH', 'ARB', 'BASE', 'OP', 'XDC'].includes(symbol)) {
+    if (['ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC'].includes(symbol)) {
       this.updateFormGroup('include', 'at:path,address,public-key,private-key', emitEvent, timeout);
     } else if (['BCH', 'SLP', 'XEC'].includes(symbol)) {
       this.updateFormGroup('include', 'at:path,addresses:legacy-p2pkh,public-key,wif', emitEvent, timeout);
@@ -266,6 +266,9 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.updateFormGroup('hd', this.hd.value, emitEvent, timeout);
     this.updateFormGroup('from', this.from.value, emitEvent, timeout);
     this.updateFormGroup('client', this.clients[0].value, emitEvent, timeout);
+    if (['ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC'].includes(this.symbol)) {
+      this.updateFormGroup('publicKeyType', 'uncompressed', emitEvent, timeout);
+    }
     if (this.symbol == 'ADA') {
       this.updateFormGroup('derivation', 'CIP1852', emitEvent, timeout);
     } else {
@@ -299,6 +302,9 @@ export class DumpsComponent implements OnInit, AfterViewInit {
     this.updateFormGroup('hd', this.hd.value, emitEvent, timeout);
     this.updateFormGroup('from', this.from.value, emitEvent, timeout);
     this.updateFormGroup('client', this.clients[0].value, emitEvent, timeout);
+    if (['ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC'].includes(this.symbol)) {
+      this.updateFormGroup('publicKeyType', 'uncompressed', emitEvent, timeout);
+    }
     if (this.symbol == 'ADA') {
       this.updateFormGroup('derivation', 'CIP1852', emitEvent, timeout);
     } else {
@@ -325,7 +331,11 @@ export class DumpsComponent implements OnInit, AfterViewInit {
       this.updateFormGroup('derivation', this.currentAllowedDerivations[0], emitEvent, timeout);
     }
     this.updateFormGroup('change', ['Electrum-V1', 'Electrum-V2'].includes(this.hd.value) ? '0' : 'external-chain', emitEvent, timeout);
-    this.updateFormGroup('publicKeyType', ['Electrum-V1', 'Electrum-V2'].includes(this.hd.value) ? 'uncompressed' : 'compressed', emitEvent, timeout);
+    this.updateFormGroup('publicKeyType', (
+      ['Electrum-V1', 'Electrum-V2'].includes(this.hd.value) ||
+      ['ARB', 'BASE', 'ETH', 'FTM', 'METIS', 'OP', 'MATIC', 'XDC'].includes(this.symbol)) ?
+      'uncompressed' : 'compressed', emitEvent, timeout
+    );
     this.updateFormGroup('cardanoType', this.hd.value === 'Cardano' ? 'shelley-icarus' : null, emitEvent, timeout);
     this.updateFormGroup('addressType', this.hd.value === 'Cardano' ? 'payment' : null, emitEvent, timeout);
     this.semantics = this.getSemantics(this.hd.value);
