@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0-beta.10](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.10) (2025-08-03)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.9...1.0.0-beta.10)
+
+**New Additions:**
+
+- Add: cryptocurrency symbol values
+
+**Fix Bugs:**
+
+- Fix: SLIP-0044 import issue
+
 ## [1.0.0-beta.9](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.9) (2025-08-03)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.8...1.0.0-beta.9)

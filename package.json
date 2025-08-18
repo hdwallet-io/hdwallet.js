@@ -1,6 +1,6 @@
 {
   "name": "@hdwallet/core",
-  "version": "1.0.0-beta.9",
+  "version": "1.0.0-beta.10",
   "description": "A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.",
   "author": "Meheret Tesfaye Batu",
   "email": "meherett.batu@gmail.com",
@@ -65,6 +65,10 @@
       "import": "./lib.esm/slip44.js",
       "default": "./lib.cjs/slip44.js"
     },
+    "./symbols": {
+      "import": "./lib.esm/symbols.js",
+      "default": "./lib.cjs/symbols.js"
+    },
     "./utils": {
       "import": "./lib.esm/utils.js",
       "default": "./lib.cjs/utils.js"
@@ -83,7 +87,7 @@
     "dist": "rollup -c && uglifyjs ./dist/hdwallet.js -o ./dist/hdwallet.min.js && uglifyjs ./dist/hdwallet.umd.js -o ./dist/hdwallet.umd.min.js",
     "dist:stats": "gzip -k9f -S '.gz' ./dist/hdwallet.min.js && gzip -k9f -S '.gz' ./dist/hdwallet.umd.min.js && du -hs ./dist/*.gz && echo '' && du -hs ./dist/*.js",
     "build:dist": "npm run dist && npm run dist:stats",
-    "build:compression": "tar -czf hdwallet-1.0.0-beta.9.tar.gz -C dist . && 7z a -tzip -mx=9 hdwallet-1.0.0-beta.9.zip dist/*",
+    "build:compression": "tar -czf hdwallet-1.0.0-beta.10.tar.gz -C dist . && 7z a -tzip -mx=9 hdwallet-1.0.0-beta.10.zip dist/*",
     "build:all": "npm run build && npm run build:dist && npm run build:compression",
     "clean:all": "rm -rf lib.esm lib.cjs dist/hdwallet.* hdwallet-*.tar.gz hdwallet-*.zip",
     "docs": "typedoc",

@@ -1,7 +1,7 @@
 "use strict";
 // SPDX-License-Identifier: MIT
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HDWallet = exports.addresses = exports.hds = exports.derivations = exports.eccs = exports.seeds = exports.mnemonics = exports.entropies = exports.cryptocurrencies = exports.utils = exports.crypto = exports.consts = exports.info = exports.hdwallet = void 0;
+exports.HDWallet = exports.addresses = exports.hds = exports.derivations = exports.eccs = exports.seeds = exports.mnemonics = exports.entropies = exports.symbols = exports.cryptocurrencies = exports.utils = exports.crypto = exports.consts = exports.info = exports.hdwallet = void 0;
 const tslib_1 = require("tslib");
 const info = tslib_1.__importStar(require("./info"));
 exports.info = info;
@@ -13,6 +13,8 @@ const utils = tslib_1.__importStar(require("./utils"));
 exports.utils = utils;
 const cryptocurrencies = tslib_1.__importStar(require("./cryptocurrencies"));
 exports.cryptocurrencies = cryptocurrencies;
+const symbols = tslib_1.__importStar(require("./symbols"));
+exports.symbols = symbols;
 const entropies = tslib_1.__importStar(require("./entropies"));
 exports.entropies = entropies;
 const mnemonics = tslib_1.__importStar(require("./mnemonics"));
@@ -35,6 +37,7 @@ const hdwallet = {
     crypto,
     utils,
     cryptocurrencies,
+    symbols,
     entropies,
     mnemonics,
     seeds,

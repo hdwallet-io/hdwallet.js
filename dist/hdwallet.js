@@ -1,7 +1,7 @@
 const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 'undefined' ? window: typeof global !== 'undefined' ? global: typeof self !== 'undefined' ? self: {});
 // SPDX-License-Identifier: MIT
 const __name__ = 'hdwallet';
-const __version__ = '1.0.0-beta.9';
+const __version__ = '1.0.0-beta.10';
 const __license__ = 'MIT';
 const __author__ = 'Meheret Tesfaye Batu';
 const __email__ = 'meherett.batu@gmail.com';
@@ -14377,7 +14377,7 @@ class Mainnet$2e extends Network {
     });
     static WIF_PREFIX = 0x80;
 }
-class EOS extends Cryptocurrency {
+class EOS$1 extends Cryptocurrency {
     static NAME = 'EOS';
     static SYMBOL = 'EOS';
     static INFO = new Info({
@@ -14393,7 +14393,7 @@ class EOS extends Cryptocurrency {
     static NETWORKS = new Networks({
         MAINNET: Mainnet$2e
     });
-    static DEFAULT_NETWORK = EOS.NETWORKS.MAINNET;
+    static DEFAULT_NETWORK = EOS$1.NETWORKS.MAINNET;
     static ENTROPIES = new Entropies([
         'BIP39'
     ]);
@@ -14407,12 +14407,12 @@ class EOS extends Cryptocurrency {
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = EOS.HDS.BIP44;
-    static DEFAULT_PATH = `m/44'/${EOS.COIN_TYPE}'/0'/0/0`;
+    static DEFAULT_HD = EOS$1.HDS.BIP44;
+    static DEFAULT_PATH = `m/44'/${EOS$1.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new Addresses([
         'EOS'
     ]);
-    static DEFAULT_ADDRESS = EOS.ADDRESSES.EOS;
+    static DEFAULT_ADDRESS = EOS$1.ADDRESSES.EOS;
     static SEMANTICS = ['p2pkh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
     static PARAMS = new Params({
@@ -15136,7 +15136,7 @@ class Testnet$h extends Network {
     static MESSAGE_PREFIX = null;
     static WIF_PREFIX = 0xed;
 }
-class FIX extends Cryptocurrency {
+class FIX$1 extends Cryptocurrency {
     static NAME = 'FIX';
     static SYMBOL = 'FIX';
     static INFO = new Info({
@@ -15152,7 +15152,7 @@ class FIX extends Cryptocurrency {
         MAINNET: Mainnet$22,
         TESTNET: Testnet$h
     });
-    static DEFAULT_NETWORK = FIX.NETWORKS.MAINNET;
+    static DEFAULT_NETWORK = FIX$1.NETWORKS.MAINNET;
     static ENTROPIES = new Entropies([
         'BIP39'
     ]);
@@ -15166,13 +15166,13 @@ class FIX extends Cryptocurrency {
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = FIX.HDS.BIP44;
-    static DEFAULT_PATH = `m/44'/${FIX.COIN_TYPE}'/0'/0/0`;
+    static DEFAULT_HD = FIX$1.HDS.BIP44;
+    static DEFAULT_PATH = `m/44'/${FIX$1.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new Addresses([
         'P2PKH',
         'P2SH'
     ]);
-    static DEFAULT_ADDRESS = FIX.ADDRESSES.P2PKH;
+    static DEFAULT_ADDRESS = FIX$1.ADDRESSES.P2PKH;
     static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
@@ -18389,7 +18389,7 @@ class Mainnet$1b extends Network {
     static MESSAGE_PREFIX = '\x18Nix Signed Message:\n';
     static WIF_PREFIX = 0x80;
 }
-class NIX extends Cryptocurrency {
+class NIX$1 extends Cryptocurrency {
     static NAME = 'NIX';
     static SYMBOL = 'NIX';
     static INFO = new Info({
@@ -18406,7 +18406,7 @@ class NIX extends Cryptocurrency {
     static NETWORKS = new Networks({
         MAINNET: Mainnet$1b
     });
-    static DEFAULT_NETWORK = NIX.NETWORKS.MAINNET;
+    static DEFAULT_NETWORK = NIX$1.NETWORKS.MAINNET;
     static ENTROPIES = new Entropies([
         'BIP39'
     ]);
@@ -18420,15 +18420,15 @@ class NIX extends Cryptocurrency {
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = NIX.HDS.BIP44;
-    static DEFAULT_PATH = `m/44'/${NIX.COIN_TYPE}'/0'/0/0`;
+    static DEFAULT_HD = NIX$1.HDS.BIP44;
+    static DEFAULT_PATH = `m/44'/${NIX$1.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new Addresses([
         'P2PKH',
         'P2SH',
         'P2WPKH',
         { P2WPKH_IN_P2SH: 'P2WPKH-In-P2SH' }
     ]);
-    static DEFAULT_ADDRESS = NIX.ADDRESSES.P2PKH;
+    static DEFAULT_ADDRESS = NIX$1.ADDRESSES.P2PKH;
     static SEMANTICS = ['p2pkh', 'p2sh', 'p2wpkh', 'p2wpkh-in-p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
@@ -21707,7 +21707,7 @@ class Testnet$2 extends Network {
     static MESSAGE_PREFIX = null;
     static WIF_PREFIX = 0xed;
 }
-class TWINS extends Cryptocurrency {
+class TWINS$1 extends Cryptocurrency {
     static NAME = 'TWINS';
     static SYMBOL = 'TWINS';
     static INFO = new Info({
@@ -21723,7 +21723,7 @@ class TWINS extends Cryptocurrency {
         MAINNET: Mainnet$l,
         TESTNET: Testnet$2
     });
-    static DEFAULT_NETWORK = TWINS.NETWORKS.MAINNET;
+    static DEFAULT_NETWORK = TWINS$1.NETWORKS.MAINNET;
     static ENTROPIES = new Entropies([
         'BIP39'
     ]);
@@ -21737,13 +21737,13 @@ class TWINS extends Cryptocurrency {
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = TWINS.HDS.BIP44;
-    static DEFAULT_PATH = `m/44'/${TWINS.COIN_TYPE}'/0'/0/0`;
+    static DEFAULT_HD = TWINS$1.HDS.BIP44;
+    static DEFAULT_PATH = `m/44'/${TWINS$1.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new Addresses([
         'P2PKH',
         'P2SH'
     ]);
-    static DEFAULT_ADDRESS = TWINS.ADDRESSES.P2PKH;
+    static DEFAULT_ADDRESS = TWINS$1.ADDRESSES.P2PKH;
     static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
@@ -22598,7 +22598,7 @@ class Mainnet$6 extends Network {
     static MESSAGE_PREFIX = null;
     static WIF_PREFIX = 0xd4;
 }
-class XUEZ extends Cryptocurrency {
+class XUEZ$1 extends Cryptocurrency {
     static NAME = 'XUEZ';
     static SYMBOL = 'XUEZ';
     static INFO = new Info({
@@ -22614,7 +22614,7 @@ class XUEZ extends Cryptocurrency {
     static NETWORKS = new Networks({
         MAINNET: Mainnet$6
     });
-    static DEFAULT_NETWORK = XUEZ.NETWORKS.MAINNET;
+    static DEFAULT_NETWORK = XUEZ$1.NETWORKS.MAINNET;
     static ENTROPIES = new Entropies([
         'BIP39'
     ]);
@@ -22628,13 +22628,13 @@ class XUEZ extends Cryptocurrency {
         'BIP32',
         'BIP44'
     ]);
-    static DEFAULT_HD = XUEZ.HDS.BIP44;
-    static DEFAULT_PATH = `m/44'/${XUEZ.COIN_TYPE}'/0'/0/0`;
+    static DEFAULT_HD = XUEZ$1.HDS.BIP44;
+    static DEFAULT_PATH = `m/44'/${XUEZ$1.COIN_TYPE}'/0'/0/0`;
     static ADDRESSES = new Addresses([
         'P2PKH',
         'P2SH'
     ]);
-    static DEFAULT_ADDRESS = XUEZ.ADDRESSES.P2PKH;
+    static DEFAULT_ADDRESS = XUEZ$1.ADDRESSES.P2PKH;
     static SEMANTICS = ['p2pkh', 'p2sh'];
     static DEFAULT_SEMANTIC = 'p2pkh';
 }
@@ -23068,7 +23068,7 @@ class CRYPTOCURRENCIES {
         [Einsteinium.NAME]: Einsteinium,
         [Elastos.NAME]: Elastos,
         [Energi.NAME]: Energi,
-        [EOS.NAME]: EOS,
+        [EOS$1.NAME]: EOS$1,
         [Ergo.NAME]: Ergo,
         [Ethereum.NAME]: Ethereum,
         [EuropeCoin.NAME]: EuropeCoin,
@@ -23080,7 +23080,7 @@ class CRYPTOCURRENCIES {
         [Filecoin.NAME]: Filecoin,
         [Firo.NAME]: Firo,
         [Firstcoin.NAME]: Firstcoin,
-        [FIX.NAME]: FIX,
+        [FIX$1.NAME]: FIX$1,
         [Flashcoin.NAME]: Flashcoin,
         [Flux.NAME]: Flux,
         [Foxdcoin.NAME]: Foxdcoin,
@@ -23135,7 +23135,7 @@ class CRYPTOCURRENCIES {
         [Neutron.NAME]: Neutron,
         [NewYorkCoin.NAME]: NewYorkCoin,
         [NineChronicles.NAME]: NineChronicles,
-        [NIX.NAME]: NIX,
+        [NIX$1.NAME]: NIX$1,
         [Novacoin.NAME]: Novacoin,
         [NuBits.NAME]: NuBits,
         [NuShares.NAME]: NuShares,
@@ -23189,7 +23189,7 @@ class CRYPTOCURRENCIES {
         [ThoughtAI.NAME]: ThoughtAI,
         [TOACoin.NAME]: TOACoin,
         [Tron.NAME]: Tron,
-        [TWINS.NAME]: TWINS,
+        [TWINS$1.NAME]: TWINS$1,
         [UltimateSecureCash.NAME]: UltimateSecureCash,
         [Unobtanium.NAME]: Unobtanium,
         [Vcash.NAME]: Vcash,
@@ -23204,7 +23204,7 @@ class CRYPTOCURRENCIES {
         [Whitecoin.NAME]: Whitecoin,
         [Wincoin.NAME]: Wincoin,
         [XinFin.NAME]: XinFin,
-        [XUEZ.NAME]: XUEZ,
+        [XUEZ$1.NAME]: XUEZ$1,
         [Ycash.NAME]: Ycash,
         [Zcash.NAME]: Zcash,
         [ZClassic.NAME]: ZClassic,
@@ -23310,7 +23310,7 @@ var cryptocurrencies = /*#__PURE__*/Object.freeze({
     Einsteinium: Einsteinium,
     Elastos: Elastos,
     Energi: Energi,
-    EOS: EOS,
+    EOS: EOS$1,
     Ergo: Ergo,
     Ethereum: Ethereum,
     EuropeCoin: EuropeCoin,
@@ -23322,7 +23322,7 @@ var cryptocurrencies = /*#__PURE__*/Object.freeze({
     Filecoin: Filecoin,
     Firo: Firo,
     Firstcoin: Firstcoin,
-    FIX: FIX,
+    FIX: FIX$1,
     Flashcoin: Flashcoin,
     Flux: Flux,
     Foxdcoin: Foxdcoin,
@@ -23377,7 +23377,7 @@ var cryptocurrencies = /*#__PURE__*/Object.freeze({
     Neutron: Neutron,
     NewYorkCoin: NewYorkCoin,
     NineChronicles: NineChronicles,
-    NIX: NIX,
+    NIX: NIX$1,
     Novacoin: Novacoin,
     NuBits: NuBits,
     NuShares: NuShares,
@@ -23431,7 +23431,7 @@ var cryptocurrencies = /*#__PURE__*/Object.freeze({
     ThoughtAI: ThoughtAI,
     TOACoin: TOACoin,
     Tron: Tron,
-    TWINS: TWINS,
+    TWINS: TWINS$1,
     UltimateSecureCash: UltimateSecureCash,
     Unobtanium: Unobtanium,
     Vcash: Vcash,
@@ -23446,13 +23446,652 @@ var cryptocurrencies = /*#__PURE__*/Object.freeze({
     Whitecoin: Whitecoin,
     Wincoin: Wincoin,
     XinFin: XinFin,
-    XUEZ: XUEZ,
+    XUEZ: XUEZ$1,
     Ycash: Ycash,
     Zcash: Zcash,
     ZClassic: ZClassic,
     Zetacoin: Zetacoin,
     Zilliqa: Zilliqa,
     ZooBC: ZooBC
+});
+
+// SPDX-License-Identifier: MIT
+// Adcoin
+const ACC = 'ACC';
+// Akash-Network
+const AKT = 'AKT';
+// Algorand
+const ALGO = 'ALGO';
+// Anon
+const ANON = 'ANON';
+// Aptos
+const APT = 'APT';
+// Arbitrum
+const ARB = 'ARB';
+// Argoneum
+const AGM = 'AGM';
+// Artax
+const XAX = 'XAX';
+// Aryacoin
+const AYA = 'AYA';
+// Asiacoin
+const AC = 'AC';
+// Auroracoin
+const AUR = 'AUR';
+// Avalanche
+const AVAX = 'AVAX';
+// Avian
+const AVN = 'AVN';
+// Axe
+const AXE = 'AXE';
+// Axelar
+const AXL = 'AXL';
+// Band-Protocol
+const BAND = 'BAND';
+// Base
+const BASE = 'BASE';
+// Bata
+const BTA = 'BTA';
+// Beetle Coin
+const BEET = 'BEET';
+// Bela Coin
+const BELA = 'BELA';
+// Binance
+const BNB = 'BNB';
+// Bit Cloud
+const BTDX = 'BTDX';
+// Bitcoin
+const BTC = 'BTC';
+// Bitcoin Atom
+const BCA = 'BCA';
+// Bitcoin-Cash
+const BCH = 'BCH';
+// Bitcoin-Cash-SLP
+const SLP = 'SLP';
+// Bitcoin Gold
+const BTG = 'BTG';
+// Bitcoin-Green
+const BITG = 'BITG';
+// Bitcoin Plus
+const XBC = 'XBC';
+// Bitcoin-Private
+const BTCP = 'BTCP';
+// Bitcoin SV
+const BSV = 'BSV';
+// BitcoinZ
+const BTCZ = 'BTCZ';
+// Bitcore
+const BTX = 'BTX';
+// Bit Send
+const BSD = 'BSD';
+// Blackcoin
+const BLK = 'BLK';
+// Blocknode
+const BND = 'BND';
+// Block Stamp
+const BST = 'BST';
+// Bolivarcoin
+const BOLI = 'BOLI';
+// Brit Coin
+const BRIT = 'BRIT';
+// Canada eCoin
+const CDN = 'CDN';
+// Cannacoin
+const CCN = 'CCN';
+// Cardano
+const ADA = 'ADA';
+// Celo
+const CELO = 'CELO';
+// Chihuahua
+const HUA = 'HUA';
+// Clams
+const CLAM = 'CLAM';
+// Club Coin
+const CLUB = 'CLUB';
+// Compcoin
+const CMP = 'CMP';
+// Cosmos
+const ATOM = 'ATOM';
+// CPU Chain
+const CPU = 'CPU';
+// Crane Pay
+const CRP = 'CRP';
+// Crave
+const CRAVE = 'CRAVE';
+// Dash
+const DASH = 'DASH';
+// DeepOnion
+const ONION = 'ONION';
+// Defcoin
+const DFC = 'DFC';
+// Denarius
+const DNR = 'DNR';
+// Diamond
+const DMD = 'DMD';
+// Digi Byte
+const DGB = 'DGB';
+// Digitalcoin
+const DGC = 'DGC';
+// Divi
+const DIVI = 'DIVI';
+// Dogecoin
+const DOGE = 'DOGE';
+// dYdX
+const DYDX = 'DYDX';
+// eCash
+const XEC = 'XEC';
+// E-coin
+const ECN = 'ECN';
+// EDR Coin
+const EDRC = 'EDRC';
+// e-Gulden
+const EFL = 'EFL';
+// Einsteinium
+const EMC2 = 'EMC2';
+// Elastos
+const ELA = 'ELA';
+// Energi
+const NRG = 'NRG';
+// EOS
+const EOS = 'EOS';
+// Ergo
+const ERG = 'ERG';
+// Ethereum
+const ETH = 'ETH';
+// Europe Coin
+const ERC = 'ERC';
+// Evrmore
+const EVR = 'EVR';
+// Exclusive Coin
+const EXCL = 'EXCL';
+// Fantom
+const FTM = 'FTM';
+// Feathercoin
+const FTC = 'FTC';
+// Fetch.ai
+const FET = 'FET';
+// Filecoin
+const FIL = 'FIL';
+// Firo
+const FIRO = 'FIRO';
+// Firstcoin
+const FRST = 'FRST';
+// FIX
+const FIX = 'FIX';
+// Flashcoin
+const FLASH = 'FLASH';
+// Flux
+const FLUX = 'FLUX';
+// Foxdcoin
+const FOXD = 'FOXD';
+// Fuji Coin
+const FJC = 'FJC';
+// Game Credits
+const GAME = 'GAME';
+// GCR Coin
+const GCR = 'GCR';
+// Go Byte
+const GBX = 'GBX';
+// Gridcoin
+const GRC = 'GRC';
+// Groestl Coin
+const GRS = 'GRS';
+// Gulden
+const NLG = 'NLG';
+// Harmony
+const ONE = 'ONE';
+// Helleniccoin
+const HNC = 'HNC';
+// Hempcoin
+const THC = 'THC';
+// Horizen
+const ZEN = 'ZEN';
+// Huobi Token
+const HT = 'HT';
+// Hush
+const HUSH = 'HUSH';
+// ICON
+const ICX = 'ICX';
+// Injective
+const INJ = 'INJ';
+// InsaneCoin
+const INSN = 'INSN';
+// Internet Of People
+const IOP = 'IOP';
+// IRISnet
+const IRIS = 'IRIS';
+// IX Coin
+const IXC = 'IXC';
+// Jumbucks
+const JBS = 'JBS';
+// Kava
+const KAVA = 'KAVA';
+// Kobocoin
+const KOBO = 'KOBO';
+// Komodo
+const KMD = 'KMD';
+// Landcoin
+const LDCN = 'LDCN';
+// LBRY Credits
+const LBC = 'LBC';
+// Linx
+const LINX = 'LINX';
+// Litecoin
+const LTC = 'LTC';
+// Litecoin Cash
+const LCC = 'LCC';
+// LitecoinZ
+const LTZ = 'LTZ';
+// Lkrcoin
+const LKR = 'LKR';
+// Lynx
+const LYNX = 'LYNX';
+// Mazacoin
+const MZC = 'MZC';
+// Megacoin
+const MEC = 'MEC';
+// Metis
+const METIS = 'METIS';
+// Minexcoin
+const MNX = 'MNX';
+// Monacoin
+const MONA = 'MONA';
+// Monero
+const XMR = 'XMR';
+// Monk
+const MONK = 'MONK';
+// MultiversX
+const EGLD = 'EGLD';
+// Myriadcoin
+const XMY = 'XMY';
+// Namecoin
+const NMC = 'NMC';
+// Nano
+const XNO = 'XNO';
+// Navcoin
+const NAV = 'NAV';
+// Near
+const NEAR = 'NEAR';
+// Neblio
+const NEBL = 'NEBL';
+// Neo
+const NEO = 'NEO';
+// Neoscoin
+const NEOS = 'NEOS';
+// Neurocoin
+const NRO = 'NRO';
+// Neutron
+const NTRN = 'NTRN';
+// New York Coin
+const NYC = 'NYC';
+// Nine-Chronicles
+const NCG = 'NCG';
+// NIX
+const NIX = 'NIX';
+// Novacoin
+const NVC = 'NVC';
+// NuBits
+const NBT = 'NBT';
+// NuShares
+const NSR = 'NSR';
+// OK Cash
+const OK = 'OK';
+// OKT-Chain
+const OKT = 'OKT';
+// Omni
+const OMNI = 'OMNI';
+// Onix
+const ONX = 'ONX';
+// Ontology
+const ONT = 'ONT';
+// Optimism
+const OP = 'OP';
+// Osmosis
+const OSMO = 'OSMO';
+// Particl
+const PART = 'PART';
+// Peercoin
+const PPC = 'PPC';
+// Pesobit
+const PSB = 'PSB';
+// Phore
+const PHR = 'PHR';
+// Pi-Network
+const PI = 'PI';
+// Pinkcoin
+const PINK = 'PINK';
+// Pivx
+const PIVX = 'PIVX';
+// Polygon
+const MATIC = 'MATIC';
+// PoSW Coin
+const POSW = 'POSW';
+// Potcoin
+const POT = 'POT';
+// Project Coin
+const PRJ = 'PRJ';
+// Putincoin
+const PUT = 'PUT';
+// Qtum
+const QTUM = 'QTUM';
+// Rapids
+const RPD = 'RPD';
+// Ravencoin
+const RVN = 'RVN';
+// Reddcoin
+const RDD = 'RDD';
+// Ripple
+const XRP = 'XRP';
+// Ritocoin
+const RITO = 'RITO';
+// RSK
+const RBTC = 'RBTC';
+// Rubycoin
+const RBY = 'RBY';
+// Safecoin
+const SAFE = 'SAFE';
+// Saluscoin
+const SLS = 'SLS';
+// Scribe
+const SCRIBE = 'SCRIBE';
+// Secret
+const SCRT = 'SCRT';
+// Shadow Cash
+const SDC = 'SDC';
+// Shentu
+const CTK = 'CTK';
+// Slimcoin
+const SLM = 'SLM';
+// Smileycoin
+const SMLY = 'SMLY';
+// Solana
+const SOL = 'SOL';
+// Solarcoin
+const SLR = 'SLR';
+// Stafi
+const FIS = 'FIS';
+// Stash
+const STASH = 'STASH';
+// Stellar
+const XLM = 'XLM';
+// Stratis
+const STRAT = 'STRAT';
+// Sugarchain
+const SUGAR = 'SUGAR';
+// Sui
+const SUI = 'SUI';
+// Syscoin
+const SYS = 'SYS';
+// Terra
+const LUNA = 'LUNA';
+// Tezos
+const XTZ = 'XTZ';
+// Theta
+const THETA = 'THETA';
+// Thought AI
+const THT = 'THT';
+// TOA Coin
+const TOA = 'TOA';
+// Tron
+const TRX = 'TRX';
+// TWINS
+const TWINS = 'TWINS';
+// Ultimate Secure Cash
+const USC = 'USC';
+// Unobtanium
+const UNO = 'UNO';
+// Vcash
+const VC = 'VC';
+// VeChain
+const VET = 'VET';
+// Verge
+const XVG = 'XVG';
+// Vertcoin
+const VTC = 'VTC';
+// Viacoin
+const VIA = 'VIA';
+// Vivo
+const VIVO = 'VIVO';
+// Voxels
+const VOX = 'VOX';
+// Virtual Cash
+const VASH = 'VASH';
+// Wagerr
+const WGR = 'WGR';
+// Whitecoin
+const XWC = 'XWC';
+// Wincoin
+const WC = 'WC';
+// XinFin
+const XDC = 'XDC';
+// XUEZ
+const XUEZ = 'XUEZ';
+// Ycash
+const YEC = 'YEC';
+// Zcash
+const ZEC = 'ZEC';
+// ZClassic
+const ZCL = 'ZCL';
+// Zetacoin
+const ZET = 'ZET';
+// Zilliqa
+const ZIL = 'ZIL';
+// ZooBC
+const ZBC = 'ZBC';
+
+var symbols = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    ACC: ACC,
+    AKT: AKT,
+    ALGO: ALGO,
+    ANON: ANON,
+    APT: APT,
+    ARB: ARB,
+    AGM: AGM,
+    XAX: XAX,
+    AYA: AYA,
+    AC: AC,
+    AUR: AUR,
+    AVAX: AVAX,
+    AVN: AVN,
+    AXE: AXE,
+    AXL: AXL,
+    BAND: BAND,
+    BASE: BASE,
+    BTA: BTA,
+    BEET: BEET,
+    BELA: BELA,
+    BNB: BNB,
+    BTDX: BTDX,
+    BTC: BTC,
+    BCA: BCA,
+    BCH: BCH,
+    SLP: SLP,
+    BTG: BTG,
+    BITG: BITG,
+    XBC: XBC,
+    BTCP: BTCP,
+    BSV: BSV,
+    BTCZ: BTCZ,
+    BTX: BTX,
+    BSD: BSD,
+    BLK: BLK,
+    BND: BND,
+    BST: BST,
+    BOLI: BOLI,
+    BRIT: BRIT,
+    CDN: CDN,
+    CCN: CCN,
+    ADA: ADA,
+    CELO: CELO,
+    HUA: HUA,
+    CLAM: CLAM,
+    CLUB: CLUB,
+    CMP: CMP,
+    ATOM: ATOM,
+    CPU: CPU,
+    CRP: CRP,
+    CRAVE: CRAVE,
+    DASH: DASH,
+    ONION: ONION,
+    DFC: DFC,
+    DNR: DNR,
+    DMD: DMD,
+    DGB: DGB,
+    DGC: DGC,
+    DIVI: DIVI,
+    DOGE: DOGE,
+    DYDX: DYDX,
+    XEC: XEC,
+    ECN: ECN,
+    EDRC: EDRC,
+    EFL: EFL,
+    EMC2: EMC2,
+    ELA: ELA,
+    NRG: NRG,
+    EOS: EOS,
+    ERG: ERG,
+    ETH: ETH,
+    ERC: ERC,
+    EVR: EVR,
+    EXCL: EXCL,
+    FTM: FTM,
+    FTC: FTC,
+    FET: FET,
+    FIL: FIL,
+    FIRO: FIRO,
+    FRST: FRST,
+    FIX: FIX,
+    FLASH: FLASH,
+    FLUX: FLUX,
+    FOXD: FOXD,
+    FJC: FJC,
+    GAME: GAME,
+    GCR: GCR,
+    GBX: GBX,
+    GRC: GRC,
+    GRS: GRS,
+    NLG: NLG,
+    ONE: ONE,
+    HNC: HNC,
+    THC: THC,
+    ZEN: ZEN,
+    HT: HT,
+    HUSH: HUSH,
+    ICX: ICX,
+    INJ: INJ,
+    INSN: INSN,
+    IOP: IOP,
+    IRIS: IRIS,
+    IXC: IXC,
+    JBS: JBS,
+    KAVA: KAVA,
+    KOBO: KOBO,
+    KMD: KMD,
+    LDCN: LDCN,
+    LBC: LBC,
+    LINX: LINX,
+    LTC: LTC,
+    LCC: LCC,
+    LTZ: LTZ,
+    LKR: LKR,
+    LYNX: LYNX,
+    MZC: MZC,
+    MEC: MEC,
+    METIS: METIS,
+    MNX: MNX,
+    MONA: MONA,
+    XMR: XMR,
+    MONK: MONK,
+    EGLD: EGLD,
+    XMY: XMY,
+    NMC: NMC,
+    XNO: XNO,
+    NAV: NAV,
+    NEAR: NEAR,
+    NEBL: NEBL,
+    NEO: NEO,
+    NEOS: NEOS,
+    NRO: NRO,
+    NTRN: NTRN,
+    NYC: NYC,
+    NCG: NCG,
+    NIX: NIX,
+    NVC: NVC,
+    NBT: NBT,
+    NSR: NSR,
+    OK: OK,
+    OKT: OKT,
+    OMNI: OMNI,
+    ONX: ONX,
+    ONT: ONT,
+    OP: OP,
+    OSMO: OSMO,
+    PART: PART,
+    PPC: PPC,
+    PSB: PSB,
+    PHR: PHR,
+    PI: PI,
+    PINK: PINK,
+    PIVX: PIVX,
+    MATIC: MATIC,
+    POSW: POSW,
+    POT: POT,
+    PRJ: PRJ,
+    PUT: PUT,
+    QTUM: QTUM,
+    RPD: RPD,
+    RVN: RVN,
+    RDD: RDD,
+    XRP: XRP,
+    RITO: RITO,
+    RBTC: RBTC,
+    RBY: RBY,
+    SAFE: SAFE,
+    SLS: SLS,
+    SCRIBE: SCRIBE,
+    SCRT: SCRT,
+    SDC: SDC,
+    CTK: CTK,
+    SLM: SLM,
+    SMLY: SMLY,
+    SOL: SOL,
+    SLR: SLR,
+    FIS: FIS,
+    STASH: STASH,
+    XLM: XLM,
+    STRAT: STRAT,
+    SUGAR: SUGAR,
+    SUI: SUI,
+    SYS: SYS,
+    LUNA: LUNA,
+    XTZ: XTZ,
+    THETA: THETA,
+    THT: THT,
+    TOA: TOA,
+    TRX: TRX,
+    TWINS: TWINS,
+    USC: USC,
+    UNO: UNO,
+    VC: VC,
+    VET: VET,
+    XVG: XVG,
+    VTC: VTC,
+    VIA: VIA,
+    VIVO: VIVO,
+    VOX: VOX,
+    VASH: VASH,
+    WGR: WGR,
+    XWC: XWC,
+    WC: WC,
+    XDC: XDC,
+    XUEZ: XUEZ,
+    YEC: YEC,
+    ZEC: ZEC,
+    ZCL: ZCL,
+    ZET: ZET,
+    ZIL: ZIL,
+    ZBC: ZBC
 });
 
 // SPDX-License-Identifier: MIT
@@ -79827,8 +80466,8 @@ class AvalancheAddress extends Address {
 
 // SPDX-License-Identifier: MIT
 class EOSAddress extends Address {
-    static addressPrefix = EOS.PARAMS.ADDRESS_PREFIX;
-    static checksumLength = EOS.PARAMS.CHECKSUM_LENGTH;
+    static addressPrefix = EOS$1.PARAMS.ADDRESS_PREFIX;
+    static checksumLength = EOS$1.PARAMS.CHECKSUM_LENGTH;
     static getName() {
         return 'EOS';
     }
@@ -83700,6 +84339,7 @@ const hdwallet = {
     crypto: crypto$1,
     utils,
     cryptocurrencies,
+    symbols,
     entropies,
     mnemonics,
     seeds,
@@ -83710,5 +84350,5 @@ const hdwallet = {
     HDWallet
 };
 
-export { HDWallet, addresses, consts, crypto$1 as crypto, cryptocurrencies, derivations, eccs, entropies, hds, hdwallet, info, mnemonics, seeds, utils };
+export { HDWallet, addresses, consts, crypto$1 as crypto, cryptocurrencies, derivations, eccs, entropies, hds, hdwallet, info, mnemonics, seeds, symbols, utils };
 //# sourceMappingURL=hdwallet.js.map

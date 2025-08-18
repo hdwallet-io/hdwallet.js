@@ -4,6 +4,7 @@ import * as consts from './consts';
 import * as crypto from './crypto';
 import * as utils from './utils';
 import * as cryptocurrencies from './cryptocurrencies';
+import * as symbols from './symbols';
 import * as entropies from './entropies';
 import * as mnemonics from './mnemonics';
 import * as seeds from './seeds';
@@ -18,6 +19,7 @@ const hdwallet = {
     crypto,
     utils,
     cryptocurrencies,
+    symbols,
     entropies,
     mnemonics,
     seeds,
@@ -27,5 +29,5 @@ const hdwallet = {
     addresses,
     HDWallet
 };
-export { hdwallet, info, consts, crypto, utils, cryptocurrencies, entropies, mnemonics, seeds, eccs, derivations, hds, addresses, HDWallet };
+export { hdwallet, info, consts, crypto, utils, cryptocurrencies, symbols, entropies, mnemonics, seeds, eccs, derivations, hds, addresses, HDWallet };
 //# sourceMappingURL=index.js.map
