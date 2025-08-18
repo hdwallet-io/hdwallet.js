@@ -7,6 +7,7 @@ import * as crypto from './crypto';
 import * as utils from './utils';
 
 import * as cryptocurrencies from './cryptocurrencies';
+import * as symbols from './symbols';
 
 import * as entropies from './entropies';
 import * as mnemonics from './mnemonics';
@@ -25,6 +26,7 @@ const hdwallet = {
   crypto,
   utils,
   cryptocurrencies,
+  symbols,
   entropies,
   mnemonics,
   seeds,
@@ -42,6 +44,7 @@ export {
   crypto,
   utils,
   cryptocurrencies,
+  symbols,
   entropies,
   mnemonics,
   seeds,
