@@ -61,9 +61,9 @@
       "import": "./lib.esm/keys.js",
       "default": "./lib.cjs/keys.js"
     },
-    "./slip49": {
-      "import": "./lib.esm/slip49.js",
-      "default": "./lib.cjs/slip49.js"
+    "./slip44": {
+      "import": "./lib.esm/slip44.js",
+      "default": "./lib.cjs/slip44.js"
     },
     "./utils": {
       "import": "./lib.esm/utils.js",
