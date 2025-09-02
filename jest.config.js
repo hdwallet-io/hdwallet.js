@@ -3,9 +3,9 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-    '^.+\\.jsx?$': 'ts-jest',
+    '^.+\\.tsx?$': ["ts-jest", { tsconfig: "tsconfig.test.json" }],
+    '^.+\\.jsx?$': ["ts-jest", { tsconfig: "tsconfig.test.json" }],
   },
 
-  transformIgnorePatterns: [],
+  transformIgnorePatterns: ["/node_modules/"]
 };
