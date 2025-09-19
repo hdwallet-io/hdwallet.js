@@ -103,10 +103,33 @@
     "lib.cjs/"
   ],
   "keywords": [
-    "ecc", "kholaw", "slip10", "ed25519", "nist256p1", "secp256k1",
-    "hd", "bip32", "bip44", "bip49", "bip84", "bip86", "bip141", "monero", "cardano",
-    "entropy", "mnemonic", "seed", "bip39", "algorand", "electrum",
-    "cryptocurrencies", "bitcoin", "ethereum", "cryptography", "cli", "cip1852"
+    "ecc",
+    "kholaw",
+    "slip10",
+    "ed25519",
+    "nist256p1",
+    "secp256k1",
+    "hd",
+    "bip32",
+    "bip44",
+    "bip49",
+    "bip84",
+    "bip86",
+    "bip141",
+    "monero",
+    "cardano",
+    "entropy",
+    "mnemonic",
+    "seed",
+    "bip39",
+    "algorand",
+    "electrum",
+    "cryptocurrencies",
+    "bitcoin",
+    "ethereum",
+    "cryptography",
+    "cli",
+    "cip1852"
   ],
   "repository": {
     "type": "git",
@@ -136,6 +159,7 @@
     "base32.js": "^0.1.0",
     "cbor2": "^2.0.1",
     "crc": "^4.3.2",
+    "jsdoc": "^4.0.4",
     "tslib": "^2.8.1",
     "tweetnacl-blake2b": "^1.0.1"
   }
