@@ -1,15 +1,16 @@
 # Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
-
+import sys
 import os
 import re
 import datetime
 from pathlib import Path
+import shutil
+
+# -- Project information -----------------------------------------------------
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 _TS_INFO = _REPO_ROOT / "src" / "info.ts"
@@ -18,7 +19,6 @@ def _parse_ts_exports(ts_path: Path) -> dict:
     if not ts_path.exists():
         return {}
     txt = ts_path.read_text(encoding="utf-8")
-    # strip full-line // comments (good enough for your file style)
     txt = "\n".join(("" if re.match(r"^\s*//", ln) else ln) for ln in txt.splitlines())
     pat = re.compile(r"export\s+const\s+(__\w+__)\s*:\s*[^=]+=\s*(.+?);")
     out = {}
@@ -45,17 +45,43 @@ copyright = f"2020-{datetime.datetime.now().year}, {author}"
 master_doc = "toctree"
 
 # -- General configuration ---------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    "sphinx.ext.autodoc",
+    "sphinx_click.ext",
+    "sphinx_ext",
+    "sphinx_js",
+]
 
 templates_path = ['_templates']
 exclude_patterns = []
 
+# -- JS/TS source settings for sphinx-js -----------------------------------
 
+# Path to JS/TS files relative to docs/conf.py
+js_source_path = "../src"
+
+# Enable recursion into subfolders
+jsdoc_config_path = "../jsdoc.json"  # Make sure this exists
+
+
+
+# Explicitly set Node executable on Windows
+js_node_executable = shutil.which("node") or r"C:\Program Files\nodejs\node.exe"
+
+# Ensure npm global bin is in PATH for jsdoc
+npm_global_bin = os.path.expandvars(r"%APPDATA%\npm")
+os.environ["PATH"] += os.pathsep + npm_global_bin
 
 # -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'furo'
+html_logo = "_static/svg/hdwallet-logo.svg"
+html_title = _ts.get("__version__")
 html_static_path = ['_static', '_static/css', '_static/svg']
+
+autodoc_member_order = "bysource"
+
+# Sphinx docs setup
+def setup(sphinx):
+    sphinx.add_css_file("css/hdwallet.css")

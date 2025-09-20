@@ -7,8 +7,7 @@ HDWallet
 
     Overview <index.rst>
     installation.rst
-..     cli.rst
-..     Supported Cryptocurrencies <cryptocurrencies.rst>
+    Supported Cryptocurrencies <cryptocurrencies.rst>
 
 .. .. toctree::
 ..     :maxdepth: 3

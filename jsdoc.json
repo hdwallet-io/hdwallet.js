@@ -1,0 +1,12 @@
+{
+  "plugins": ["plugins/typescript"],
+  "source": {
+    "include": ["../src"],
+    "includePattern": ".+\\.ts$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "opts": {
+    "recurse": true,
+    "destination": "./out"
+  }
+}
