@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["./src"],
+  "tsconfig": "../tsconfig.base.json",
+  "out": "typedoc-output",
+  "name": "HDWallet",
+  "includeVersion": true,
+  "exclude": ["node_modules", "**/*.test.ts"],
+  "excludeInternal": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "readme": "none"
+}

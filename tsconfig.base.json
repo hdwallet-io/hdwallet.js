@@ -13,7 +13,8 @@
     "resolveJsonModule": true,
     "importHelpers": true,
     "sourceMap": true,
-    "target": "es2022"
+    "target": "es2022",
+    "moduleResolution": "Node"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "src/**/*.ts"]
 }

@@ -9,11 +9,11 @@ HDWallet
     installation.rst
     Supported Cryptocurrencies <cryptocurrencies.rst>
 
-.. .. toctree::
-..     :maxdepth: 3
-..     :caption: API's
+.. toctree::
+    :maxdepth: 3
+    :caption: API's
 
-..     Entropies <entropies.rst>
+    Entropies <entropies.rst>
 ..     Mnemonics <mnemonics.rst>
 ..     Seeds <seeds.rst>
 ..     Derivations <derivations.rst>

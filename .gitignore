@@ -16,6 +16,9 @@ x/
 .idea/**/dictionaries
 .idea/**/shelf
 
+__pycache__
+
+
 # AWS User-specific
 .idea/**/aws.xml
 

@@ -47,10 +47,10 @@ master_doc = "toctree"
 # -- General configuration ---------------------------------------------------
 
 extensions = [
+    "sphinx_js",
     "sphinx.ext.autodoc",
     "sphinx_click.ext",
     "sphinx_ext",
-    "sphinx_js",
 ]
 
 templates_path = ['_templates']
@@ -59,15 +59,17 @@ exclude_patterns = []
 # -- JS/TS source settings for sphinx-js -----------------------------------
 
 # Path to JS/TS files relative to docs/conf.py
-js_source_path = "../src"
+js_source_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 
 # Enable recursion into subfolders
-jsdoc_config_path = "../jsdoc.json"  # Make sure this exists
+jsdoc_config_path = "typedoc.json"  # Make sure this exists
+
+js_language = 'typescript'
 
 
 
 # Explicitly set Node executable on Windows
-js_node_executable = shutil.which("node") or r"C:\Program Files\nodejs\node.exe"
+js_node_executable = r"C:\path\from\where\node.exe" 
 
 # Ensure npm global bin is in PATH for jsdoc
 npm_global_bin = os.path.expandvars(r"%APPDATA%\npm")
