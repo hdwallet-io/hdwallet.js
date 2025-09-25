@@ -118,3 +118,81 @@ ENTROPIES
    // Output: 'Monero'
 
 
+.. js:autoclass:: electrum/v1.ElectrumV1Entropy
+   :members:
+
+   >>> const { ENTROPIES, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
+   >>> ENTROPIES.names()
+   console.log('>>> ENTROPIES.names()');
+   console.log(ENTROPIES.getNames());
+   // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
+   >>> ENTROPIES.classes()
+   console.log('\n>>> ENTROPIES.classes()');
+   console.log(ENTROPIES.getClasses());
+   // Output: [ [class AlgorandEntropy], [class BIP39Entropy], [class ElectrumV1Entropy], ... ]
+   >>> ENTROPIES.getEntropyClass("Electrum-V1")
+   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V1")');
+   console.log(ENTROPIES.getEntropyClass("Electrum-V1"));
+   // Output: [class ElectrumV1Entropy]
+   >>> ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy
+   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy');
+   console.log(ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy);
+   // Output: true
+   >>> ENTROPIES.isEntropy("Electrum-V1")
+   console.log('\n>>> ENTROPIES.isEntropy("Electrum-V1")');
+   console.log(ENTROPIES.isEntropy("Electrum-V1"));
+   // Output: true
+   >>> ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+   console.log('\n>>> ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT');
+   console.log(ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT);
+   // Output: 128
+   >>> ElectrumV1Entropy.strengths
+   console.log('\n>>> ElectrumV1Entropy.strengths');
+   console.log(ElectrumV1Entropy.strengths);
+   // Output: [128]
+   >>> ElectrumV1Entropy.getName()
+   console.log('\n>>> ElectrumV1Entropy.getName()');
+   console.log(ElectrumV1Entropy.getName());
+   // Output: 'Electrum-V1'
+
+
+.. js:autoclass:: electrum/v2.ElectrumV2Entropy
+   :members:
+
+   >>> const { ENTROPIES, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
+   >>> ENTROPIES.names()
+   console.log('>>> ENTROPIES.names()');
+   console.log(ENTROPIES.getNames());
+   // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
+   >>> ENTROPIES.classes()
+   console.log('\n>>> ENTROPIES.classes()');
+   console.log(ENTROPIES.getClasses());
+   // Output: [ [class AlgorandEntropy], [class BIP39Entropy], [class ElectrumV1Entropy], [class ElectrumV2Entropy], ... ]
+   >>> ENTROPIES.getEntropyClass("Electrum-V2")
+   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V2")');
+   console.log(ENTROPIES.getEntropyClass("Electrum-V2"));
+   // Output: [class ElectrumV2Entropy]
+   >>> ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy
+   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy');
+   console.log(ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy);
+   // Output: true
+   >>> ENTROPIES.isEntropy("Electrum-V2")
+   console.log('\n>>> ENTROPIES.isEntropy("Electrum-V2")');
+   console.log(ENTROPIES.isEntropy("Electrum-V2"));
+   // Output: true
+   >>> ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
+   console.log('\n>>> ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO');
+   console.log(ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO);
+   // Output: 132
+   >>> ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
+   console.log('\n>>> ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR');
+   console.log(ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR);
+   // Output: 264
+   >>> ElectrumV2Entropy.strengths
+   console.log('\n>>> ElectrumV2Entropy.strengths');
+   console.log(ElectrumV2Entropy.strengths);
+   // Output: [132, 264]
+   >>> ElectrumV2Entropy.getName()
+   console.log('\n>>> ElectrumV2Entropy.getName()');
+   console.log(ElectrumV2Entropy.getName());
+   // Output: 'Electrum-V2'
