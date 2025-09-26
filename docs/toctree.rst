@@ -14,7 +14,7 @@ HDWallet
     :caption: API's
 
     Entropies <entropies.rst>
-..     Mnemonics <mnemonics.rst>
+    Mnemonics <mnemonics.rst>
 ..     Seeds <seeds.rst>
 ..     Derivations <derivations.rst>
 ..     ECCs <eccs.rst>
