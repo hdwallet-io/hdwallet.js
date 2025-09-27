@@ -52,3 +52,36 @@ MNEMONICS
    console.log('\n>>> ALGORAND_MNEMONIC_STRENGTHS.TWENTY_FIVE');
    console.log(ALGORAND_MNEMONIC_STRENGTHS.TWENTY_FIVE);
    // Output: 25
+
+.. js:autoclass:: bip39/mnemonic.BIP39Mnemonic
+   :members:
+
+    >>> const { MNEMONICS, BIP39Mnemonic, BIP39_MNEMONIC_STRENGTHS } = await import('./src/mnemonics/index.js');
+    >>> MNEMONICS.names()
+    console.log('>>> MNEMONICS.names()');
+    console.log(MNEMONICS.getNames());
+    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
+    >>> MNEMONICS.classes()
+    console.log('\n>>> MNEMONICS.classes()');
+    console.log(MNEMONICS.getClasses());
+    // Output: [ [class AlgorandMnemonic], [class BIP39Mnemonic], ... ]
+    >>> MNEMONICS.getMnemonicClass("BIP39")
+    console.log('\n>>> MNEMONICS.getMnemonicClass("BIP39")');
+    console.log(MNEMONICS.getMnemonicClass("BIP39"));
+    // Output: [class BIP39Mnemonic]
+    >>> MNEMONICS.getMnemonicClass("BIP39") === BIP39Mnemonic
+    console.log('\n>>> MNEMONICS.getMnemonicClass("BIP39") === BIP39Mnemonic');
+    console.log(MNEMONICS.getMnemonicClass("BIP39") === BIP39Mnemonic);
+    // Output: true
+    >>> MNEMONICS.isMnemonic("BIP39")
+    console.log('\n>>> MNEMONICS.isMnemonic("BIP39")');
+    console.log(MNEMONICS.isMnemonic("BIP39"));
+    // Output: true
+    >>> BIP39_MNEMONIC_STRENGTHS.TWELVE
+    console.log('\n>>> BIP39_MNEMONIC_STRENGTHS.TWELVE');
+    console.log(BIP39_MNEMONIC_STRENGTHS.TWELVE);
+    // Output: 12
+    >>> BIP39_MNEMONIC_STRENGTHS.TWENTY_FOUR
+    console.log('\n>>> BIP39_MNEMONIC_STRENGTHS.TWENTY_FOUR');
+    console.log(BIP39_MNEMONIC_STRENGTHS.TWENTY_FOUR);
+    // Output: 24
