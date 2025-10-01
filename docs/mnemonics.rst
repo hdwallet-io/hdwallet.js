@@ -85,3 +85,113 @@ MNEMONICS
     console.log('\n>>> BIP39_MNEMONIC_STRENGTHS.TWENTY_FOUR');
     console.log(BIP39_MNEMONIC_STRENGTHS.TWENTY_FOUR);
     // Output: 24
+
+.. js:autoclass:: electrum/v1/mnemonic.ElectrumV1Mnemonic
+   :members:
+
+   >>> const { MNEMONICS, ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES } = await import('./src/mnemonics/index.js');
+   >>> MNEMONICS.names()
+   console.log('>>> MNEMONICS.names()');
+   console.log(MNEMONICS.getNames());
+   // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
+   >>> MNEMONICS.classes()
+   console.log('\n>>> MNEMONICS.classes()');
+   console.log(MNEMONICS.getClasses());
+   // Output: [ [class AlgorandMnemonic], [class BIP39Mnemonic], [class ElectrumV1Mnemonic], ... ]
+   >>> MNEMONICS.getMnemonicClass("Electrum-V1")
+   console.log('\n>>> MNEMONICS.getMnemonicClass("Electrum-V1")');
+   console.log(MNEMONICS.getMnemonicClass("Electrum-V1"));
+   // Output: [class ElectrumV1Mnemonic]
+   >>> MNEMONICS.getMnemonicClass("Electrum-V1") === ElectrumV1Mnemonic
+   console.log('\n>>> MNEMONICS.getMnemonicClass("Electrum-V1") === ElectrumV1Mnemonic');
+   console.log(MNEMONICS.getMnemonicClass("Electrum-V1") === ElectrumV1Mnemonic);
+   // Output: true
+   >>> MNEMONICS.isMnemonic("Electrum-V1")
+   console.log('\n>>> MNEMONICS.isMnemonic("Electrum-V1")');
+   console.log(MNEMONICS.isMnemonic("Electrum-V1"));
+   // Output: true
+   >>> ELECTRUM_V1_MNEMONIC_WORDS.TWELVE
+   console.log('\n>>> ELECTRUM_V1_MNEMONIC_WORDS.TWELVE');
+   console.log(ELECTRUM_V1_MNEMONIC_WORDS.TWELVE);
+   // Output: 12
+   >>> ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH
+   console.log('\n>>> ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH');
+   console.log(ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH);
+   // Output: 'english'
+
+
+.. js:autoclass:: electrum/v2/mnemonic.ElectrumV2Mnemonic
+   :members:
+
+    >>> const { MNEMONICS, ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES } = await import('./src/mnemonics/index.js');
+    >>> MNEMONICS.names()
+    console.log('>>> MNEMONICS.names()');
+    console.log(MNEMONICS.getNames());
+    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
+    >>> MNEMONICS.classes()
+    console.log('\n>>> MNEMONICS.classes()');
+    console.log(MNEMONICS.getClasses());
+    // Output: [ [class AlgorandMnemonic], [class BIP39Mnemonic], [class ElectrumV1Mnemonic], [class ElectrumV2Mnemonic], [class MoneroMnemonic] ]
+    >>> MNEMONICS.getMnemonicClass("Electrum-V2")
+    console.log('\n>>> MNEMONICS.getMnemonicClass("Electrum-V2")');
+    console.log(MNEMONICS.getMnemonicClass("Electrum-V2"));
+    // Output: [class ElectrumV2Mnemonic]
+    >>> MNEMONICS.getMnemonicClass("Electrum-V2") === ElectrumV2Mnemonic
+    console.log('\n>>> MNEMONICS.getMnemonicClass("Electrum-V2") === ElectrumV2Mnemonic');
+    console.log(MNEMONICS.getMnemonicClass("Electrum-V2") === ElectrumV2Mnemonic);
+    // Output: true
+    >>> MNEMONICS.isMnemonic("Electrum-V2")
+    console.log('\n>>> MNEMONICS.isMnemonic("Electrum-V2")');
+    console.log(MNEMONICS.isMnemonic("Electrum-V2"));
+    // Output: true
+    >>> ELECTRUM_V2_MNEMONIC_WORDS.TWELVE
+    console.log('\n>>> ELECTRUM_V2_MNEMONIC_WORDS.TWELVE');
+    console.log(ELECTRUM_V2_MNEMONIC_WORDS.TWELVE);
+    // Output: 12
+    >>> ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR
+    console.log('\n>>> ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR');
+    console.log(ELECTRUM_V2_MNEMONIC_WORDS.TWENTY_FOUR);
+    // Output: 24
+    >>> ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH
+    console.log('\n>>> ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH');
+    console.log(ELECTRUM_V2_MNEMONIC_LANGUAGES.ENGLISH);
+    // Output: 'english'
+    >>> ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT
+    console.log('\n>>> ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT');
+    console.log(ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT);
+    // Output: 'segwit'
+
+.. js:autoclass:: monero/mnemonic.MoneroMnemonic
+   :members:
+
+    >>> const { MNEMONICS, MoneroMnemonic, MONERO_MNEMONIC_STRENGTHS } = await import('./src/mnemonics/index.js');
+    >>> MNEMONICS.names()
+    console.log('>>> MNEMONICS.names()');
+    console.log(MNEMONICS.getNames());
+    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
+    >>> MNEMONICS.classes()
+    console.log('\n>>> MNEMONICS.classes()');
+    console.log(MNEMONICS.getClasses());
+    // Output: [ [class AlgorandMnemonic], [class BIP39Mnemonic], ... ]
+    >>> MNEMONICS.getMnemonicClass("Monero")
+    console.log('\n>>> MNEMONICS.getMnemonicClass("Monero")');
+    console.log(MNEMONICS.getMnemonicClass("Monero"));
+    // Output: [class MoneroMnemonic]
+    >>> MNEMONICS.getMnemonicClass("Monero") === MoneroMnemonic
+    console.log('\n>>> MNEMONICS.getMnemonicClass("Monero") === MoneroMnemonic');
+    console.log(MNEMONICS.getMnemonicClass("Monero") === MoneroMnemonic);
+    // Output: true
+    >>> MNEMONICS.isMnemonic("Monero")
+    console.log('\n>>> MNEMONICS.isMnemonic("Monero")');
+    console.log(MNEMONICS.isMnemonic("Monero"));
+    // Output: true
+    >>> MONERO_MNEMONIC_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+    console.log('\n>>> MONERO_MNEMONIC_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT');
+    console.log(MONERO_MNEMONIC_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT);
+    // Output: 128
+    >>> MONERO_MNEMONIC_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
+    console.log('\n>>> MONERO_MNEMONIC_STRENGTHS.TWO_HUNDRED_FIFTY_SIX');
+    console.log(MONERO_MNEMONIC_STRENGTHS.TWO_HUNDRED_FIFTY_SIX);
+    // Output: 256
+
+

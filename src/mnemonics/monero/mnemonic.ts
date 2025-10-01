@@ -43,6 +43,13 @@ export const MONERO_MNEMONIC_LANGUAGES: MoneroMnemonicLanguagesInterface = {
   SPANISH: 'spanish',
 } as const;
 
+/**
+ * MoneroMnemonic
+ *
+ * Implements the Monero-specific mnemonic system which supports multiple languages
+ * and variable word counts (12, 13, 24, or 25 words). Provides encoding and decoding
+ * between entropy and mnemonic phrases with optional checksum validation.
+ */
 export class MoneroMnemonic extends Mnemonic {
 
   static wordBitLength: number = 11;
@@ -96,10 +103,22 @@ export class MoneroMnemonic extends Mnemonic {
     [MONERO_MNEMONIC_LANGUAGES.SPANISH]: MONERO_SPANISH_WORDLIST
   };
 
+  /**
+   * Returns the name of this mnemonic type.
+   * @returns {string} `"Monero"`
+   */
   static getName(): string {
     return 'Monero';
   }
 
+  /**
+   * Generates a mnemonic phrase from a given word count.
+   *
+   * @param {number} count - The number of words (12, 13, 24, or 25).
+   * @param {string} language - The language of the mnemonic (must be one of `MONERO_MNEMONIC_LANGUAGES`).
+   * @returns {string} Mnemonic phrase.
+   * @throws {MnemonicError} If the word count is invalid.
+   */
   static fromWords(
     count: number, language: string
   ): string {
@@ -118,6 +137,14 @@ export class MoneroMnemonic extends Mnemonic {
     return this.encode(entropyBytes, language, options);
   }
 
+  /**
+   * Generates a mnemonic phrase from entropy.
+   *
+   * @param {string | Uint8Array | Entropy} entropy - Entropy in hex, bytes, or Entropy object.
+   * @param {string} language - Target language for words.
+   * @param {MnemonicOptionsInterface} [options={}] - Options (e.g., checksum).
+   * @returns {string} Mnemonic phrase.
+   */
   static fromEntropy(
     entropy: string | Uint8Array | Entropy, language: string, options: MnemonicOptionsInterface = { }
   ): string {
@@ -132,6 +159,16 @@ export class MoneroMnemonic extends Mnemonic {
     return this.encode(raw, language, options);
   }
 
+  /**
+   * Encodes raw entropy bytes into a Monero mnemonic phrase.
+   *
+   * @param {string | Uint8Array} entropy - Raw entropy.
+   * @param {string} language - Language for the mnemonic.
+   * @param {MnemonicOptionsInterface} [options={}] - Options, supports `{ checksum: true }`.
+   * @returns {string} Encoded mnemonic phrase.
+   * @throws {EntropyError} If entropy length is invalid.
+   * @throws {Error} If the wordlist length is incorrect.
+   */
   static encode(
     entropy: string | Uint8Array, language: string, options: MnemonicOptionsInterface = { }
   ): string {
@@ -169,6 +206,15 @@ export class MoneroMnemonic extends Mnemonic {
     return this.normalize(mnemonic).join(' ');
   }
 
+  /**
+   * Decodes a Monero mnemonic phrase into entropy.
+   *
+   * @param {string | string[]} input - Mnemonic phrase as string or array of words.
+   * @param {MnemonicOptionsInterface} [options={}] - Options (checksum validation).
+   * @returns {string} Hex string of entropy.
+   * @throws {MnemonicError} If mnemonic length is invalid.
+   * @throws {ChecksumError} If checksum is invalid.
+   */
   static decode(
     input: string | string[], options: MnemonicOptionsInterface = { }
   ): string {
@@ -211,6 +257,12 @@ export class MoneroMnemonic extends Mnemonic {
     return bytesToHex(concatBytes(...buffers), false);
   }
 
+  /**
+   * Normalizes mnemonic input into a lowercase word array.
+   *
+   * @param {string | string[]} input - Mnemonic phrase (string or array).
+   * @returns {string[]} Normalized words.
+   */
   static normalize(input: string | string[]): string[] {
     const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
     return arr.map(w => w.normalize('NFKD').toLowerCase());
