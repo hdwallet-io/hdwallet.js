@@ -8,6 +8,14 @@ import { CardanoSeed } from './cardano'
 import { ElectrumV1Seed, ElectrumV2Seed } from './electrum'
 import { MoneroSeed } from './monero'
 
+/**
+ * The SEEDS class acts as a centralized registry for all supported seed types.
+ *
+ * It provides a unified interface for accessing, validating, and retrieving seed classes
+ * (such as Algorand, BIP39, Cardano, Electrum, and Monero).
+ *
+ * Each seed class implements the `Seed` base class and defines its own derivation logic.
+ */
 export class SEEDS {
 
   private static dictionary: Record<string, typeof Seed> = {
@@ -19,14 +27,31 @@ export class SEEDS {
     [MoneroSeed.getName()]: MoneroSeed
   }
 
+  /**
+   * Returns the names of all available seed classes.
+   *
+   * @returns {string[]} Array of seed class names.
+   */
   static getNames(): string[] {
     return Object.keys(this.dictionary);
   }
 
+  /**
+   * Returns all seed class constructors.
+   *
+   * @returns {typeof Seed[]} Array of seed class constructors.
+   */
   static getClasses(): typeof Seed[] {
     return Object.values(this.dictionary);
   }
 
+  /**
+   * Retrieves a specific seed class by name.
+   *
+   * @param {string} name - The name of the seed class.
+   * @returns {typeof Seed} The corresponding seed class.
+   * @throws {SeedError} If the provided seed name is invalid.
+   */
   static getSeedClass(name: string): typeof Seed | any {
     if (!this.isSeed(name)) {
       throw new SeedError(
@@ -36,6 +61,12 @@ export class SEEDS {
     return this.dictionary[name];
   }
 
+  /**
+   * Checks if a given name corresponds to a valid registered seed type.
+   *
+   * @param {string} name - The seed name to check.
+   * @returns {boolean} `true` if valid, otherwise `false`.
+   */
   static isSeed(name: string): boolean {
     return this.getNames().includes(name);
   }
