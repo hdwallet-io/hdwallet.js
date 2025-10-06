@@ -1,25 +1,21 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES,
-  ElectrumV2Entropy,
+  ENTROPIES, ElectrumV2Entropy,
 } from '../../../src/entropies';
 import { EntropyError } from '../../../src/exceptions';
+
 const rawVectors = require('../../data/json/entropies.json') as {
-  Electrum_V2: Record<string, { name:string; entropy:string; strength:number }>;
+  "Electrum-V2": Record<string, {
+    "entropy-suitable": string;
+    "entropy-not-suitable": string;
+    strength: number;
+    name: string;
+  }>;
 };
 
 describe("Electrum-V2 Entropy", () => {
-  const ev2 = rawVectors["Electrum-V2"] as Record<
-    string,
-    {
-      "entropy-suitable": string;
-      "entropy-not-suitable": string;
-      strength: number;
-      name: string;
-    }
-  >;
-
+  const ev2 = rawVectors["Electrum-V2"];
   for (const [bits, vector] of Object.entries(ev2)) {
     const { strength, name } = vector;
     const goodHex = vector["entropy-suitable"];

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES,
-  AlgorandEntropy,
-  ALGORAND_ENTROPY_STRENGTHS
+  ENTROPIES, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { EntropyError } from '../../src/exceptions';
+
 const rawVectors = require('../data/json/entropies.json') as {
   Algorand: Record<string, { name:string; entropy:string; strength:number }>;
 };

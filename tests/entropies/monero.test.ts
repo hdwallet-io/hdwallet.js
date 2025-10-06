@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES,
-  MoneroEntropy,
-  MONERO_ENTROPY_STRENGTHS
+  ENTROPIES, MoneroEntropy, MONERO_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { EntropyError } from '../../src/exceptions';
+
 const rawVectors = require('../data/json/entropies.json') as {
   Monero: Record<string, { name:string; entropy:string; strength:number }>;
 };

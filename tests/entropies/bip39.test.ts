@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES,
-  BIP39Entropy,
-  BIP39_ENTROPY_STRENGTHS
+  ENTROPIES, BIP39Entropy, BIP39_ENTROPY_STRENGTHS
 } from '../../src/entropies';
 import { EntropyError } from '../../src/exceptions';
+
 const rawVectors = require('../data/json/entropies.json') as {
   BIP39: Record<string, { name:string; entropy:string; strength:number }>;
 };

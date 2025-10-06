@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
 
 import {
-  ENTROPIES,
-  ElectrumV1Entropy,
-  ELECTRUM_V1_ENTROPY_STRENGTHS
+  ENTROPIES, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS
 } from '../../../src/entropies';
 import { EntropyError } from '../../../src/exceptions';
+
 const rawVectors = require('../../data/json/entropies.json') as {
-  Electrum_V1: Record<string, { name:string; entropy:string; strength:number }>;
+  "Electrum-V1": Record<string, { name:string; entropy:string; strength:number }>;
 };
 
 describe("Electrum-V1 Entropy", () => {
