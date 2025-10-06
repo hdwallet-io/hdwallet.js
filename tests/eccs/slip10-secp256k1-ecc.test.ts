@@ -10,7 +10,7 @@ import {
   SLIP10Secp256k1PrivateKey,
   ECCS,
   validateAndGetPublicKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 
 import { getBytes } from '../../src/utils';
 

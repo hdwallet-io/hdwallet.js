@@ -8,7 +8,7 @@ import {
   SLIP10Nist256p1Point,
   SLIP10Nist256p1PublicKey,
   SLIP10Nist256p1PrivateKey
-} from '../../src/ecc';
+} from '../../src/eccs';
 
 import { getBytes } from '../../src/utils';
 

@@ -2,14 +2,16 @@
 
 import eccs from '../data/json/eccs.json';
 
-import { ECCS } from '../../src/ecc';
 
 import {
-  SLIP10Ed25519ECC,
+  ECCS,
   SLIP10Ed25519Point,
-  SLIP10Ed25519PublicKey,
-  SLIP10Ed25519PrivateKey
-} from '../../src/ecc'
+  SLIP10Ed25519MoneroECC,
+  SLIP10Ed25519MoneroPoint,
+  SLIP10Ed25519MoneroPublicKey,
+  SLIP10Ed25519MoneroPrivateKey
+} from '../../src/eccs';
+
 import { getBytes } from '../../src/utils';
 
 
@@ -22,29 +24,35 @@ interface CurveData {
   compressed:   { length: number; "public-key": string; point: PointVec };
 }
 
-const data = (eccs as Record<string, CurveData>)["SLIP10-Ed25519"];
+const data = (eccs as Record<string, CurveData>)["SLIP10-Ed25519-Monero"];
 const skBytes    = getBytes(data["private-key"]);
 const bytesUncmp = getBytes(data.uncompressed["public-key"]);
 const bytesCcmp  = getBytes(data.compressed["public-key"]);
 const encPoint   = getBytes(data.uncompressed.point.encode);
 
-describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
+describe("SLIP10-Ed25519-Monero (tweetnacl) end-to-end", () => {
   it("instance .getName()", () => {
-    const sk = SLIP10Ed25519PrivateKey.fromBytes(getBytes(data["private-key"]));
+    const sk = SLIP10Ed25519MoneroPrivateKey.fromBytes(
+      getBytes(data["private-key"])
+    );
     expect(sk.getName()).toBe(data.name);
 
-    const pt = SLIP10Ed25519Point.fromBytes(getBytes(data.uncompressed.point.encode));
+    const pt = SLIP10Ed25519MoneroPoint.fromBytes(
+      getBytes(data.uncompressed.point.encode)
+    );
     expect(pt.getName()).toBe(data.name);
 
-    const pk = SLIP10Ed25519PublicKey.fromBytes(getBytes(data.uncompressed["public-key"]));
+    const pk = SLIP10Ed25519MoneroPublicKey.fromBytes(
+      getBytes(data.uncompressed["public-key"])
+    );
     expect(pk.getName()).toBe(data.name);
   });
-
 
   for (const type of ["uncompressed", "compressed"] as const) {
     const vec = data[type].point;
     const enc = getBytes(vec.encode);
-    const canonical = SLIP10Ed25519Point.fromBytes(enc);
+
+    const canonical = SLIP10Ed25519MoneroPoint.fromBytes(enc);
     const expectedEncoded = canonical.getRawEncoded();
     const expectedDecoded = canonical.getRawDecoded();
     const xs = canonical.getX();
@@ -52,7 +60,7 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
 
     describe(`Point (${type})`, () => {
       it("fromBytes()", () => {
-        const p = SLIP10Ed25519Point.fromBytes(enc);
+        const p = SLIP10Ed25519MoneroPoint.fromBytes(enc);
         expect(p.getX()).toBe(xs);
         expect(p.getY()).toBe(ys);
         expect(p.getRawEncoded()).toEqual(expectedEncoded);
@@ -60,7 +68,7 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
       });
 
       it("fromCoordinates()", () => {
-        const p = SLIP10Ed25519Point.fromCoordinates(xs, ys);
+        const p = SLIP10Ed25519MoneroPoint.fromCoordinates(xs, ys);
         expect(p.getX()).toBe(xs);
         expect(p.getY()).toBe(ys);
         expect(p.getRawEncoded()).toEqual(expectedEncoded);
@@ -71,14 +79,14 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
     describe(`PublicKey (${type})`, () => {
       const pkBytes = getBytes(data[type]["public-key"]);
       it("fromBytes()", () => {
-        const pk = SLIP10Ed25519PublicKey.fromBytes(pkBytes);
+        const pk = SLIP10Ed25519MoneroPublicKey.fromBytes(pkBytes);
         expect(pk.getRawUncompressed()).toEqual(
           getBytes(data.uncompressed["public-key"])
         );
         expect(pk.getRawCompressed()).toEqual(
           getBytes(data.compressed["public-key"])
         );
-        // embedded point matches
+
         const pt2 = pk.getPoint();
         expect(pt2.getX()).toBe(xs);
         expect(pt2.getY()).toBe(ys);
@@ -88,7 +96,7 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
 
   describe("PrivateKey", () => {
     it("fromBytes() → raw & pubkey", () => {
-      const sk = SLIP10Ed25519PrivateKey.fromBytes(
+      const sk = SLIP10Ed25519MoneroPrivateKey.fromBytes(
         getBytes(data["private-key"])
       );
       expect(sk.getRaw()).toEqual(getBytes(data["private-key"]));
@@ -105,7 +113,7 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
 
   describe("Point arithmetic", () => {
     const enc = getBytes(data.uncompressed.point.encode);
-    const G   = SLIP10Ed25519Point.fromBytes(enc);
+    const G   = SLIP10Ed25519MoneroPoint.fromBytes(enc);
 
     for (let n = 2; n < 50; n++) {
       it(`n=${n}`, () => {
@@ -117,8 +125,8 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
         const m1 = G.multiply(cur);
         const m2 = G.multiply(cur);
 
-        const expectedEncoded = m1.getRawEncoded();
         const expectedDecoded = m1.getRawDecoded();
+        const expectedEncoded = m1.getRawEncoded();
 
         for (const q of [a1, a2, m1, m2]) {
           expect(q.getX()).toBe(m1.getX());
@@ -130,24 +138,24 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
     }
   });
   
-  describe("SLIP10-Ed25519 (generic)", () => {
-    const ecc = ECCS.getECCClass(SLIP10Ed25519ECC.NAME);
+  describe("SLIP10-Ed25519-Monero (generic)", () => {
+    const ecc = ECCS.getECCClass(SLIP10Ed25519MoneroECC.NAME);
 
     it("ECC.NAME matches concrete NAME", () => {
-      expect(SLIP10Ed25519ECC.NAME).toBe(data.name);
-      expect(ecc.NAME).toBe(SLIP10Ed25519ECC.NAME);
+      expect(SLIP10Ed25519MoneroECC.NAME).toBe(data.name);
+      expect(ecc.NAME).toBe(SLIP10Ed25519MoneroECC.NAME);
     });
 
     it("generic PRIVATE_KEY.fromBytes()", () => {
-      const skConcrete = SLIP10Ed25519PrivateKey.fromBytes(skBytes);
+      const skConcrete = SLIP10Ed25519MoneroPrivateKey.fromBytes(skBytes);
       const skGeneric = ecc.PRIVATE_KEY.fromBytes(skBytes);
-      expect(skGeneric).toBeInstanceOf(SLIP10Ed25519PrivateKey);
+      expect(skGeneric).toBeInstanceOf(SLIP10Ed25519MoneroPrivateKey);
       expect(skGeneric.getRaw()).toEqual(skBytes);
       expect(skGeneric.getRaw()).toEqual(skConcrete.getRaw());
     });
 
     it("generic POINT.fromBytes and .fromCoordinates", () => {
-      const basePoint = SLIP10Ed25519Point.fromBytes(encPoint);
+      const basePoint = SLIP10Ed25519MoneroPoint.fromBytes(encPoint);
       const pGeneric1 = ecc.POINT.fromBytes(encPoint);
       const pGeneric2 = ecc.POINT.fromCoordinates(basePoint.getX(), basePoint.getY());
       expect(pGeneric1.getRawEncoded()).toEqual(encPoint);
@@ -155,7 +163,7 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
     });
 
     it("generic PUBLIC_KEY.fromBytes and .fromPoint", () => {
-      const basePoint = SLIP10Ed25519Point.fromBytes(encPoint);
+      const basePoint = SLIP10Ed25519MoneroPoint.fromBytes(encPoint);
       const puGeneric1 = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
       const puGeneric2 = ecc.PUBLIC_KEY.fromPoint(basePoint);
       expect(puGeneric1.getRawUncompressed()).toEqual(bytesUncmp);
@@ -163,37 +171,37 @@ describe("SLIP10-Ed25519 (tweetnacl) end-to-end", () => {
     });
 
     it("cross-route byte equality", () => {
-      const skConc = SLIP10Ed25519PrivateKey.fromBytes(skBytes);
+      const skConc = SLIP10Ed25519MoneroPrivateKey.fromBytes(skBytes);
       const skGen = ecc.PRIVATE_KEY.fromBytes(skBytes);
       expect(skConc.getRaw()).toEqual(skGen.getRaw());
 
-      const ptConc = SLIP10Ed25519Point.fromBytes(encPoint);
+      const ptConc = SLIP10Ed25519MoneroPoint.fromBytes(encPoint);
       const ptGen = ecc.POINT.fromBytes(encPoint);
       expect(ptConc.getRawDecoded()).toEqual(ptGen.getRawDecoded());
 
-      const pkConc = SLIP10Ed25519PublicKey.fromBytes(bytesUncmp);
+      const pkConc = SLIP10Ed25519MoneroPublicKey.fromBytes(bytesUncmp);
       const pkGen = ecc.PUBLIC_KEY.fromBytes(bytesUncmp);
       expect(pkConc.getRawCompressed()).toEqual(pkGen.getRawCompressed());
     });
 
     it("curve constants & classes", () => {
-      expect(SLIP10Ed25519ECC.NAME).toBe(data.name);
-      expect(typeof SLIP10Ed25519ECC.ORDER).toBe("bigint");
-      expect(SLIP10Ed25519ECC.GENERATOR).toBeInstanceOf(SLIP10Ed25519Point);
-      expect(SLIP10Ed25519ECC.POINT).toBe(SLIP10Ed25519Point);
-      expect(SLIP10Ed25519ECC.PUBLIC_KEY).toBe(SLIP10Ed25519PublicKey);
-      expect(SLIP10Ed25519ECC.PRIVATE_KEY).toBe(SLIP10Ed25519PrivateKey);
+      expect(SLIP10Ed25519MoneroECC.NAME).toBe(data.name);
+      expect(typeof SLIP10Ed25519MoneroECC.ORDER).toBe("bigint");
+      expect(SLIP10Ed25519MoneroECC.GENERATOR).toBeInstanceOf(SLIP10Ed25519Point);
+      expect(SLIP10Ed25519MoneroECC.POINT).toBe(SLIP10Ed25519MoneroPoint);
+      expect(SLIP10Ed25519MoneroECC.PUBLIC_KEY).toBe(SLIP10Ed25519MoneroPublicKey);
+      expect(SLIP10Ed25519MoneroECC.PRIVATE_KEY).toBe(SLIP10Ed25519MoneroPrivateKey);
     });
 
     it("public key lengths", () => {
-      expect(SLIP10Ed25519PublicKey.getUncompressedLength())
-          .toBe(data.uncompressed.length);
-      expect(SLIP10Ed25519PublicKey.getCompressedLength())
+      expect(SLIP10Ed25519MoneroPublicKey.getCompressedLength())
           .toBe(data.compressed.length);
+      expect(SLIP10Ed25519MoneroPublicKey.getUncompressedLength())
+          .toBe(data.uncompressed.length);
     });
 
     it("private key length (via instance)", () => {
-      const sk = SLIP10Ed25519PrivateKey.fromBytes(skBytes);
+      const sk = SLIP10Ed25519MoneroPrivateKey.fromBytes(skBytes);
       expect(sk.getRaw().length).toBe(data["private-key-length"]);
     });
 
