@@ -1,18 +1,14 @@
 // SPDX-License-Identifier: MIT
 
+import { MnemonicError, EntropyError } from '../../src/exceptions';
+import {
+  MNEMONICS, MoneroMnemonic, MONERO_MNEMONIC_LANGUAGES
+} from '../../src/mnemonics';
 import { readFileSync } from 'fs';
 import { join }         from 'path';
 
-import { MnemonicError, EntropyError } from '../../src/exceptions';
-import {
-  MNEMONICS,
-  MoneroMnemonic,
-  MONERO_MNEMONIC_LANGUAGES
-} from '../../src/mnemonics';
-
 const raw = readFileSync(
-  join(__dirname, '../data/json/mnemonics.json'),
-  'utf8'
+  join(__dirname, '../data/json/mnemonics.json'), 'utf8'
 ).normalize('NFC');
 
 interface MoneroCase {

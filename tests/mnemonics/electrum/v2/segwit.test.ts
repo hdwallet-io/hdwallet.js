@@ -1,20 +1,14 @@
 // SPDX-License-Identifier: MIT
 
+import {
+  MNEMONICS, ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES
+} from '../../../../src/mnemonics';
+import { MnemonicError, EntropyError } from '../../../../src/exceptions';
 import { readFileSync } from 'fs';
 import { join }         from 'path';
 
-import {
-  MNEMONICS,
-  ElectrumV2Mnemonic,
-  ELECTRUM_V2_MNEMONIC_WORDS,
-  ELECTRUM_V2_MNEMONIC_LANGUAGES,
-  ELECTRUM_V2_MNEMONIC_TYPES
-} from '../../../../src/mnemonics';
-import { MnemonicError, EntropyError } from '../../../../src/exceptions';
-
 const raw = readFileSync(
-  join(__dirname, '../../../data/json/mnemonics.json'),
-  'utf8'
+  join(__dirname, '../../../data/json/mnemonics.json'), 'utf8'
 ).normalize('NFC');
 
 interface ElectrumV2Case {

@@ -1,21 +1,16 @@
 // SPDX-License-Identifier: MIT
 
-import { readFileSync } from 'fs';
-import { join }         from 'path';
-
 import { ElectrumV1Entropy } from '../../../src/entropies';
 import {
-  MNEMONICS,
-  ElectrumV1Mnemonic,
-  ELECTRUM_V1_MNEMONIC_LANGUAGES,
-  ELECTRUM_V1_MNEMONIC_WORDS
+  MNEMONICS, ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_LANGUAGES, ELECTRUM_V1_MNEMONIC_WORDS
 } from '../../../src/mnemonics';
 import { MnemonicError, EntropyError } from '../../../src/exceptions';
 import { getBytes } from '../../../src/utils';
+import { readFileSync } from 'fs';
+import { join }         from 'path';
 
 const raw = readFileSync(
-  join(__dirname, '../../data/json/mnemonics.json'),
-  'utf8'
+  join(__dirname, '../../data/json/mnemonics.json'), 'utf8'
 ).normalize('NFC');
 
 interface ElectrumV1Case {
