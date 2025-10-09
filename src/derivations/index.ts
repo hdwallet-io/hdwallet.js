@@ -12,8 +12,16 @@ import { MoneroDerivation } from './monero';
 import { HDWDerivation } from './hdw';
 import { DerivationError } from '../exceptions';
 
+/**
+ * A registry for all derivation classes.
+ * Provides methods to access, validate, and retrieve derivation class definitions.
+ */
 export class DERIVATIONS {
 
+  /**
+   * A dictionary mapping derivation names to their corresponding classes.
+   * @type {Record<string, typeof Derivation>}
+   */
   static dictionary: Record<string, typeof Derivation> = {
     [CustomDerivation.getName()]: CustomDerivation,
     [BIP44Derivation.getName()]: BIP44Derivation,
@@ -26,14 +34,28 @@ export class DERIVATIONS {
     [HDWDerivation.getName()]: HDWDerivation
   };
 
+  /**
+   * Returns all available derivation names.
+   * @returns {string[]} List of derivation names.
+   */
   static getNames(): string[] {
     return Object.keys(this.dictionary);
   }
 
+  /**
+   * Returns all available derivation classes.
+   * @returns {typeof Derivation[]} List of derivation class constructors.
+   */
   static getClasses(): typeof Derivation[] {
     return Object.values(this.dictionary);
   }
 
+  /**
+   * Retrieves a derivation class by name.
+   * @param {string} name - The derivation name.
+   * @returns {typeof Derivation} The derivation class corresponding to the given name.
+   * @throws {DerivationError} If the provided name is not a valid derivation.
+   */
   static getDerivationClass(name: string): typeof Derivation | any {
     if (!this.isDerivation(name)) {
       throw new DerivationError(
@@ -43,6 +65,11 @@ export class DERIVATIONS {
     return this.dictionary[name];
   }
 
+  /**
+   * Checks if a derivation name exists in the dictionary.
+   * @param {string} name - The derivation name to check.
+   * @returns {boolean} True if the derivation name exists, false otherwise.
+   */
   static isDerivation(name: string): boolean {
     return this.dictionary.hasOwnProperty(name);
   }

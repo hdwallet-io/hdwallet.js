@@ -16,7 +16,7 @@ HDWallet
     Entropies <entropies.rst>
     Mnemonics <mnemonics.rst>
     Seeds <seeds.rst>
-..     Derivations <derivations.rst>
+    Derivations <derivations.rst>
 ..     ECCs <eccs.rst>
 ..     HD's <hds.rst>
 ..     Addresses <addresses.rst>

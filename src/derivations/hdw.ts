@@ -17,12 +17,21 @@ import { DerivationOptionsInterface } from '../interfaces';
 import { IndexType, DerivationsType } from '../types';
 import { DerivationError } from '../exceptions';
 
+/**
+ * HDWDerivation implements a generic hierarchical deterministic wallet derivation
+ * supporting multiple elliptic curves.
+ *
+ **/
 export class HDWDerivation extends Derivation {
 
   private account: DerivationsType;
   private ecc: DerivationsType;
   private address: DerivationsType;
 
+  /**
+   * Constructor to initialize the HDW derivation.
+   * @param options - Options including account, ECC type, and address.
+   */
   constructor(options: DerivationOptionsInterface = {
     account: 0, ecc: SLIP10Secp256k1ECC, address: 0
   }) {
@@ -35,10 +44,21 @@ export class HDWDerivation extends Derivation {
     this.updateDerivation();
   }
 
+  /**
+   * Returns the name of this derivation class.
+   * @returns {string} - 'HDW'
+   */
   static getName(): string {
     return 'HDW';
   }
 
+  /**
+   * Converts an ECC input to a valid internal representation.
+   * @param ecc - ECC name, index, or EllipticCurveCryptography instance.
+   * @param nameOnly - If true, returns the ECC name instead of numeric index.
+   * @returns {number|string} - Numeric index or ECC name.
+   * @throws {DerivationError} If the ECC type is invalid.
+   */
   protected getECCValue(
     ecc: IndexType | EllipticCurveCryptography, nameOnly: boolean = false
   ): any {
@@ -82,24 +102,43 @@ export class HDWDerivation extends Derivation {
     this.path = path;
   }
 
+  /**
+   * Set a new account index.
+   * @param account - The new account index.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   fromAccount(account: IndexType): this {
     this.account = normalizeIndex(account, true);
     this.updateDerivation();
     return this;
   }
 
+  /**
+   * Set a new ECC type.
+   * @param ecc - ECC name, index, or EllipticCurveCryptography instance.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   fromECC(ecc: string | number | EllipticCurveCryptography): this {
     this.ecc = normalizeIndex(this.getECCValue(ecc), false);
     this.updateDerivation();
     return this;
   }
 
+  /**
+   * Set a new address index.
+   * @param address - The new address index.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   fromAddress(address: IndexType): this {
     this.address = normalizeIndex(address, false);
     this.updateDerivation();
     return this;
   }
 
+  /**
+   * Reset the derivation to default values.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   clean(): this {
     this.account = normalizeIndex(0, true);
     this.ecc = normalizeIndex(
@@ -110,14 +149,27 @@ export class HDWDerivation extends Derivation {
     return this;
   }
 
+  /**
+   * Get the account index.
+   * @returns {number} - The account index.
+   */
   getAccount(): number {
     return this.account.length === 3 ? this.account[1] : this.account[0];
   }
 
+  /**
+   * Get the ECC type used.
+   * @param nameOnly - If true, returns the ECC name; otherwise returns numeric index.
+   * @returns {string|number} - ECC name or numeric index.
+   */
   getECC(nameOnly: boolean = true): string {
     return this.getECCValue(this.ecc[0], nameOnly);
   }
 
+  /**
+   * Get the address index.
+   * @returns {number} - The address index.
+   */
   getAddress(): number {
     return this.address.length === 3 ? this.address[1] : this.address[0];
   }

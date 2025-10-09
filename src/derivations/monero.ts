@@ -5,11 +5,19 @@ import { normalizeIndex, normalizeDerivation, indexTupleToString } from '../util
 import { DerivationOptionsInterface } from '../interfaces';
 import { IndexType, DerivationsType } from '../types';
 
+/**
+ * MoneroDerivation implements a hierarchical derivation path for Monero wallets.
+ *
+ **/
 export class MoneroDerivation extends Derivation {
 
   private minor: DerivationsType;
   private major: DerivationsType;
 
+  /**
+   * Constructor to initialize Monero derivation.
+   * @param options - Options including minor and major indices.
+   */
   constructor(options: DerivationOptionsInterface = {
     minor: 1, major: 0
   }) {
@@ -19,6 +27,10 @@ export class MoneroDerivation extends Derivation {
     this.updateDerivation();
   }
 
+  /**
+   * Returns the name of this derivation class.
+   * @returns {string} - 'Monero'
+   */
   static getName(): string {
     return 'Monero';
   }
@@ -33,18 +45,32 @@ export class MoneroDerivation extends Derivation {
     this.path = path;
   }
 
+  /**
+   * Set a new minor index.
+   * @param minor - The minor index.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   fromMinor(minor: IndexType): this {
     this.minor = normalizeIndex(minor, false);
     this.updateDerivation();
     return this;
   }
 
+  /**
+   * Set a new major index.
+   * @param major - The major index.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   fromMajor(major: IndexType): this {
     this.major = normalizeIndex(major, false);
     this.updateDerivation();
     return this;
   }
 
+  /**
+   * Reset the derivation to default values.
+   * @returns {this} - Returns the derivation instance for chaining.
+   */
   clean(): this {
     this.minor = normalizeIndex(1, false);
     this.major = normalizeIndex(0, false);
@@ -52,10 +78,18 @@ export class MoneroDerivation extends Derivation {
     return this;
   }
 
+  /**
+   * Get the minor index.
+   * @returns {number} - The minor index.
+   */
   getMinor(): number {
     return this.minor.length === 3 ? this.minor[1] : this.minor[0];
   }
 
+  /**
+   * Get the major index.
+   * @returns {number} - The major index.
+   */
   getMajor(): number {
     return this.major.length === 3 ? this.major[1] : this.major[0];
   }
