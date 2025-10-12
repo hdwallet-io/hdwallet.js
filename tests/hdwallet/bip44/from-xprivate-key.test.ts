@@ -5,19 +5,19 @@ import { CRYPTOCURRENCIES } from '../../../src/cryptocurrencies';
 import { DERIVATIONS } from '../../../src/derivations';
 import { HDS } from '../../../src/hds';
 
-const rawVectors = require('../../data/json/hdwallet.json') as any;
+const data = require('../../data/json/hdwallet.json') as any;
 
 describe("BIP44.fromXPrivateKey", () => {
   it("compressed", () => {
-    const compressed = rawVectors.BIP44['compressed'];
+    const compressed = data.BIP44['compressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(compressed['cryptocurrency']);
-    const DerivationClass = DERIVATIONS.getDerivationClass(rawVectors.BIP44.derivation.name);
+    const DerivationClass = DERIVATIONS.getDerivationClass(data.BIP44.derivation.name);
 
     const derivation = new DerivationClass({
-      coinType: rawVectors.BIP44.derivation.args['coin-type'],
-      account: rawVectors.BIP44.derivation.args['account'],
-      change: rawVectors.BIP44.derivation.args['change'] as any,
-      address: rawVectors.BIP44.derivation.args['address']
+      coinType: data.BIP44.derivation.args['coin-type'],
+      account: data.BIP44.derivation.args['account'],
+      change: data.BIP44.derivation.args['change'] as any,
+      address: data.BIP44.derivation.args['address']
     });
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -86,15 +86,15 @@ describe("BIP44.fromXPrivateKey", () => {
   });
 
   it("uncompressed", () => {
-    const uncompressed = rawVectors.BIP44['uncompressed'];
+    const uncompressed = data.BIP44['uncompressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(uncompressed['cryptocurrency']);
-    const DerivationClass = DERIVATIONS.getDerivationClass(rawVectors.BIP44.derivation.name);
+    const DerivationClass = DERIVATIONS.getDerivationClass(data.BIP44.derivation.name);
 
     const derivation = new DerivationClass({
-      coinType: rawVectors.BIP44.derivation.args['coin-type'],
-      account: rawVectors.BIP44.derivation.args['account'],
-      change: rawVectors.BIP44.derivation.args['change'] as any,
-      address: rawVectors.BIP44.derivation.args['address']
+      coinType: data.BIP44.derivation.args['coin-type'],
+      account: data.BIP44.derivation.args['account'],
+      change: data.BIP44.derivation.args['change'] as any,
+      address: data.BIP44.derivation.args['address']
     });
 
     const hdwallet = new HDWallet(cryptocurrency, {

@@ -4,11 +4,11 @@ import { HDWallet } from '../../../src';
 import { CRYPTOCURRENCIES } from '../../../src/cryptocurrencies';
 import { HDS } from '../../../src/hds';
 
-const rawVectors = require('../../data/json/hdwallet.json') as any;
+const data = require('../../data/json/hdwallet.json') as any;
 
 describe("BIP44.fromPublicKey", () => {
   it("compressed", () => {
-    const compressed = rawVectors.BIP44['compressed'];
+    const compressed = data.BIP44['compressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(compressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -86,15 +86,11 @@ describe("BIP44.fromPublicKey", () => {
     expect(hdwallet.getHash()).toBe(dump['derivation']['hash']);
     expect(hdwallet.getFingerprint()).toBe(dump['derivation']['fingerprint']);
     expect(hdwallet.getParentFingerprint()).toBe(dump['derivation']['parent-fingerprint']);
-
-    expect(hdwallet.getAddress({
-      address: cryptocurrency.ADDRESSES.P2PKH,
-      publicKeyAddressPrefix: cryptocurrency.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
-    })).toBe(dump['derivation']['address']);
+    expect(hdwallet.getAddress()).toBe(dump['derivation']['address']);
   });
 
   it("uncompressed", () => {
-    const uncompressed = rawVectors.BIP44['uncompressed'];
+    const uncompressed = data.BIP44['uncompressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(uncompressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -172,10 +168,6 @@ describe("BIP44.fromPublicKey", () => {
     expect(hdwallet.getHash()).toBe(dump['derivation']['hash']);
     expect(hdwallet.getFingerprint()).toBe(dump['derivation']['fingerprint']);
     expect(hdwallet.getParentFingerprint()).toBe(dump['derivation']['parent-fingerprint']);
-
-    expect(hdwallet.getAddress({
-      address: cryptocurrency.ADDRESSES.P2PKH,
-      publicKeyAddressPrefix: cryptocurrency.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
-    })).toBe(dump['derivation']['address']);
+    expect(hdwallet.getAddress()).toBe(dump['derivation']['address']);
   });
 });

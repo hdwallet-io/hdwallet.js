@@ -5,11 +5,11 @@ import { CRYPTOCURRENCIES } from '../../../src/cryptocurrencies';
 import { DERIVATIONS } from '../../../src/derivations';
 import { HDS } from '../../../src/hds';
 
-const rawVectors = require('../../data/json/hdwallet.json') as any;
+const data = require('../../data/json/hdwallet.json') as any;
 
 describe("BIP32.fromXPrivateKey", () => {
   it("compressed", () => {
-    const compressed = rawVectors.BIP32['compressed'];
+    const compressed = data.BIP32['compressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(compressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -18,8 +18,8 @@ describe("BIP32.fromXPrivateKey", () => {
       publicKeyType: compressed['public-key-type']
     })
       .fromXPrivateKey(compressed['root-xprivate-key'], compressed['strict'])
-      .fromDerivation(new (DERIVATIONS.getDerivationClass(rawVectors.BIP32.derivation.name))(
-        rawVectors.BIP32.derivation.args
+      .fromDerivation(new (DERIVATIONS.getDerivationClass(data.BIP32.derivation.name))(
+        data.BIP32.derivation.args
       ));
 
     const expectedDump = {
@@ -114,7 +114,7 @@ describe("BIP32.fromXPrivateKey", () => {
   });
 
   it("uncompressed", () => {
-    const uncompressed = rawVectors.BIP32['uncompressed'];
+    const uncompressed = data.BIP32['uncompressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(uncompressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -123,8 +123,8 @@ describe("BIP32.fromXPrivateKey", () => {
       publicKeyType: uncompressed['public-key-type']
     })
       .fromXPrivateKey(uncompressed['root-xprivate-key'], uncompressed['strict'])
-      .fromDerivation(new (DERIVATIONS.getDerivationClass(rawVectors.BIP32.derivation.name))(
-        rawVectors.BIP32.derivation.args
+      .fromDerivation(new (DERIVATIONS.getDerivationClass(data.BIP32.derivation.name))(
+        data.BIP32.derivation.args
       ));
 
     const expectedDump = {

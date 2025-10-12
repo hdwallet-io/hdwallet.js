@@ -4,11 +4,11 @@ import { HDWallet } from '../../../src';
 import { CRYPTOCURRENCIES } from '../../../src/cryptocurrencies';
 import { HDS } from '../../../src/hds';
 
-const rawVectors = require('../../data/json/hdwallet.json') as any;
+const data = require('../../data/json/hdwallet.json') as any;
 
 describe("BIP44.fromWIF", () => {
   it("compressed", () => {
-    const compressed = rawVectors.BIP44['compressed'];
+    const compressed = data.BIP44['compressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(compressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -90,7 +90,7 @@ describe("BIP44.fromWIF", () => {
   });
 
   it("uncompressed", () => {
-    const uncompressed = rawVectors.BIP44['uncompressed'];
+    const uncompressed = data.BIP44['uncompressed'];
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(uncompressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
