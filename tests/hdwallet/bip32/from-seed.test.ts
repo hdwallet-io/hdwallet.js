@@ -11,7 +11,6 @@ const rawVectors = require('../../data/json/hdwallet.json') as any;
 describe("BIP32.fromSeed", () => {
   it("compressed", () => {
     const compressed = rawVectors.BIP32['compressed'];
-
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(compressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
@@ -117,7 +116,6 @@ describe("BIP32.fromSeed", () => {
 
   it("uncompressed", () => {
     const uncompressed = rawVectors.BIP32['uncompressed'];
-
     const cryptocurrency = CRYPTOCURRENCIES.getCryptocurrencyClass(uncompressed['cryptocurrency']);
 
     const hdwallet = new HDWallet(cryptocurrency, {
