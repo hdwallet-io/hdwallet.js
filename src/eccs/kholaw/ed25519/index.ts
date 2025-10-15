@@ -8,6 +8,11 @@ import { KholawEd25519Point as _KholawEd25519Point } from './point';
 import { KholawEd25519PublicKey as _KholawEd25519PublicKey } from './public-key';
 import { KholawEd25519PrivateKey as _KholawEd25519PrivateKey } from './private-key';
 
+/**
+ * Represents the Kholaw-Ed25519 elliptic curve cryptography implementation.
+ * Extends the SLIP10-Ed25519 curve with Kholaw-specific key handling.
+ * @extends EllipticCurveCryptography
+ */
 export class KholawEd25519ECC extends EllipticCurveCryptography {
 
   static NAME: string = 'Kholaw-Ed25519';

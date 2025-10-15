@@ -8,12 +8,26 @@ import { SLIP10Ed25519Blake2bPublicKey } from './public-key';
 import { SLIP10_ED25519_CONST } from '../../../../consts';
 import { getBytes } from '../../../../utils';
 
+/**
+ * Represents a SLIP10 Ed25519 Blake2b private key.
+ * @extends PrivateKey
+ */
 export class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
 
+  /**
+   * Returns the name of the private key curve.
+   * @returns {string} Curve name.
+   */
   getName(): string {
     return 'SLIP10-Ed25519-Blake2b';
   }
 
+  /**
+   * Creates a private key instance from raw bytes.
+   * @param {Uint8Array} privateKey - The private key bytes.
+   * @returns {SLIP10Ed25519Blake2bPrivateKey} The private key instance.
+   * @throws {Error} If the bytes are invalid or length is incorrect.
+   */
   static fromBytes(privateKey: Uint8Array): PrivateKey {
 
     if (privateKey.length !== SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
@@ -29,19 +43,35 @@ export class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
     }
   }
 
+  /**
+   * Returns the length of the private key in bytes.
+   * @returns {number} Private key byte length.
+   */
   static getLength(): number {
     return SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH;
   }
 
+  /**
+   * Returns the raw private key bytes.
+   * @returns {Uint8Array} Private key bytes.
+   */
   getRaw(): Uint8Array {
     const secret = this.privateKey.secretKey;
     return new Uint8Array(secret.subarray(0, nacl.sign.seedLength));
   }
 
+  /**
+   * Returns the underlying private key object.
+   * @returns {any} Underlying key object.
+   */
   getUnderlyingObject(): any {
     return this.privateKey;
   }
 
+  /**
+   * Returns the corresponding public key.
+   * @returns {SLIP10Ed25519Blake2bPublicKey} The public key instance.
+   */
   getPublicKey(): PublicKey {
     const publicKey = this.privateKey.publicKey;
     return SLIP10Ed25519Blake2bPublicKey.fromBytes(publicKey);
