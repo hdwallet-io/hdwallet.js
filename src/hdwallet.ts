@@ -930,9 +930,9 @@ export class HDWallet {
       'hd': this.getHD()
     };
 
-    if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
-      delete root['passphrase'];
-    }
+    // if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
+    //   delete root['passphrase'];
+    // }
 
     if ([
       'Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
