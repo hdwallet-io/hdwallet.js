@@ -958,7 +958,7 @@ export class HDWallet {
       if (['Algorand', 'Cardano'].includes(hdName)) {
         delete root['root-wif'];
         delete root['public-key-type'];
-        delete root['root-type'];
+        delete root['wif-type'];
         if (this.cardanoType !== Cardano.TYPES.BYRON_LEGACY) {
           delete root['path-key'];
         }
