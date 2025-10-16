@@ -8,5 +8,6 @@
   "excludeInternal": true,
   "excludePrivate": true,
   "excludeProtected": true,
-  "readme": "none"
+  "readme": "none",
+  "skipErrorChecking": true
 }
