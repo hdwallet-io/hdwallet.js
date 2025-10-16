@@ -8,6 +8,10 @@ import { SLIP10Ed25519Blake2bPublicKey, PublicKey, validateAndGetPublicKey } fro
 import { bytesToString, bytesReverse, getBytes, concatBytes, equalBytes } from '../utils';
 import { Address } from './address';
 
+/**
+ * Class representing a Nano (formerly RaiBlocks) blockchain address.
+ * Supports encoding and decoding using a modified Base32 scheme and Blake2b checksums.
+ */
 export class NanoAddress extends Address {
 
   static addressPrefix: string = Nano.PARAMS.ADDRESS_PREFIX;
@@ -15,14 +19,32 @@ export class NanoAddress extends Address {
   static payloadPaddingDecoded: Uint8Array = getBytes(Nano.PARAMS.PAYLOAD_PADDING_DECODED);
   static payloadPaddingEncoded: string = Nano.PARAMS.PAYLOAD_PADDING_ENCODED;
 
+  /**
+   * Returns the display name of this address type.
+   * @returns {string} Name of the address type.
+   */
   static getName(): string {
     return 'Nano';
   }
 
+  /**
+   * Computes the Nano checksum for a given public key.
+   * Uses Blake2b (40-bit) and reverses the byte order.
+   *
+   * @param {Uint8Array} publicKey - The public key bytes.
+   * @returns {Uint8Array} The checksum bytes.
+   */
   static computeChecksum(publicKey: Uint8Array): Uint8Array {
     return bytesReverse(blake2b40(publicKey));
   }
 
+  /**
+   * Encodes a public key into a Nano address.
+   *
+   * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+   * @returns {string} The encoded Nano address.
+   * @throws {AddressError} If the public key is invalid.
+   */
   static encode(publicKey: Uint8Array | string | PublicKey): string {
     const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519Blake2bPublicKey);
     const raw = pk.getRawCompressed().subarray(1);
@@ -33,6 +55,14 @@ export class NanoAddress extends Address {
     return this.addressPrefix + b32.slice(this.payloadPaddingEncoded.length);
   }
 
+  /**
+   * Decodes a Nano address back into the public key bytes.
+   * Verifies the address prefix, Base32 decoding, and checksum.
+   *
+   * @param {string} address - The Nano address to decode.
+   * @returns {string} The public key bytes as a string.
+   * @throws {AddressError} If the address is invalid or checksum verification fails.
+   */
   static decode(address: string): string {
     const prefix = address.slice(0, this.addressPrefix.length);
     if (prefix !== this.addressPrefix) {

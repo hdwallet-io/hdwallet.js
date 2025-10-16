@@ -9,14 +9,33 @@ import { Address } from './address';
 import { AddressOptionsInterface } from '../interfaces';
 import { AddressError } from '../exceptions';
 
+/**
+ * Class representing an Injective blockchain address.
+ * Inherits from the base Address class.
+ * Uses Bech32 encoding with Ethereum-style public key hashing.
+ */
 export class InjectiveAddress extends Address {
 
   static readonly hrp: string = Injective.NETWORKS.MAINNET.HRP;
 
+  /**
+   * Returns the display name of this address type.
+   * @returns {string} Name of the address type.
+   */
   static getName(): string {
     return 'Injective';
   }
 
+   /**
+   * Encodes a public key into a Bech32 Injective address.
+   * Uses Ethereum-style encoding of the public key, then converts to Bech32.
+   *
+   * @param {Uint8Array | string | PublicKey} publicKey - Public key to encode.
+   * @param {AddressOptionsInterface} [options] - Optional parameters.
+   * @param {string} [options.hrp=this.hrp] - Human-readable prefix for Bech32.
+   * @returns {string} Bech32-encoded Injective address.
+   * @throws {AddressError} If encoding fails.
+   */
   static encode(
     publicKey: Uint8Array | string | PublicKey, options: AddressOptionsInterface = {
       hrp: this.hrp
@@ -37,6 +56,15 @@ export class InjectiveAddress extends Address {
     return encoded;
   }
 
+  /**
+   * Decodes a Bech32 Injective address back into its raw public key bytes.
+   *
+   * @param {string} address - Bech32-encoded Injective address to decode.
+   * @param {AddressOptionsInterface} [options] - Optional parameters.
+   * @param {string} [options.hrp=this.hrp] - Expected human-readable prefix for Bech32.
+   * @returns {string} Raw public key bytes as a string.
+   * @throws {AddressError} If decoding fails, the HRP does not match, or length is invalid.
+   */
   static decode(
     address: string, options: AddressOptionsInterface = {
       hrp: this.hrp

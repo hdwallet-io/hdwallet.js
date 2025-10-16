@@ -36,6 +36,10 @@ import { SuiAddress } from './sui';
 import { AptosAddress } from './aptos';
 import { NearAddress } from './near';
 
+/**
+ * Central registry of all supported blockchain address classes.
+ * Provides utility methods to fetch names, classes, or check validity.
+ */
 export class ADDRESSES {
 
   private static readonly dictionary: Record<string, typeof Address> = {
@@ -74,14 +78,28 @@ export class ADDRESSES {
     [NearAddress.getName()]: NearAddress
   };
 
+  /**
+   * Returns an array of all supported address names.
+   * @returns {string[]} List of address names.
+   */
   public static getNames(): string[] {
     return Object.keys(this.dictionary);
   }
 
+  /**
+   * Returns an array of all address classes.
+   * @returns {Array<typeof Address>} List of address classes.
+   */
   public static getClasses(): Array<typeof Address> {
     return Object.values(this.dictionary);
   }
 
+  /**
+   * Fetches the address class corresponding to the given name.
+   * @param {string} name - Name of the address.
+   * @returns {typeof Address} The corresponding address class.
+   * @throws {AddressError} If the name is not a valid address.
+   */
   public static getAddressClass(name: string): typeof Address {
     if (!this.isAddress(name)) {
       throw new AddressError(
@@ -91,6 +109,11 @@ export class ADDRESSES {
     return this.dictionary[name];
   }
 
+  /**
+   * Checks whether a given name corresponds to a supported address.
+   * @param {string} name - Name to check.
+   * @returns {boolean} True if the name is supported, false otherwise.
+   */
   public static isAddress(name: string): boolean {
     return name in this.dictionary;
   }

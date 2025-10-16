@@ -19,7 +19,7 @@ HDWallet
     Derivations <derivations.rst>
     ECCs <eccs.rst>
     HD's <hds.rst>
-..     Addresses <addresses.rst>
+    Addresses <addresses.rst>
 ..     HDWallet <hdwallet.rst>
 ..     Consts <consts.rst>
 ..     Crypto <crypto.rst>
