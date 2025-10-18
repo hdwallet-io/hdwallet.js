@@ -1,6 +1,5 @@
-=============
 Cryptography 
-=============
+============
 
 .. currentmodule:: hashes
 
@@ -38,7 +37,7 @@ Functions
 .. js:autofunction:: getChecksum
 
 Constants / Aliases
-------------------
+-------------------
 
 Blake2b variants with fixed digest lengths (all are functions):
 

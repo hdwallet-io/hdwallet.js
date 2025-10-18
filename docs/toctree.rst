@@ -20,7 +20,7 @@ HDWallet
     ECCs <eccs.rst>
     HD's <hds.rst>
     Addresses <addresses.rst>
+    HDWallet <hdwallet.rst>
     Consts <consts.rst>
     Crypto <crypto.rst>
-..     HDWallet <hdwallet.rst>
-..     Utils <utils.rst>
+    Utils <utils.rst>
