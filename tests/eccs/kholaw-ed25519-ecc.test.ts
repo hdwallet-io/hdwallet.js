@@ -2,7 +2,6 @@
 
 import eccs from '../data/json/eccs.json';
 
-
 import {
   ECCS,
   Point,
@@ -179,7 +178,6 @@ describe("Kholaw-Ed25519 end-to-end", () => {
     });
 
     it("curve constants & classes", () => {
-      console.log(KholawEd25519ECC.NAME)
       expect(KholawEd25519ECC.NAME).toBe(data.name);
       expect(typeof KholawEd25519ECC.ORDER).toBe("bigint");
       expect(KholawEd25519ECC.GENERATOR).toBeInstanceOf(Point);
