@@ -135,7 +135,7 @@ export class BIP32HD extends HD {
     if ((this.ecc as typeof EllipticCurveCryptography).NAME === 'Kholaw-Ed25519') {
       let kl = hmacResult.slice(0, hmacHalfLength);
       const kr = hmacResult.slice(hmacHalfLength);
-      kl = tweakMasterKeyBits(kl);
+      kl = new Uint8Array(tweakMasterKeyBits(kl));
 
       const chainCode = hmacSha256(
         getHmac((this.ecc as typeof EllipticCurveCryptography).NAME),

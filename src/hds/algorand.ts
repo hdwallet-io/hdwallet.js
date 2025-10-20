@@ -62,7 +62,7 @@ export class AlgorandHD extends BIP32HD {
       kR = updated.slice(32, 64);
     }
 
-    kL = clampKL(kL);
+    kL = new Uint8Array(clampKL(kL));
     const chainCode = sha256(Uint8Array.from([0x01, ...rawSeed]));
 
     this.seed = rawSeed;
