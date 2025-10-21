@@ -16,5 +16,8 @@
     "target": "es2022",
     "moduleResolution": "Node"
   },
-  "include": ["src/**/*", "src/**/*.ts"]
+  "include": [
+    "src/**/*", "src/**/*.ts",
+    "tests/**/*", "tests/**/*.ts"
+  ]
 }
