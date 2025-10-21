@@ -12,6 +12,6 @@
     "noEmit": true,
     "baseUrl": "."
   },
-  "include": ["../src"],
+  "include": ["src"],
   "exclude": ["../**/*.test.ts", "../tests/**", "../node_modules/**"]
 }

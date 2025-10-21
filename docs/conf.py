@@ -49,7 +49,6 @@ master_doc = "toctree"
 extensions = [
     "sphinx_js",
     "sphinx.ext.autodoc",
-    "sphinx_click.ext",
     "sphinx_ext",
 ]
 
