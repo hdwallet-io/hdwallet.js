@@ -1,4 +1,74 @@
 {
+    "Algorand": {
+        "derivation":{
+            "name": "Custom",
+            "args":{
+                "path": "m/0-1"
+            }
+        },
+        "dumps": {
+            "cryptocurrency": "Algorand",
+            "symbol": "ALGO",
+            "network": "mainnet",
+            "coin-type": 283,
+            "entropy": "0660cc198330660cc198330660cc198330660cc198330660cc198330660cc19a",
+            "strength": 256,
+            "mnemonic": "all all all all all all all all all all all all all all all all all all all all all all all feel",
+            "passphrase": null,
+            "language": "english",
+            "seed": "3be138b36c013fc797d9a897dfeb57c82bfa43f32509753140d851bc88be0fbe5a0abe984e0ca0678749952a1b1f99853ce30b0c388a4da38e2a65c5d1f23e9b",
+            "ecc": "Kholaw-Ed25519",
+            "hd": "Algorand",
+            "semantic": "p2pkh",
+            "root-xprivate-key": "xprv3QESAWYc9vDdZfSSV961AhBP9xiVn2AbVnogWgvY4JUr8akGaVBeTVAA4PkKGZRc5qARyS7icBJtYAcwHh4NzqhjhNt9djtfmPfBBY9KxJUL4FAyosZKtdWVWRC4u4UW1F13RfHt7hqbj78cyxv6QUF",
+            "root-xpublic-key": "xpub661MyMwAqRbcFsvr7uTkLDfTbW9E8XS4mnToUK3qytPukrTTA8HM3Xgm4pzUH2W5QLPShuKyeX56NmhRD4tyiBTh6X8qz73eha9M6nCTuEE",
+            "root-private-key": "d87a73c754bedc63c1a3cb21755d716c1b5775aa6a44c2e98138f161c4ccfa509f0aa44aa6ef7e969e3735da9805eac46da3f8f1ef983c65ebe3a9595357de99",
+            "root-chain-code": "8633bfaef62e4fd738b3b9abefe751431b91ba8d09d65a5cf2f915d50d9b53b8",
+            "root-public-key": "009c5077f61dff6c5211b0162f6f9479041c6e523c15ae10a2111ee6f1532863d2",
+            "strict": true,
+            "wif-type": null,
+            "derivations": [
+                {
+                  "at": {
+                    "path": "m/0",
+                    "indexes": [
+                      0
+                    ],
+                    "depth": 1,
+                    "index": 0
+                  },
+                  "xprivate-key": "xprv3RJrbSKSL7m4S16BXaF7rmLk2gcLBFSWMbtpAmumHvU6g6Z21QavJNkqVzQNFrTtiAevabXkaasHtAfNwe8UkPuYP41eCUPD4bRqCMz5LTgPUWxCUEcHfnBDQNQmTD8qtKEaNGZadw3URPNg4CBv3fP",
+                  "xpublic-key": "xpub69dVRdwUpuoasD6U66HsDCqpYHsNeqcjDMoxXpw7fuQNm5tNw7URxaXiBWQvxeYYxGj41JCwWfmFUQuqF2M9QjhS1wZAEfg1RJ5WAawCmFf",
+                  "private-key": "d87a73c754bedc63c1a3cb21755d716c1b5775aa6a44c2e98138f161c4ccfa509f0aa44aa6ef7e969e3735da9805eac46da3f8f1ef983c65ebe3a9595357de99",
+                  "chain-code": "3abe876dd0d2a75c949e1b1cd26d303ecade0c3331e58581058b5cedbf19d94f",
+                  "public-key": "0057813ad2cfb5434eef999a56016a7f183e0b69018d3b783628a549231f6adbef",
+                  "fingerprint": "8b2a9e55",
+                  "parent-fingerprint": "ece66e99",
+                  "hash": "8b2a9e555646a09a23ac04f1997f8664178fa40f",
+                  "address": "K6ATVUWPWVBU534ZTJLAC2T7DA7AW2IBRU5XQNRIUVESGH3K3PX23BTOZE"
+                },
+                {
+                  "at": {
+                    "path": "m/1",
+                    "indexes": [
+                      1
+                    ],
+                    "depth": 1,
+                    "index": 1
+                  },
+                  "xprivate-key": "xprv3RJrbSKSL7m4TFAW2RC3aG1iF1eFRWKSs8SjVk8AskJ8Yhpz9mfRuVXMGhTW63mSLVVsVzEJrBE1qFTyDPUKaLZDZ3ohABJrJDvDkwwBDrLwzhQCMByyZ43WDifWiGyiQonDJautvJ6H8PubvVby1w1",
+                  "xpublic-key": "xpub69dVRdwUpuoawPig9SUYbzNBHhtCkPEm2Xcp4DtgdTiwLJtrpRe8EvgRZEiitLrkAyFarsSGnZrD36j1ogTUNZ5bkfGUipYucf3q3aRGfGM",
+                  "private-key": "d87a73c754bedc63c1a3cb21755d716c1b5775aa6a44c2e98138f161c4ccfa509f0aa44aa6ef7e969e3735da9805eac46da3f8f1ef983c65ebe3a9595357de99",
+                  "chain-code": "dee8cd84d74202639a37385677ebb2fe49280cff8186b1c76b9478630a4491c4",
+                  "public-key": "0052d18c3acd28da0e34aff0e92d3c2dc1b84465099e862f7f9ee361451f4a4e72",
+                  "fingerprint": "0d6b3483",
+                  "parent-fingerprint": "ece66e99",
+                  "hash": "0d6b3483b857128202c5bd65290572962c788f66",
+                  "address": "KLIYYOWNFDNA4NFP6DUS2PBNYG4EIZIJT2DC67464NQUKH2KJZZGMBCVLY"
+                }
+            ]
+        }
+    },    
     "BIP32": {
         "derivation":{
             "name": "Custom",
