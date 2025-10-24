@@ -26,7 +26,6 @@
             "root-chain-code": "8633bfaef62e4fd738b3b9abefe751431b91ba8d09d65a5cf2f915d50d9b53b8",
             "root-public-key": "009c5077f61dff6c5211b0162f6f9479041c6e523c15ae10a2111ee6f1532863d2",
             "strict": true,
-            "wif-type": null,
             "derivations": [
                 {
                   "at": {
