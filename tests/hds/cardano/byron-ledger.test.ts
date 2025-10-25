@@ -1,39 +1,13 @@
 // SPDX-License-Identifier: MIT
 
 import { HDS, CardanoHD } from '../../../src/hds';
-import { BIP44Derivation, CustomDerivation } from '../../../src/derivations';
+import { BIP44Derivation } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const rawVectors = require('../../data/json/hds.json') as {
-  'Cardano': {
-    'byron-ledger': {
-      'name': string;
-      'seed': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-  };
-};
+const data = require('../../data/json/hds.json') as any;
 
 describe('CardanoHD (Byron Ledger)', () => {
-  const root = rawVectors['Cardano']['byron-ledger'];
+  const root = data['Cardano']['byron-ledger'];
   const drv = root['derivation'];
 
   it('initializes from seed and exposes root values', () => {

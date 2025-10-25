@@ -4,39 +4,11 @@ import { BIP44HD, HDS } from '../../src/hds';
 import { BIP44Derivation } from '../../src/derivations';
 import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 
-const rawVectors = require('../data/json/hds.json') as {
-  'BIP44': {
-    'name': string;
-    'seed': string;
-    'root-xprivate-key': string;
-    'root-xpublic-key': string;
-    'root-private-key': string;
-    'root-chain-code': string;
-    'root-public-key': string;
-    'derivation': {
-      'xprivate-key': string;
-      'xpublic-key': string;
-      'private-key': string;
-      'wif': string;
-      'chain-code': string;
-      'public-key': string;
-      'uncompressed': string;
-      'compressed': string;
-      'hash': string;
-      'depth': number;
-      'path': string;
-      'index': number;
-      'indexes': number[];
-      'fingerprint': string;
-      'parent-fingerprint': string;
-      'address': string;
-    };
-  };
-};
+const data = require('../data/json/hds.json') as any;
 
 describe('BIP44HD', () => {
-  const root = rawVectors['BIP44'];
-  const drv = rawVectors['BIP44']['derivation'];
+  const root = data['BIP44'];
+  const drv = data['BIP44']['derivation'];
 
   it('initializes from seed and exposes root values', () => {
     const hd = new BIP44HD({

@@ -4,36 +4,10 @@ import { HDS, CardanoHD } from '../../../src/hds';
 import { CustomDerivation } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const rawVectors = require('../../data/json/hds.json') as {
-  'Cardano': {
-    'byron-legacy': {
-      'name': string;
-      'seed': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-  };
-};
+const data = require('../../data/json/hds.json') as any;
 
 describe('CardanoHD (Byron Legacy)', () => {
-  const root = rawVectors['Cardano']['byron-legacy'];
+  const root = data['Cardano']['byron-legacy'];
   const drv = root['derivation'];
 
   it('initializes from seed and exposes root values', () => {

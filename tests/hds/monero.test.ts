@@ -1,31 +1,12 @@
-// tests/hds/monero.test.ts
 // SPDX-License-Identifier: MIT
 
-import { HDS } from '../../src/hds';
-import { MoneroHD } from '../../src/hds/monero';
+import { HDS, MoneroHD } from '../../src/hds';
 import { Monero } from '../../src/cryptocurrencies';
 
-const rawVectors = require('../data/json/hds.json') as {
-  'Monero': {
-    'name': string;
-    'seed': string;
-    'spend-private-key': string;
-    'view-private-key': string;
-    'spend-public-key': string;
-    'view-public-key': string;
-    'primary-address': string;
-    'payment-id': string;
-    'integrated-address': string;
-    'sub-addresses': Array<{
-      'address': string;
-      'minor': number;
-      'major': number;
-    }>;
-  };
-};
+const data = require('../data/json/hds.json') as any;
 
 describe('MoneroHD', () => {
-  const root = rawVectors['Monero'];
+  const root = data['Monero'];
 
   it('initializes from seed and exposes root values', () => {
     const hd = new MoneroHD({

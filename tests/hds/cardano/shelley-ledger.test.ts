@@ -4,50 +4,10 @@ import { HDS, CardanoHD } from '../../../src/hds';
 import { CIP1852Derivation, ROLES } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const rawVectors = require('../../data/json/hds.json') as {
-  'Cardano': {
-    'shelley-ledger': {
-      'name': string;
-      'seed': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation-staking': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-      'derivation-payment': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-  };
-};
+const data = require('../../data/json/hds.json') as any;
 
 describe('CardanoHD (Shelley Ledger)', () => {
-  const root = rawVectors['Cardano']['shelley-ledger'];
+  const root = data['Cardano']['shelley-ledger'];
   const stake = root['derivation-staking'];
   const pay = root['derivation-payment'];
 

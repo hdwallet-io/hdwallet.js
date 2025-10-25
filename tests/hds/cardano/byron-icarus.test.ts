@@ -4,62 +4,12 @@ import { HDS, CardanoHD } from '../../../src/hds';
 import { BIP44Derivation } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const rawVectors = require('../../data/json/hds.json') as {
-  'Cardano': {
-    'byron-icarus': {
-      'name': string;
-      'seed': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-    'byron-icarus-passphrase': {
-      'name': string;
-      'seed': string;
-      'passphrase': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-  };
-};
+const data = require('../../data/json/hds.json') as any;
 
 describe('CardanoHD (Byron Icarus)', () => {
-  const icarus = rawVectors['Cardano']['byron-icarus'];
+  const icarus = data['Cardano']['byron-icarus'];
   const drvIcarus = icarus['derivation'];
-  const icarusPass = rawVectors['Cardano']['byron-icarus-passphrase'];
+  const icarusPass = data['Cardano']['byron-icarus-passphrase'];
   const drvIcarusPass = icarusPass['derivation'];
 
   // -- without passphrase --

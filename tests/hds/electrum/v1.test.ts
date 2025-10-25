@@ -5,29 +5,11 @@ import { ElectrumDerivation } from '../../../src/derivations';
 import { Bitcoin as Cryptocurrency } from '../../../src/cryptocurrencies';
 import { PUBLIC_KEY_TYPES } from '../../../src/consts';
 
-const rawVectors = require('../../data/json/hds.json') as {
-  'Electrum-V1': {
-    'name': string;
-    'seed': string;
-    'master-private-key': string;
-    'master-wif': string;
-    'master-public-key': string;
-    'public-key-type': string;
-    'wif-type': string;
-    'derivation': {
-      'private-key': string;
-      'wif': string;
-      'public-key': string;
-      'uncompressed': string;
-      'compressed': string;
-      'address': string;
-    };
-  };
-};
+const data = require('../../data/json/hds.json') as any;
 
 describe('ElectrumV1HD', () => {
-  const root = rawVectors['Electrum-V1'];
-  const drv = rawVectors['Electrum-V1']['derivation'];
+  const root = data['Electrum-V1'];
+  const drv = data['Electrum-V1']['derivation'];
 
   it('initializes from seed and exposes master values', () => {
     const hd = new ElectrumV1HD({

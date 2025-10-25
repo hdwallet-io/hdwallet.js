@@ -4,47 +4,11 @@ import { BIP32HD, HDS } from '../../src/hds';
 import { CustomDerivation } from '../../src/derivations';
 import { Bitcoin as Cryptocurrency } from '../../src/cryptocurrencies';
 
-const rawVectors = require('../data/json/hds.json') as {
-  'BIP32': {
-    'name': string;
-    'seed': string;
-    'root-xprivate-key': string;
-    'root-xpublic-key': string;
-    'root-private-key': string;
-    'root-chain-code': string;
-    'root-public-key': string;
-    'derivation': {
-      'xprivate-key': string;
-      'xpublic-key': string;
-      'private-key': string;
-      'wif': string;
-      'chain-code': string;
-      'public-key': string;
-      'uncompressed': string;
-      'compressed': string;
-      'hash': string;
-      'depth': number;
-      'path': string;
-      'index': number;
-      'indexes': number[];
-      'fingerprint': string;
-      'parent-fingerprint': string;
-      'addresses': {
-        'p2pkh': string;
-        'p2sh': string;
-        'p2tr': string;
-        'p2wpkh': string;
-        'p2wpkh-in-p2sh': string;
-        'p2wsh': string;
-        'p2wsh-in-p2sh': string;
-      };
-    };
-  };
-};
+const data = require('../data/json/hds.json') as any;
 
 describe('BIP32HD', () => {
-  const root = rawVectors['BIP32'];
-  const drv = rawVectors['BIP32']['derivation'];
+  const root = data['BIP32'];
+  const drv = data['BIP32']['derivation'];
 
   it('initializes from seed and exposes root values', () => {
     const hd = new BIP32HD({

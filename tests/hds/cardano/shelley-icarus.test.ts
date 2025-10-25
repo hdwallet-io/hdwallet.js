@@ -1,95 +1,17 @@
 // SPDX-License-Identifier: MIT
 
 import { HDS, CardanoHD } from '../../../src/hds';
-import { CIP1852Derivation, CustomDerivation, ROLES } from '../../../src/derivations';
+import { CIP1852Derivation, ROLES } from '../../../src/derivations';
 import { Cardano } from '../../../src/cryptocurrencies';
 
-const rawVectors = require('../../data/json/hds.json') as {
-  'Cardano': {
-    'shelley-icarus': {
-      'name': string;
-      'seed': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation-staking': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-      'derivation-payment': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-    'shelley-icarus-passphrase': {
-      'name': string;
-      'seed': string;
-      'passphrase': string;
-      'root-xprivate-key': string;
-      'root-xpublic-key': string;
-      'root-private-key': string;
-      'root-chain-code': string;
-      'root-public-key': string;
-      'derivation-staking': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-      'derivation-payment': {
-        'xprivate-key': string;
-        'xpublic-key': string;
-        'private-key': string;
-        'chain-code': string;
-        'public-key': string;
-        'depth': number;
-        'path': string;
-        'index': number;
-        'indexes': number[];
-        'fingerprint': string;
-        'parent-fingerprint': string;
-        'address': string;
-      };
-    };
-  };
-};
+const data = require('../../data/json/hds.json') as any;
 
 describe('CardanoHD (Shelley Icarus)', () => {
-  const root = rawVectors['Cardano']['shelley-icarus'];
+  const root = data['Cardano']['shelley-icarus'];
   const stake = root['derivation-staking'];
   const pay = root['derivation-payment'];
 
-  const rootPass = rawVectors['Cardano']['shelley-icarus-passphrase'];
+  const rootPass = data['Cardano']['shelley-icarus-passphrase'];
   const stakePass = rootPass['derivation-staking'];
   const payPass = rootPass['derivation-payment'];
 
