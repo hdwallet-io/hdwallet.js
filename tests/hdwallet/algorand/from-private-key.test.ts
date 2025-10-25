@@ -61,7 +61,6 @@ describe("Algorand.fromPrivateKey", () => {
     dump['derivation']['hash'] = hdwallet.getHash();
     dump['derivation']['address'] = hdwallet.getAddress();
 
-    console.log(dump);
     expect(hdwallet.getDump()).toEqual(dump);
 
     expect(hdwallet.getCryptocurrency()).toBe(dump['cryptocurrency']);
