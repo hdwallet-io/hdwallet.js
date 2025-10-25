@@ -29,29 +29,23 @@ ENTROPIES
 .. js:autoclass:: algorand.AlgorandEntropy
    :members:
 
-   >>> const { ENTROPIES, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
-   >>> ENTROPIES.names()
-   console.log('>>> ENTROPIES.names()');
+   const { ENTROPIES, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
+   ENTROPIES.names()
    console.log(ENTROPIES.getNames());
    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
-   >>> ENTROPIES.classes()
-   console.log('\n>>> ENTROPIES.classes()');
+   ENTROPIES.classes()
    console.log(ENTROPIES.getClasses());
    // Output: [ [class AlgorandEntropy], [class BIP39Entropy], ... ]
-   >>> ENTROPIES.getEntropyClass("Algorand")
-   console.log('\n>>> ENTROPIES.getEntropyClass("Algorand")');
+   ENTROPIES.getEntropyClass("Algorand")
    console.log(ENTROPIES.getEntropyClass("Algorand"));
    // Output: [class AlgorandEntropy]
-   >>> ENTROPIES.getEntropyClass("Algorand") === AlgorandEntropy
-   console.log('\n>>> ENTROPIES.getEntropyClass("Algorand") === AlgorandEntropy');
+   ENTROPIES.getEntropyClass("Algorand") === AlgorandEntropy
    console.log(ENTROPIES.getEntropyClass("Algorand") === AlgorandEntropy);
    // Output: true
-   >>> ENTROPIES.isEntropy("Algorand")
-   console.log('\n>>> ENTROPIES.isEntropy("Algorand")');
+   ENTROPIES.isEntropy("Algorand")
    console.log(ENTROPIES.isEntropy("Algorand"));
    // Output: true
-   >>> ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
-   console.log('\n>>> ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX');
+   ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
    console.log(ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX);
    // Output: 256
 
@@ -60,25 +54,20 @@ ENTROPIES
 .. js:autoclass:: bip39.BIP39Entropy
    :members:
 
-   >>> const { ENTROPIES, BIP39Entropy } = await import('./src/entropies/index.js');
-   >>> ENTROPIES.names()
-   console.log('>>> ENTROPIES.names()');
+   const { ENTROPIES, BIP39Entropy } = await import('./src/entropies/index.js');
+   ENTROPIES.names()
    console.log(ENTROPIES.getNames());
    Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
-   >>> ENTROPIES.classes()
-   console.log('\n>>> ENTROPIES.classes()');
+   ENTROPIES.classes()
    console.log(ENTROPIES.getClasses());
    // Output: [ [class AlgorandEntropy], [class BIP39Entropy], ... ]
-   >>> ENTROPIES.getEntropyClass("BIP39")
-   console.log('\n>>> ENTROPIES.getEntropyClass("BIP39")');
+   ENTROPIES.getEntropyClass("BIP39")
    console.log(ENTROPIES.getEntropyClass("BIP39"));
    Output: [class BIP39Entropy]
-   >>> ENTROPIES.getEntropyClass("BIP39") === BIP39Entropy
-   console.log('\n>>> ENTROPIES.getEntropyClass("BIP39") === BIP39Entropy');
+   ENTROPIES.getEntropyClass("BIP39") === BIP39Entropy
    console.log(ENTROPIES.getEntropyClass("BIP39") === BIP39Entropy);
    Output: true
-   >>> ENTROPIES.isEntropy("Electrum-V2")
-   console.log('\n>>> ENTROPIES.isEntropy("Electrum-V2")');
+   ENTROPIES.isEntropy("Electrum-V2")
    console.log(ENTROPIES.isEntropy("Electrum-V2"));
    Output: true
 
@@ -87,33 +76,32 @@ ENTROPIES
    :members:
 
 
-   >>> const { ENTROPIES, MoneroEntropy, MONERO_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
-
-   >>> ENTROPIES.names()
+   const { ENTROPIES, MoneroEntropy, MONERO_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
+   ENTROPIES.names()
    console.log(ENTROPIES.getNames());
    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' 
-   >>> ENTROPIES.classes()
+   ENTROPIES.classes()
    console.log(ENTROPIES.getClasses());
    // Output: [ [class AlgorandEntropy], [class BIP39Entropy], ..., [class MoneroEntropy] ]
-   >>> ENTROPIES.getEntropyClass("Monero")
+   ENTROPIES.getEntropyClass("Monero")
    console.log(ENTROPIES.getEntropyClass("Monero"));
    // Output: [class MoneroEntropy]
-   >>> ENTROPIES.getEntropyClass("Monero") === MoneroEntropy
+   ENTROPIES.getEntropyClass("Monero") === MoneroEntropy
    console.log(ENTROPIES.getEntropyClass("Monero") === MoneroEntropy);
    // Output: true
-   >>> ENTROPIES.isEntropy("Monero")
+   ENTROPIES.isEntropy("Monero")
    console.log(ENTROPIES.isEntropy("Monero"));
    // Output: true
-   >>> MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
+   MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
    console.log(MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT);
    // Output: 128
-   >>> MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
+   MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
    console.log(MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX);
    // Output: 256
-   >>> MoneroEntropy.strengths
+   MoneroEntropy.strengths
    console.log(MoneroEntropy.strengths);
    // Output: [128, 256]
-   >>> MoneroEntropy.getName()
+   MoneroEntropy.getName()
    console.log(MoneroEntropy.getName());
    // Output: 'Monero'
 
@@ -121,37 +109,29 @@ ENTROPIES
 .. js:autoclass:: electrum/v1.ElectrumV1Entropy
    :members:
 
-   >>> const { ENTROPIES, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
-   >>> ENTROPIES.names()
-   console.log('>>> ENTROPIES.names()');
+   const { ENTROPIES, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
+   ENTROPIES.names()
    console.log(ENTROPIES.getNames());
    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
-   >>> ENTROPIES.classes()
-   console.log('\n>>> ENTROPIES.classes()');
+   ENTROPIES.classes()
    console.log(ENTROPIES.getClasses());
    // Output: [ [class AlgorandEntropy], [class BIP39Entropy], [class ElectrumV1Entropy], ... ]
-   >>> ENTROPIES.getEntropyClass("Electrum-V1")
-   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V1")');
+   ENTROPIES.getEntropyClass("Electrum-V1")
    console.log(ENTROPIES.getEntropyClass("Electrum-V1"));
    // Output: [class ElectrumV1Entropy]
-   >>> ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy
-   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy');
+   ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy
    console.log(ENTROPIES.getEntropyClass("Electrum-V1") === ElectrumV1Entropy);
    // Output: true
-   >>> ENTROPIES.isEntropy("Electrum-V1")
-   console.log('\n>>> ENTROPIES.isEntropy("Electrum-V1")');
+   ENTROPIES.isEntropy("Electrum-V1")
    console.log(ENTROPIES.isEntropy("Electrum-V1"));
    // Output: true
-   >>> ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
-   console.log('\n>>> ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT');
+   ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
    console.log(ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT);
    // Output: 128
-   >>> ElectrumV1Entropy.strengths
-   console.log('\n>>> ElectrumV1Entropy.strengths');
+   ElectrumV1Entropy.strengths
    console.log(ElectrumV1Entropy.strengths);
    // Output: [128]
-   >>> ElectrumV1Entropy.getName()
-   console.log('\n>>> ElectrumV1Entropy.getName()');
+   ElectrumV1Entropy.getName()
    console.log(ElectrumV1Entropy.getName());
    // Output: 'Electrum-V1'
 
@@ -159,40 +139,31 @@ ENTROPIES
 .. js:autoclass:: electrum/v2.ElectrumV2Entropy
    :members:
 
-   >>> const { ENTROPIES, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
-   >>> ENTROPIES.names()
-   console.log('>>> ENTROPIES.names()');
+   const { ENTROPIES, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
+   ENTROPIES.names()
    console.log(ENTROPIES.getNames());
    // Output: [ 'Algorand', 'BIP39', 'Electrum-V1', 'Electrum-V2', 'Monero' ]
-   >>> ENTROPIES.classes()
-   console.log('\n>>> ENTROPIES.classes()');
+   ENTROPIES.classes()
    console.log(ENTROPIES.getClasses());
    // Output: [ [class AlgorandEntropy], [class BIP39Entropy], [class ElectrumV1Entropy], [class ElectrumV2Entropy], ... ]
-   >>> ENTROPIES.getEntropyClass("Electrum-V2")
-   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V2")');
+   ENTROPIES.getEntropyClass("Electrum-V2")
    console.log(ENTROPIES.getEntropyClass("Electrum-V2"));
    // Output: [class ElectrumV2Entropy]
-   >>> ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy
-   console.log('\n>>> ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy');
+   ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy
    console.log(ENTROPIES.getEntropyClass("Electrum-V2") === ElectrumV2Entropy);
    // Output: true
-   >>> ENTROPIES.isEntropy("Electrum-V2")
-   console.log('\n>>> ENTROPIES.isEntropy("Electrum-V2")');
+   ENTROPIES.isEntropy("Electrum-V2")
    console.log(ENTROPIES.isEntropy("Electrum-V2"));
    // Output: true
-   >>> ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
-   console.log('\n>>> ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO');
+   ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO
    console.log(ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO);
    // Output: 132
-   >>> ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
-   console.log('\n>>> ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR');
+   ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
    console.log(ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR);
    // Output: 264
-   >>> ElectrumV2Entropy.strengths
-   console.log('\n>>> ElectrumV2Entropy.strengths');
+   ElectrumV2Entropy.strengths
    console.log(ElectrumV2Entropy.strengths);
    // Output: [132, 264]
-   >>> ElectrumV2Entropy.getName()
-   console.log('\n>>> ElectrumV2Entropy.getName()');
+   ElectrumV2Entropy.getName()
    console.log(ElectrumV2Entropy.getName());
    // Output: 'Electrum-V2'
