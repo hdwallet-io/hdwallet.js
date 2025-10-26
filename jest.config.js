@@ -25,5 +25,12 @@ module.exports = {
   ],
   coverageReporters: [
     'text', 'lcov', 'html'
-  ]
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '/lib.cjs/',
+    '/lib.esm/',
+    '/online/',
+  ],
 };
