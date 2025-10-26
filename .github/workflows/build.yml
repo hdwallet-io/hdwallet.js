@@ -35,7 +35,7 @@ jobs:
       - name: Report Coverage Summary
         run: cat ./coverage/lcov.info | head -n 20 || echo "lcov report generated"
       - name: Submit Coverage to Coveralls
-        if: ${{ matrix.node-version == 20 && github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
+        if: ${{ matrix.node-version == 22 && github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')) }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
