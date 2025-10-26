@@ -7,8 +7,22 @@ Before implementing a change, please open an [issue](https://github.com/hdwallet
 
 To get started, just fork this repo, clone it locally, and run:
 
-```
+```shell
 npm install
+```
+
+## Testing
+
+You can run the tests with:
+
+```shell
+npm run test
+```
+
+To see the coverage:
+
+```shell
+npm run test:coverage
 ```
 
 ## Pull Request

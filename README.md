@@ -390,6 +390,28 @@ Bitcoin (BTC) native-segwit wallet: {
 
 Explore more [Clients](https://github.com/hdwallet-io/hdwallet.js/blob/master/clients)
 
+## Development
+
+To get started, just fork this repo, clone it locally, and run:
+
+```shell
+npm install
+```
+
+## Testing
+
+You can run the tests with:
+
+```shell
+npm run test
+```
+
+To see the coverage:
+
+```shell
+npm run test:coverage
+```
+
 ## Contributing
 
 Feel free to open an [issue](https://github.com/hdwallet-io/hdwallet.js/issues) if you find a problem,
