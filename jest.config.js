@@ -20,6 +20,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
     'src/**/*.ts',
+    '!src/libs/*.ts',
     '!src/**/*.d.ts',
     '!src/**/index.ts'
   ],
