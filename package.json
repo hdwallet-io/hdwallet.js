@@ -91,6 +91,7 @@
     "build:all": "npm run build && npm run build:dist && npm run build:compression",
     "clean:all": "rm -rf lib.esm lib.cjs dist/hdwallet.* hdwallet-*.tar.gz hdwallet-*.zip",
     "docs": "typedoc",
+    "test:coverage": "jest --coverage",
     "test": "jest"
   },
   "publishConfig": {
