@@ -5,6 +5,7 @@
 [![NPM Version](https://img.shields.io/npm/v/@hdwallet/core)](https://www.npmjs.com/package/@hdwallet/core)
 [![NPM License](https://img.shields.io/npm/l/%40hdwallet%2Fcore?color=%23000000)](https://www.npmjs.com/package/@hdwallet/core)
 [![NPM Downloads](https://img.shields.io/npm/d18m/%40hdwallet%2Fcore)](https://www.npmjs.com/package/@hdwallet/core)
+[![Coverage Status](https://coveralls.io/repos/github/hdwallet-io/hdwallet.js/badge.svg?branch=master)](https://coveralls.io/github/hdwallet-io/hdwallet.js)
 
 A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.
 
