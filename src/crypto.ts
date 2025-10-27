@@ -76,11 +76,58 @@ export function blake2b(
   return getBytes(hashBytes);
 }
 
-export const blake2b32  = (d: any, k?: any, s?: any) => blake2b(d,  4, k, s);
-export const blake2b40  = (d: any, k?: any, s?: any) => blake2b(d,  5, k, s);
+/**
+ * Computes a 32-bit (4-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 4-byte Blake2b digest as Uint8Array.
+ */
+export const blake2b32 = (d: any, k?: any, s?: any) => blake2b(d, 4, k, s);
+
+/**
+ * Computes a 40-bit (5-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 5-byte Blake2b digest as Uint8Array.
+ */
+export const blake2b40 = (d: any, k?: any, s?: any) => blake2b(d, 5, k, s);
+
+/**
+ * Computes a 160-bit (20-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 20-byte Blake2b digest as Uint8Array.
+ */
 export const blake2b160 = (d: any, k?: any, s?: any) => blake2b(d, 20, k, s);
+
+/**
+ * Computes a 224-bit (28-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 28-byte Blake2b digest as Uint8Array.
+ */
 export const blake2b224 = (d: any, k?: any, s?: any) => blake2b(d, 28, k, s);
+
+/**
+ * Computes a 256-bit (32-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 32-byte Blake2b digest as Uint8Array.
+ */
 export const blake2b256 = (d: any, k?: any, s?: any) => blake2b(d, 32, k, s);
+
+/**
+ * Computes a 512-bit (64-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 64-byte Blake2b digest as Uint8Array.
+ */
 export const blake2b512 = (d: any, k?: any, s?: any) => blake2b(d, 64, k, s);
 
 /**
