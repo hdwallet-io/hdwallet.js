@@ -7,6 +7,9 @@ build:
   tools:
     python: "3.12"
     nodejs: "20"
+  jobs:
+    pre_install:
+      - npm ci --include=dev
 
 python:
   install:
