@@ -2,7 +2,9 @@
 
 > This library is still under development and not ready for production use.
 
+[![Build Status](https://img.shields.io/github/actions/workflow/status/hdwallet-io/hdwallet.js/build.yml)](https://github.com/hdwallet-io/hdwallet.js/actions/workflows/build.yml)
 [![NPM Version](https://img.shields.io/npm/v/@hdwallet/core)](https://www.npmjs.com/package/@hdwallet/core)
+[![Documentation Status](https://readthedocs.org/projects/hdwallet/badge/?version=master)](https://hdwallet.readthedocs.io/projects/typescript)
 [![NPM License](https://img.shields.io/npm/l/%40hdwallet%2Fcore?color=%23000000)](https://www.npmjs.com/package/@hdwallet/core)
 [![NPM Downloads](https://img.shields.io/npm/d18m/%40hdwallet%2Fcore)](https://www.npmjs.com/package/@hdwallet/core)
 [![Coverage Status](https://coveralls.io/repos/github/hdwallet-io/hdwallet.js/badge.svg?branch=master)](https://coveralls.io/github/hdwallet-io/hdwallet.js)
@@ -24,9 +26,6 @@ A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurre
 | Derivations                   | `BIP44`, `BIP49`, `BIP84`, `BIP86`, `CIP1852`, `Custom`, `Electrum`, `Monero`, `HDW (Our own custom derivation)`                                                                                                                                                                                                                                    |
 | Addresses                     | `Algorand`, `Aptos`, `Avalanche`, `Cardano`, `Cosmos`, `EOS`, `Ergo`, `Ethereum`, `Filecoin`, `Harmony`, `Icon`, `Injective`, `Monero`, `MultiversX`, `Nano`, `Near`, `Neo`, `OKT-Chain`, `P2PKH`, `P2SH`, `P2TR`, `P2WPKH`, `P2WPKH-In-P2SH`, `P2WSH`, `P2WSH-In-P2SH`, `Ripple`, `Solana`, `Stellar`, `Sui`, `Tezos`, `Tron`, `XinFin`, `Zilliqa` |
 | Others                        | `Wallet Import Format (WIF)`, `Serialization`                                                                                                                                                                                                                                                                                                       |
-
-> [!NOTE]
-> Full documentation is coming soon — until then, explore the [examples](https://github.com/hdwallet-io/hdwallet.js/blob/master/examples) folder for every feature or check the [python-hdwallet](https://github.com/hdwallet-io/python-hdwallet) docs (APIs are almost identical).
 
 ## Installation
 
