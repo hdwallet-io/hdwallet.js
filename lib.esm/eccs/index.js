@@ -4,6 +4,14 @@ import { KholawEd25519ECC as _KholawEd25519ECC } from './kholaw';
 import { SLIP10Ed25519ECC as _SLIP10Ed25519ECC, SLIP10Ed25519Blake2bECC as _SLIP10Ed25519Blake2bECC, SLIP10Ed25519MoneroECC as _SLIP10Ed25519MoneroECC, SLIP10Nist256p1ECC as _SLIP10Nist256p1ECC, SLIP10Secp256k1ECC as _SLIP10Secp256k1ECC } from './slip10';
 import { getBytes } from '../utils';
 import { ECCError, PublicKeyError } from '../exceptions';
+/**
+ * The `ECCS` class manages and provides access to supported
+ * Elliptic Curve Cryptography (ECC) implementations.
+ *
+ * It maintains a dictionary of available ECC algorithm classes,
+ * such as Ed25519, Ed25519-Blake2b, Ed25519-Monero, Nist256p1, and Secp256k1.
+ * This class allows retrieval, validation, and enumeration of these ECC types.
+ */
 export class ECCS {
     static dictionary = {
         [_KholawEd25519ECC.NAME]: _KholawEd25519ECC,
@@ -13,22 +21,48 @@ export class ECCS {
         [_SLIP10Nist256p1ECC.NAME]: _SLIP10Nist256p1ECC,
         [_SLIP10Secp256k1ECC.NAME]: _SLIP10Secp256k1ECC
     };
+    /**
+     * Get the names of all supported ECC implementations.
+     * @returns {string[]} List of ECC class names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Get all available ECC classes.
+     * @returns {typeof _EllipticCurveCryptography[]} Array of ECC classes.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieve an ECC class by its name.
+     * @param {string} name - The ECC class name.
+     * @returns {typeof _EllipticCurveCryptography} The corresponding ECC class.
+     * @throws {ECCError} If the name is invalid.
+     */
     static getECCClass(name) {
         if (!this.isECC(name)) {
             throw new ECCError(`Invalid ECC name`, { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Check if a given name corresponds to a valid ECC implementation.
+     * @param {string} name - The ECC name to verify.
+     * @returns {boolean} True if valid, false otherwise.
+     */
     static isECC(name) {
         return this.getNames().includes(name);
     }
 }
+/**
+ * Validate and normalize a public key input.
+ * @param {Uint8Array | string | _PublicKey} publicKey - Public key data or object.
+ * @param {typeof _PublicKey} publicKeyCls - Expected public key class.
+ * @returns {_PublicKey} Validated and instantiated public key.
+ * @throws {PublicKeyError} If the public key is invalid or of the wrong type.
+ */
 export function validateAndGetPublicKey(publicKey, publicKeyCls) {
     try {
         if (publicKey instanceof Uint8Array) {

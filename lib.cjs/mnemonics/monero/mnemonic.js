@@ -26,6 +26,13 @@ exports.MONERO_MNEMONIC_LANGUAGES = {
     RUSSIAN: 'russian',
     SPANISH: 'spanish',
 };
+/**
+ * MoneroMnemonic
+ *
+ * Implements the Monero-specific mnemonic system which supports multiple languages
+ * and variable word counts (12, 13, 24, or 25 words). Provides encoding and decoding
+ * between entropy and mnemonic phrases with optional checksum validation.
+ */
 class MoneroMnemonic extends mnemonic_1.Mnemonic {
     static wordBitLength = 11;
     static wordsList = [
@@ -69,9 +76,21 @@ class MoneroMnemonic extends mnemonic_1.Mnemonic {
         [exports.MONERO_MNEMONIC_LANGUAGES.RUSSIAN]: wordlists_1.MONERO_RUSSIAN_WORDLIST,
         [exports.MONERO_MNEMONIC_LANGUAGES.SPANISH]: wordlists_1.MONERO_SPANISH_WORDLIST
     };
+    /**
+     * Returns the name of this mnemonic type.
+     * @returns {string} `"Monero"`
+     */
     static getName() {
         return 'Monero';
     }
+    /**
+     * Generates a mnemonic phrase from a given word count.
+     *
+     * @param {number} count - The number of words (12, 13, 24, or 25).
+     * @param {string} language - The language of the mnemonic (must be one of `MONERO_MNEMONIC_LANGUAGES`).
+     * @returns {string} Mnemonic phrase.
+     * @throws {MnemonicError} If the word count is invalid.
+     */
     static fromWords(count, language) {
         if (!this.wordsList.includes(count)) {
             throw new exceptions_1.MnemonicError('Invalid word count', { expected: this.wordsList, got: count });
@@ -84,6 +103,14 @@ class MoneroMnemonic extends mnemonic_1.Mnemonic {
         const entropyBytes = entropies_1.MoneroEntropy.generate(strength);
         return this.encode(entropyBytes, language, options);
     }
+    /**
+     * Generates a mnemonic phrase from entropy.
+     *
+     * @param {string | Uint8Array | Entropy} entropy - Entropy in hex, bytes, or Entropy object.
+     * @param {string} language - Target language for words.
+     * @param {MnemonicOptionsInterface} [options={}] - Options (e.g., checksum).
+     * @returns {string} Mnemonic phrase.
+     */
     static fromEntropy(entropy, language, options = {}) {
         let raw;
         if (typeof entropy === 'string') {
@@ -97,6 +124,16 @@ class MoneroMnemonic extends mnemonic_1.Mnemonic {
         }
         return this.encode(raw, language, options);
     }
+    /**
+     * Encodes raw entropy bytes into a Monero mnemonic phrase.
+     *
+     * @param {string | Uint8Array} entropy - Raw entropy.
+     * @param {string} language - Language for the mnemonic.
+     * @param {MnemonicOptionsInterface} [options={}] - Options, supports `{ checksum: true }`.
+     * @returns {string} Encoded mnemonic phrase.
+     * @throws {EntropyError} If entropy length is invalid.
+     * @throws {Error} If the wordlist length is incorrect.
+     */
     static encode(entropy, language, options = {}) {
         const entropyBytes = (0, utils_1.getBytes)(entropy);
         if (!entropies_1.MoneroEntropy.isValidBytesStrength(entropyBytes.length)) {
@@ -122,6 +159,15 @@ class MoneroMnemonic extends mnemonic_1.Mnemonic {
         }
         return this.normalize(mnemonic).join(' ');
     }
+    /**
+     * Decodes a Monero mnemonic phrase into entropy.
+     *
+     * @param {string | string[]} input - Mnemonic phrase as string or array of words.
+     * @param {MnemonicOptionsInterface} [options={}] - Options (checksum validation).
+     * @returns {string} Hex string of entropy.
+     * @throws {MnemonicError} If mnemonic length is invalid.
+     * @throws {ChecksumError} If checksum is invalid.
+     */
     static decode(input, options = {}) {
         const words = this.normalize(input);
         const count = words.length;
@@ -153,6 +199,12 @@ class MoneroMnemonic extends mnemonic_1.Mnemonic {
         }
         return (0, utils_1.bytesToHex)((0, utils_1.concatBytes)(...buffers), false);
     }
+    /**
+     * Normalizes mnemonic input into a lowercase word array.
+     *
+     * @param {string | string[]} input - Mnemonic phrase (string or array).
+     * @returns {string[]} Normalized words.
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());

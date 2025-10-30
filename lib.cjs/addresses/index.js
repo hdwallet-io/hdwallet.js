@@ -71,6 +71,10 @@ const aptos_1 = require("./aptos");
 Object.defineProperty(exports, "AptosAddress", { enumerable: true, get: function () { return aptos_1.AptosAddress; } });
 const near_1 = require("./near");
 Object.defineProperty(exports, "NearAddress", { enumerable: true, get: function () { return near_1.NearAddress; } });
+/**
+ * Central registry of all supported blockchain address classes.
+ * Provides utility methods to fetch names, classes, or check validity.
+ */
 class ADDRESSES {
     static dictionary = {
         [p2pkh_1.P2PKHAddress.getName()]: p2pkh_1.P2PKHAddress,
@@ -107,18 +111,37 @@ class ADDRESSES {
         [aptos_1.AptosAddress.getName()]: aptos_1.AptosAddress,
         [near_1.NearAddress.getName()]: near_1.NearAddress
     };
+    /**
+     * Returns an array of all supported address names.
+     * @returns {string[]} List of address names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns an array of all address classes.
+     * @returns {Array<typeof Address>} List of address classes.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Fetches the address class corresponding to the given name.
+     * @param {string} name - Name of the address.
+     * @returns {typeof Address} The corresponding address class.
+     * @throws {AddressError} If the name is not a valid address.
+     */
     static getAddressClass(name) {
         if (!this.isAddress(name)) {
             throw new exceptions_1.AddressError('Invalid address name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks whether a given name corresponds to a supported address.
+     * @param {string} name - Name to check.
+     * @returns {boolean} True if the name is supported, false otherwise.
+     */
     static isAddress(name) {
         return name in this.dictionary;
     }

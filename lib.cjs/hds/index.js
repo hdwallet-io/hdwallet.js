@@ -27,6 +27,9 @@ const v2_1 = require("./electrum/v2");
 Object.defineProperty(exports, "ElectrumV2HD", { enumerable: true, get: function () { return v2_1.ElectrumV2HD; } });
 const monero_1 = require("./monero");
 Object.defineProperty(exports, "MoneroHD", { enumerable: true, get: function () { return monero_1.MoneroHD; } });
+/**
+ * Manages and retrieves supported HD wallet classes for multiple blockchain protocols.
+ */
 class HDS {
     static dictionary = {
         [algorand_1.AlgorandHD.getName()]: algorand_1.AlgorandHD,
@@ -41,18 +44,37 @@ class HDS {
         [v2_1.ElectrumV2HD.getName()]: v2_1.ElectrumV2HD,
         [monero_1.MoneroHD.getName()]: monero_1.MoneroHD
     };
+    /**
+     * Returns all registered HD wallet names.
+     * @returns {string[]} An array of HD wallet names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns all registered HD wallet classes.
+     * @returns {typeof HD[]} An array of HD wallet class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieves a specific HD wallet class by name.
+     * @param {string} name - The HD wallet name to look up.
+     * @returns {typeof HD} The corresponding HD wallet class.
+     * @throws {BaseError} If the provided name is not a valid HD class.
+     */
     static getHDClass(name) {
         if (!this.isHD(name)) {
             throw new exceptions_1.BaseError('Invalid HD name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks whether the provided name corresponds to a valid HD wallet class.
+     * @param {string} name - The HD wallet name to validate.
+     * @returns {boolean} True if the name exists in the dictionary, otherwise false.
+     */
     static isHD(name) {
         return this.getNames().includes(name);
     }

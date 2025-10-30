@@ -26,7 +26,19 @@ Object.defineProperty(exports, "MoneroMnemonic", { enumerable: true, get: functi
 Object.defineProperty(exports, "MONERO_MNEMONIC_WORDS", { enumerable: true, get: function () { return mnemonic_6.MONERO_MNEMONIC_WORDS; } });
 Object.defineProperty(exports, "MONERO_MNEMONIC_LANGUAGES", { enumerable: true, get: function () { return mnemonic_6.MONERO_MNEMONIC_LANGUAGES; } });
 const exceptions_1 = require("../exceptions");
+/**
+ * Registry for all supported mnemonic schemes.
+ *
+ * Provides utility functions to:
+ *  - List all available mnemonic names (`getNames`).
+ *  - Retrieve classes for each mnemonic (`getClasses`).
+ *  - Lookup a specific mnemonic implementation by name (`getMnemonicClass`).
+ *  - Validate whether a mnemonic name is supported (`isMnemonic`).
+ */
 class MNEMONICS {
+    /**
+     * Internal dictionary mapping mnemonic names to their class implementations.
+     */
     static dictionary = {
         [mnemonic_2.AlgorandMnemonic.getName()]: mnemonic_2.AlgorandMnemonic,
         [mnemonic_3.BIP39Mnemonic.getName()]: mnemonic_3.BIP39Mnemonic,
@@ -34,18 +46,41 @@ class MNEMONICS {
         [mnemonic_5.ElectrumV2Mnemonic.getName()]: mnemonic_5.ElectrumV2Mnemonic,
         [mnemonic_6.MoneroMnemonic.getName()]: mnemonic_6.MoneroMnemonic
     };
+    /**
+     * Get the list of all supported mnemonic names.
+     *
+     * @returns {string[]} Array of mnemonic names, e.g. `["Algorand", "BIP39", "Electrum-V1", "Electrum-V2", "Monero"]`.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Get the list of all supported mnemonic classes.
+     *
+     * @returns {typeof Mnemonic[]} Array of mnemonic class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Lookup a mnemonic class by name.
+     *
+     * @param {string} name - The mnemonic name to lookup (e.g. `"BIP39"`).
+     * @throws {MnemonicError} If the name is invalid or unsupported.
+     * @returns {typeof Mnemonic} The corresponding mnemonic class.
+     */
     static getMnemonicClass(name) {
         if (!this.isMnemonic(name)) {
             throw new exceptions_1.MnemonicError('Invalid Mnemonic name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Check if a given name corresponds to a supported mnemonic.
+     *
+     * @param {string} name - The mnemonic name to check.
+     * @returns {boolean} `true` if the name is supported, otherwise `false`.
+     */
     static isMnemonic(name) {
         return this.getNames().includes(name);
     }

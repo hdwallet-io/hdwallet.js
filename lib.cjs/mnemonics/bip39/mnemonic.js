@@ -29,6 +29,22 @@ exports.BIP39_MNEMONIC_LANGUAGES = {
     SPANISH: 'spanish',
     TURKISH: 'turkish'
 };
+/**
+ * Implements the BIP-39 mnemonic standard.
+ *
+ * BIP-39 mnemonics are human-readable sequences of words that encode entropy
+ * with a checksum, making it easier to back up and restore HD wallets.
+ *
+ * Supported word counts: 12, 15, 18, 21, 24
+ * Supported languages: Chinese (Simplified/Traditional), Czech, English, French,
+ * Italian, Japanese, Korean, Portuguese, Russian, Spanish, Turkish.
+ *
+ * Features:
+ * - Generate mnemonics from entropy or word count.
+ * - Encode entropy into mnemonic phrases.
+ * - Decode mnemonic phrases back to entropy.
+ * - Verify and normalize mnemonics across languages.
+ */
 class BIP39Mnemonic extends mnemonic_1.Mnemonic {
     static wordBitLength = 11;
     static wordsListNumber = 2048;
@@ -61,9 +77,22 @@ class BIP39Mnemonic extends mnemonic_1.Mnemonic {
         [exports.BIP39_MNEMONIC_LANGUAGES.SPANISH]: wordlists_1.BIP39_SPANISH_WORDLIST,
         [exports.BIP39_MNEMONIC_LANGUAGES.TURKISH]: wordlists_1.BIP39_TURKISH_WORDLIST
     };
+    /**
+     * Get the human-readable name of this mnemonic standard.
+     * @returns `"BIP39"`
+     */
     static getName() {
         return 'BIP39';
     }
+    /**
+     * Generate a new mnemonic phrase by word count.
+     *
+     * @param words Number of words (12, 15, 18, 21, or 24).
+     * @param language Language of the wordlist.
+     * @param options Additional encoding options.
+     * @throws {MnemonicError} If word count is invalid.
+     * @returns Mnemonic phrase as a string.
+     */
     static fromWords(words, language, options = {}) {
         if (!this.wordsList.includes(words)) {
             throw new exceptions_1.MnemonicError(`Invalid words`, { expected: this.wordsList, got: words });
@@ -72,6 +101,14 @@ class BIP39Mnemonic extends mnemonic_1.Mnemonic {
         const entropyHex = entropies_1.BIP39Entropy.generate(strength);
         return this.encode(entropyHex, language, options);
     }
+    /**
+     * Generate a mnemonic phrase from entropy.
+     *
+     * @param entropy Hex string, byte array, or Entropy instance.
+     * @param language Language of the wordlist.
+     * @param options Additional encoding options.
+     * @returns Mnemonic phrase as a string.
+     */
     static fromEntropy(entropy, language, options = {}) {
         let hex;
         if (typeof entropy === 'string') {
@@ -85,6 +122,16 @@ class BIP39Mnemonic extends mnemonic_1.Mnemonic {
         }
         return this.encode(hex, language, options);
     }
+    /**
+     * Encode entropy into a BIP-39 mnemonic phrase.
+     *
+     * @param entropyInput Hex string or byte array.
+     * @param language Wordlist language.
+     * @param options Additional options.
+     * @throws {EntropyError} If entropy length is invalid.
+     * @throws {Error} If wordlist size is not 2048.
+     * @returns Mnemonic phrase as a string.
+     */
     static encode(entropyInput, language, options = {}) {
         const entropyBytes = typeof entropyInput === 'string' ?
             (0, utils_1.hexToBytes)(entropyInput) : entropyInput;
@@ -108,6 +155,15 @@ class BIP39Mnemonic extends mnemonic_1.Mnemonic {
         }
         return words.join(' ');
     }
+    /**
+     * Decode a mnemonic phrase back into entropy.
+     *
+     * @param mnemonic Mnemonic phrase as string or array of words.
+     * @param options Options for checksum verification and custom wordlists.
+     * @throws {MnemonicError} If word count or words are invalid.
+     * @throws {ChecksumError} If checksum does not match.
+     * @returns Hex string of entropy.
+     */
     static decode(mnemonic, options = { checksum: false }) {
         const words = this.normalize(mnemonic);
         if (!this.wordsList.includes(words.length)) {
@@ -149,6 +205,12 @@ class BIP39Mnemonic extends mnemonic_1.Mnemonic {
         }
         return (0, utils_1.bytesToHex)(entropyBytes);
     }
+    /**
+     * Normalize a mnemonic phrase into lowercase NFKD words.
+     *
+     * @param input Mnemonic as string or array of words.
+     * @returns Array of normalized words.
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());

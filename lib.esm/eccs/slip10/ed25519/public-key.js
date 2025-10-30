@@ -4,10 +4,22 @@ import { PublicKey } from '../../public-key';
 import { SLIP10_ED25519_CONST } from '../../../consts';
 import { SLIP10Ed25519Point } from './point';
 import { concatBytes } from '../../../utils';
+/**
+ * Represents a public key for the SLIP10-Ed25519 elliptic curve.
+ * Provides encoding, compressed/uncompressed bytes, and point access.
+ * @extends PublicKey
+ */
 export class SLIP10Ed25519PublicKey extends PublicKey {
+    /** @returns {string} The name of the elliptic curve. */
     getName() {
         return 'SLIP10-Ed25519';
     }
+    /**
+     * Create a public key from raw bytes.
+     * @param {Uint8Array} publicKey - Encoded public key bytes.
+     * @returns {PublicKey} The constructed public key.
+     * @throws {Error} If the byte length is invalid or data is invalid.
+     */
     static fromBytes(publicKey) {
         let data = publicKey;
         const prefix = SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX;
@@ -26,25 +38,36 @@ export class SLIP10Ed25519PublicKey extends PublicKey {
             throw new Error('Invalid key bytes');
         }
     }
+    /**
+     * Create a public key from a point.
+     * @param {Point} point - The elliptic curve point.
+     * @returns {PublicKey} The constructed public key.
+     */
     static fromPoint(point) {
         const raw = point.getRawEncoded();
         return this.fromBytes(raw);
     }
+    /** @returns {number} The length of the compressed public key in bytes. */
     static getCompressedLength() {
         return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX.length;
     }
+    /** @returns {number} The length of the uncompressed public key in bytes. */
     static getUncompressedLength() {
         return this.getCompressedLength();
     }
+    /** @returns {any} The underlying public key object. */
     getUnderlyingObject() {
         return this.publicKey;
     }
+    /** @returns {Uint8Array} The compressed public key bytes. */
     getRawCompressed() {
         return concatBytes(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX, this.publicKey.toRawBytes());
     }
+    /** @returns {Uint8Array} The uncompressed public key bytes (same as compressed). */
     getRawUncompressed() {
         return this.getRawCompressed();
     }
+    /** @returns {Point} The elliptic curve point corresponding to this public key. */
     getPoint() {
         return new SLIP10Ed25519Point(this.publicKey);
     }

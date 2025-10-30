@@ -10,6 +10,11 @@ const public_key_1 = require("./public-key");
 Object.defineProperty(exports, "KholawEd25519PublicKey", { enumerable: true, get: function () { return public_key_1.KholawEd25519PublicKey; } });
 const private_key_1 = require("./private-key");
 Object.defineProperty(exports, "KholawEd25519PrivateKey", { enumerable: true, get: function () { return private_key_1.KholawEd25519PrivateKey; } });
+/**
+ * Represents the Kholaw-Ed25519 elliptic curve cryptography implementation.
+ * Extends the SLIP10-Ed25519 curve with Kholaw-specific key handling.
+ * @extends EllipticCurveCryptography
+ */
 class KholawEd25519ECC extends ecc_1.EllipticCurveCryptography {
     static NAME = 'Kholaw-Ed25519';
     static ORDER = slip10_1.SLIP10Ed25519ECC.ORDER;

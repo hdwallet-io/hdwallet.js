@@ -3,6 +3,10 @@ import { EllipticCurveCryptography } from '../../ecc';
 import { SLIP10Secp256k1Point as _SLIP10Secp256k1Point } from './point';
 import { SLIP10Secp256k1PublicKey as _SLIP10Secp256k1PublicKey } from './public-key';
 import { SLIP10Secp256k1PrivateKey as _SLIP10Secp256k1PrivateKey } from './private-key';
+/**
+ * Represents the SLIP10 Secp256k1 elliptic curve cryptography.
+ * @extends EllipticCurveCryptography
+ */
 export class SLIP10Secp256k1ECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Secp256k1';
     static ORDER = BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141');

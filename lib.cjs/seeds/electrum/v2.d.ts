@@ -1,11 +1,38 @@
 import { Seed } from '../seed';
 import { Mnemonic } from '../../mnemonics';
 import { SeedOptionsInterface } from '../../interfaces';
+/**
+ * Represents an Electrum-V2 seed derived from an Electrum V2 mnemonic phrase.
+ *
+ * Implements the PBKDF2-HMAC-SHA512 key derivation using the salt "electrum"
+ * plus an optional passphrase. Compatible with Standard, Segwit, and 2FA mnemonic types.
+ */
 export declare class ElectrumV2Seed extends Seed {
     static seedSaltModifier: string;
     static seedPbkdf2Rounds: number;
+    /**
+     * Returns the name of this seed type.
+     *
+     * @returns {string} The seed name, `'Electrum-V2'`.
+     */
     static getName(): string;
+    /**
+     * Derives an Electrum-V2 seed from a given mnemonic.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase or `Mnemonic` object.
+     * @param {SeedOptionsInterface} [options] - Optional parameters including:
+     *   - `mnemonicType` (`ELECTRUM_V2_MNEMONIC_TYPES`): The type of Electrum V2 mnemonic.
+     *   - `passphrase` (`string`): An optional passphrase for seed derivation.
+     * @returns {string} The derived Electrum-V2 seed as a hex string.
+     * @throws {MnemonicError} If the mnemonic is invalid for the specified type.
+     */
     static fromMnemonic(mnemonic: string | Mnemonic, options?: SeedOptionsInterface): string;
+    /**
+     * Retrieves the mnemonic type from the seed options.
+     *
+     * @returns {string} The mnemonic type (e.g., `'standard'`, `'segwit'`, `'2fa'`).
+     * @throws {SeedError} If the mnemonic type is not set.
+     */
     getMnemonicType(): string;
 }
 //# sourceMappingURL=v2.d.ts.map

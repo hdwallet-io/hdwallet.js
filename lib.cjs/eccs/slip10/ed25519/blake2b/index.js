@@ -10,6 +10,11 @@ const public_key_1 = require("./public-key");
 Object.defineProperty(exports, "SLIP10Ed25519Blake2bPublicKey", { enumerable: true, get: function () { return public_key_1.SLIP10Ed25519Blake2bPublicKey; } });
 const private_key_1 = require("./private-key");
 Object.defineProperty(exports, "SLIP10Ed25519Blake2bPrivateKey", { enumerable: true, get: function () { return private_key_1.SLIP10Ed25519Blake2bPrivateKey; } });
+/**
+ * Represents the SLIP10-Ed25519-Blake2b elliptic curve cryptography class.
+ * Provides access to generator, order, points, public and private key classes.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Ed25519Blake2bECC extends ecc_1.EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519-Blake2b';
     static ORDER = index_1.SLIP10Ed25519ECC.ORDER;

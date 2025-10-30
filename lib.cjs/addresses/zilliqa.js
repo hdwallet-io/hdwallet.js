@@ -9,11 +9,26 @@ const crypto_1 = require("../crypto");
 const utils_1 = require("../utils");
 const address_1 = require("./address");
 const exceptions_1 = require("../exceptions");
+/**
+ * Class representing a Zilliqa blockchain address.
+ * Uses Bech32 encoding for addresses and derives addresses from the compressed public key.
+ */
 class ZilliqaAddress extends address_1.Address {
     static hrp = cryptocurrencies_1.Zilliqa.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} The string "Zilliqa".
+     */
     static getName() {
         return 'Zilliqa';
     }
+    /**
+     * Encodes a public key into a Bech32 Zilliqa address.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} [options] - Optional encoding parameters, such as HRP.
+     * @returns {string} The Bech32-encoded Zilliqa address.
+     * @throws {AddressError} If encoding fails.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -26,6 +41,13 @@ class ZilliqaAddress extends address_1.Address {
         }
         return encoded;
     }
+    /**
+     * Decodes a Bech32 Zilliqa address back into its public key hash.
+     * @param {string} address - The Bech32-encoded Zilliqa address to decode.
+     * @param {AddressOptionsInterface} [options] - Optional decoding parameters, such as HRP.
+     * @returns {string} The public key hash in byte string format.
+     * @throws {AddressError} If decoding fails or the address length is invalid.
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {

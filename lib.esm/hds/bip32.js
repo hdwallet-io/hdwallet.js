@@ -12,6 +12,12 @@ import { serialize, deserialize, isValidKey, isRootKey } from '../keys';
 import { getBytes, getHmac, bytesToInteger, integerToBytes, bytesToString, resetBits, setBits, concatBytes, ensureTypeMatch, hexToBytes } from '../utils';
 import { AddressError, DerivationError, BaseError, PrivateKeyError, PublicKeyError, SeedError, WIFError, XPrivateKeyError, XPublicKeyError } from '../exceptions';
 import { checkDecode } from '../libs/base58';
+/**
+ * Implements the BIP32 hierarchical deterministic (HD) wallet standard.
+ * Provides methods for key derivation, serialization, address generation, and working
+ * with extended keys (xprv/xpub) and WIF format.
+ *
+ */
 export class BIP32HD extends HD {
     seed;
     rootPrivateKey;
@@ -30,6 +36,10 @@ export class BIP32HD extends HD {
     rootIndex = 0;
     depth = 0;
     index = 0;
+    /**
+     * Create a new BIP32HD instance with optional configuration.
+     * @param options Configuration options for HD wallet
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -51,9 +61,19 @@ export class BIP32HD extends HD {
             path: options.path, indexes: options.indexes
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'BIP32'
+     */
     static getName() {
         return 'BIP32';
     }
+    /**
+     * Initialize HD wallet from a seed.
+     * @param seed Seed as Uint8Array, string, or Seed object
+     * @returns {this} The current HD instance
+     * @throws {SeedError} If the seed is invalid
+     */
     fromSeed(seed) {
         try {
             this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
@@ -95,7 +115,7 @@ export class BIP32HD extends HD {
         if (this.ecc.NAME === 'Kholaw-Ed25519') {
             let kl = hmacResult.slice(0, hmacHalfLength);
             const kr = hmacResult.slice(hmacHalfLength);
-            kl = tweakMasterKeyBits(kl);
+            kl = new Uint8Array(tweakMasterKeyBits(kl));
             const chainCode = hmacSha256(getHmac(this.ecc.NAME), concatBytes(integerToBytes(0x01), this.seed));
             this.rootPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(concatBytes(kl, kr));
             this.rootChainCode = getBytes(chainCode);
@@ -115,6 +135,14 @@ export class BIP32HD extends HD {
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Initialize from extended private key (xprv).
+     * @param xprv Extended private key
+     * @param encoded Whether the key is encoded in Base58
+     * @param strict Whether to enforce root key validation
+     * @returns {this} The current HD instance
+     * @throws {XPrivateKeyError} If the key is invalid
+     */
     fromXPrivateKey(xprv, encoded = true, strict = false) {
         if (!isValidKey(xprv, encoded)) {
             throw new XPrivateKeyError('Invalid extended(x) private key');
@@ -142,6 +170,14 @@ export class BIP32HD extends HD {
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Initialize from extended public key (xpub).
+     * @param xpub Extended public key
+     * @param encoded Whether the key is encoded in Base58
+     * @param strict Whether to enforce root key validation
+     * @returns {this} The current HD instance
+     * @throws {XPublicKeyError} If the key is invalid
+     */
     fromXPublicKey(xpub, encoded = true, strict = false) {
         if (!isValidKey(xpub, encoded)) {
             throw new XPublicKeyError('Invalid extended(x) public key');
@@ -167,6 +203,12 @@ export class BIP32HD extends HD {
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Initialize from WIF private key.
+     * @param wif WIF string
+     * @returns {this} The current HD instance
+     * @throws {WIFError} If the WIF prefix is missing
+     */
     fromWIF(wif) {
         if (!this.wifPrefix) {
             throw new WIFError('WIF prefix is required');
@@ -185,6 +227,12 @@ export class BIP32HD extends HD {
         this.strict = null;
         return this;
     }
+    /**
+     * Initialize from a raw private key.
+     * @param privateKey Private key as string
+     * @returns {this} The current HD instance
+     * @throws {PrivateKeyError} If the private key is invalid
+     */
     fromPrivateKey(privateKey) {
         try {
             const bytes = getBytes(privateKey);
@@ -197,6 +245,12 @@ export class BIP32HD extends HD {
             throw new PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Initialize from a raw public key.
+     * @param publicKey Public key as string
+     * @returns {this} The current HD instance
+     * @throws {PublicKeyError} If the public key is invalid
+     */
     fromPublicKey(publicKey) {
         try {
             const bytes = getBytes(publicKey);
@@ -208,6 +262,11 @@ export class BIP32HD extends HD {
             throw new PublicKeyError('Invalid public key data');
         }
     }
+    /**
+     * Apply a derivation path to the HD instance.
+     * @param derivation Derivation object
+     * @returns {this} The current HD instance
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, Derivation, { errorClass: DerivationError });
         for (const index of this.derivation.getIndexes()) {
@@ -215,11 +274,20 @@ export class BIP32HD extends HD {
         }
         return this;
     }
+    /**
+     * Update derivation path after clearing previous derivation.
+     * @param derivation Derivation object
+     * @returns {this} The current HD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         this.fromDerivation(derivation);
         return this;
     }
+    /**
+     * Reset derivation to the root keys.
+     * @returns {this} The current HD instance
+     */
     cleanDerivation() {
         if (this.rootPrivateKey) {
             this.privateKey = this.rootPrivateKey;
@@ -238,6 +306,12 @@ export class BIP32HD extends HD {
         }
         return this;
     }
+    /**
+     * Derive a child key at a specific index.
+     * @param index Child index
+     * @returns {this} The current HD instance
+     * @throws {DerivationError} If derivation fails
+     */
     drive(index) {
         const hmacHalfLength = 64 / 2; // sha512 output is 64 bytes
         if (this.ecc.NAME === 'Kholaw-Ed25519') {
@@ -367,6 +441,10 @@ export class BIP32HD extends HD {
             return this;
         }
     }
+    /**
+     * Returns the seed as a string.
+     * @returns {string | null} Seed or null if not set
+     */
     getSeed() {
         return this.seed ? bytesToString(this.seed) : null;
     }
@@ -485,6 +563,13 @@ export class BIP32HD extends HD {
     getStrict() {
         return this.strict ?? null;
     }
+    /**
+     * Generate a cryptocurrency address using current public key.
+     * Supports multiple address formats like P2PKH, P2SH, P2TR, P2WPKH, etc.
+     * @param options Address generation options
+     * @returns {string} Encoded address
+     * @throws {AddressError} If the address type is invalid
+     */
     getAddress(options = {
         address: Bitcoin.ADDRESSES.P2PKH,
         publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,

@@ -11,6 +11,16 @@ export const ALGORAND_MNEMONIC_WORDS = {
 export const ALGORAND_MNEMONIC_LANGUAGES = {
     ENGLISH: 'english'
 };
+/**
+ * Represents an Algorand mnemonic implementation.
+ *
+ * This class provides functionality to generate, encode, decode,
+ * and validate mnemonics based on Algorand's specification.
+ *
+ * - Uses 25-word mnemonics
+ * - Uses a checksum mechanism (2 bytes, 11-bit words)
+ * - Supported languages: English
+ */
 export class AlgorandMnemonic extends Mnemonic {
     static checksumLength = 2;
     static wordBitLength = 11;
@@ -24,9 +34,23 @@ export class AlgorandMnemonic extends Mnemonic {
     static wordLists = {
         [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: ALGORAND_ENGLISH_WORDLIST
     };
+    /**
+     * Returns the name of this mnemonic type.
+     *
+     * @returns The string `"Algorand"`.
+     */
     static getName() {
         return 'Algorand';
     }
+    /**
+     * Generate a new mnemonic from word count and language.
+     *
+     * @param words - Number of words (must be 25).
+     * @param language - Language of the wordlist.
+     * @param options - Optional mnemonic generation options.
+     * @returns A space-separated mnemonic string.
+     * @throws {MnemonicError} If word count is invalid.
+     */
     static fromWords(words, language, options = {}) {
         if (!this.wordsList.includes(words)) {
             throw new MnemonicError(`Invalid words count`, { expected: this.wordsList, got: words });
@@ -35,12 +59,30 @@ export class AlgorandMnemonic extends Mnemonic {
         const entropyHex = AlgorandEntropy.generate(strength);
         return this.encode(entropyHex, language, options);
     }
+    /**
+     * Generate a mnemonic from entropy input.
+     *
+     * @param entropy - Entropy (hex string, Uint8Array, or Entropy object).
+     * @param language - Target language.
+     * @param options - Optional mnemonic options.
+     * @returns A mnemonic phrase.
+     */
     static fromEntropy(entropy, language, options = {}) {
         const entropyBytes = typeof entropy === 'string'
             ? getBytes(entropy) : entropy instanceof Uint8Array
             ? entropy : getBytes(entropy.getEntropy());
         return this.encode(entropyBytes, language, options);
     }
+    /**
+     * Encode entropy bytes into an Algorand mnemonic phrase.
+     *
+     * @param entropyInput - Entropy (hex string or bytes).
+     * @param language - Language for wordlist.
+     * @param options - Optional encode options.
+     * @returns A space-separated mnemonic.
+     * @throws {EntropyError} If entropy length is invalid.
+     * @throws {Error} If conversion to checksum/data words fails.
+     */
     static encode(entropyInput, language, options = {}) {
         const entropyBytes = getBytes(entropyInput);
         if (!AlgorandEntropy.isValidBytesStrength(entropyBytes.length)) {
@@ -58,6 +100,15 @@ export class AlgorandMnemonic extends Mnemonic {
         const indexes = [...dataWords, checksumWords[0]];
         return indexes.map(i => wordList[i]).join(' ');
     }
+    /**
+     * Decode an Algorand mnemonic back into entropy.
+     *
+     * @param mnemonic - Mnemonic string or array of words.
+     * @param options - Optional decode options.
+     * @returns Hex string representing entropy.
+     * @throws {MnemonicError} If mnemonic length or words are invalid.
+     * @throws {ChecksumError} If checksum does not match.
+     */
     static decode(mnemonic, options = {}) {
         const words = this.normalize(mnemonic);
         if (!this.wordsList.includes(words.length)) {
@@ -87,6 +138,12 @@ export class AlgorandMnemonic extends Mnemonic {
         }
         return bytesToString(entropyBytes);
     }
+    /**
+     * Normalize input mnemonic into lowercase array of words.
+     *
+     * @param input - Mnemonic string or array.
+     * @returns Normalized array of words.
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());

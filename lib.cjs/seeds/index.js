@@ -16,6 +16,14 @@ Object.defineProperty(exports, "ElectrumV1Seed", { enumerable: true, get: functi
 Object.defineProperty(exports, "ElectrumV2Seed", { enumerable: true, get: function () { return electrum_1.ElectrumV2Seed; } });
 const monero_1 = require("./monero");
 Object.defineProperty(exports, "MoneroSeed", { enumerable: true, get: function () { return monero_1.MoneroSeed; } });
+/**
+ * The SEEDS class acts as a centralized registry for all supported seed types.
+ *
+ * It provides a unified interface for accessing, validating, and retrieving seed classes
+ * (such as Algorand, BIP39, Cardano, Electrum, and Monero).
+ *
+ * Each seed class implements the `Seed` base class and defines its own derivation logic.
+ */
 class SEEDS {
     static dictionary = {
         [algorand_1.AlgorandSeed.getName()]: algorand_1.AlgorandSeed,
@@ -25,18 +33,41 @@ class SEEDS {
         [electrum_1.ElectrumV2Seed.getName()]: electrum_1.ElectrumV2Seed,
         [monero_1.MoneroSeed.getName()]: monero_1.MoneroSeed
     };
+    /**
+     * Returns the names of all available seed classes.
+     *
+     * @returns {string[]} Array of seed class names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns all seed class constructors.
+     *
+     * @returns {typeof Seed[]} Array of seed class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieves a specific seed class by name.
+     *
+     * @param {string} name - The name of the seed class.
+     * @returns {typeof Seed} The corresponding seed class.
+     * @throws {SeedError} If the provided seed name is invalid.
+     */
     static getSeedClass(name) {
         if (!this.isSeed(name)) {
             throw new exceptions_1.SeedError('Invalid seed name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks if a given name corresponds to a valid registered seed type.
+     *
+     * @param {string} name - The seed name to check.
+     * @returns {boolean} `true` if valid, otherwise `false`.
+     */
     static isSeed(name) {
         return this.getNames().includes(name);
     }

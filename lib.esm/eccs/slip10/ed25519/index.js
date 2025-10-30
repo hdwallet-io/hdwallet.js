@@ -3,6 +3,11 @@ import { EllipticCurveCryptography } from '../../ecc';
 import { SLIP10Ed25519Point as _SLIP10Ed25519Point } from './point';
 import { SLIP10Ed25519PublicKey as _SLIP10Ed25519PublicKey } from './public-key';
 import { SLIP10Ed25519PrivateKey as _SLIP10Ed25519PrivateKey } from './private-key';
+/**
+ * Implements the SLIP10-Ed25519 elliptic curve cryptography scheme.
+ * Provides point, public key, and private key definitions for Ed25519 curve operations.
+ * @extends EllipticCurveCryptography
+ */
 export class SLIP10Ed25519ECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519';
     static ORDER = BigInt('7237005577332262213973186563042994240857116359379907606001950938285454250989');

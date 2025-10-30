@@ -9,6 +9,10 @@ const public_key_1 = require("./public-key");
 Object.defineProperty(exports, "SLIP10Secp256k1PublicKey", { enumerable: true, get: function () { return public_key_1.SLIP10Secp256k1PublicKey; } });
 const private_key_1 = require("./private-key");
 Object.defineProperty(exports, "SLIP10Secp256k1PrivateKey", { enumerable: true, get: function () { return private_key_1.SLIP10Secp256k1PrivateKey; } });
+/**
+ * Represents the SLIP10 Secp256k1 elliptic curve cryptography.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Secp256k1ECC extends ecc_1.EllipticCurveCryptography {
     static NAME = 'SLIP10-Secp256k1';
     static ORDER = BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141');

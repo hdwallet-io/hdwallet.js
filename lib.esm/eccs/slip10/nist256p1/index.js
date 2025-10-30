@@ -4,6 +4,10 @@ import { EllipticCurveCryptography } from '../../ecc';
 import { SLIP10Nist256p1Point as _SLIP10Nist256p1Point } from './point';
 import { SLIP10Nist256p1PublicKey as _SLIP10Nist256p1PublicKey } from './public-key';
 import { SLIP10Nist256p1PrivateKey as _SLIP10Nist256p1PrivateKey } from './private-key';
+/**
+ * Represents the SLIP10 NIST P-256 elliptic curve cryptography implementation.
+ * @extends EllipticCurveCryptography
+ */
 export class SLIP10Nist256p1ECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Nist256p1';
     static ORDER = p256.CURVE.n;

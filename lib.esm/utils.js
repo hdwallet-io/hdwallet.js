@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 import { randomBytes as nobleRandomBytes } from '@noble/hashes/utils';
 import { TypeError, DerivationError } from './exceptions';
+/**
+ * Converts input data to a Uint8Array.
+ * @param data - Input data as a string, number array, Uint8Array, or null/undefined.
+ * @param encoding - Encoding to use if input is a string ('hex', 'utf8', 'base64'). Default is 'hex'.
+ * @returns Uint8Array representation of the input data.
+ */
 export function getBytes(data, encoding = 'hex') {
     if (data == null) {
         return new Uint8Array();
@@ -34,6 +40,12 @@ export function getBytes(data, encoding = 'hex') {
             throw new Error(`Unsupported encoding: ${encoding}`);
     }
 }
+/**
+ * Converts input to a Uint8Array (buffer).
+ * @param input - Input as a string, ArrayBuffer, or Array-like number array.
+ * @param encoding - Encoding for string inputs ('utf8', 'hex', 'base64'). Default is 'utf8'.
+ * @returns Uint8Array representation of input.
+ */
 export function toBuffer(input, encoding = 'utf8') {
     if (typeof input === 'string') {
         switch (encoding) {
@@ -60,6 +72,12 @@ export function toBuffer(input, encoding = 'utf8') {
     // Fallback: try Array-like (e.g. number[])
     return Uint8Array.from(input);
 }
+/**
+ * Converts a hex string to a Uint8Array.
+ * @param hex - Hexadecimal string (optionally prefixed with '0x').
+ * @returns Uint8Array representing the hex string.
+ * @throws Error if hex string length is not even.
+ */
 export function hexToBytes(hex) {
     const normalized = hex.startsWith('0x') ? hex.slice(2) : hex;
     if (normalized.length % 2 !== 0) {
@@ -71,12 +89,23 @@ export function hexToBytes(hex) {
     }
     return bytes;
 }
+/**
+ * Converts a Uint8Array to a hex string.
+ * @param bytes - Data to convert.
+ * @param prefix - Whether to add '0x' prefix. Default is false.
+ * @returns Hexadecimal string.
+ */
 export function bytesToHex(bytes, prefix = false) {
     const hex = Array.from(bytes)
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
     return prefix ? `0x${hex}` : hex;
 }
+/**
+ * Converts a string or Uint8Array to a hex string.
+ * @param data - Input string or Uint8Array.
+ * @returns Hexadecimal string representation of input.
+ */
 export function bytesToString(data) {
     if (data == null ||
         (typeof data === 'string' && data.length === 0) ||
@@ -96,12 +125,24 @@ export function bytesToString(data) {
     // Uint8Array case: just convert those bytes to hex
     return bytesToHex(data);
 }
+/**
+ * Generates cryptographically secure random bytes.
+ * @param len - Number of random bytes to generate.
+ * @returns Uint8Array of random bytes.
+ * @throws Error if length is not a positive integer.
+ */
 export function randomBytes(len) {
     if (!Number.isInteger(len) || len <= 0) {
         throw new Error('randomBytes: length must be a positive integer');
     }
     return nobleRandomBytes(len);
 }
+/**
+ * Converts a Uint8Array to a bigint.
+ * @param bytes - Byte array to convert.
+ * @param littleEndian - Whether to interpret bytes in little-endian order. Default is false.
+ * @returns bigint representation of bytes.
+ */
 export function bytesToInteger(bytes, littleEndian = false) {
     // if little-endian, reverse into a new array
     const data = littleEndian
@@ -109,6 +150,12 @@ export function bytesToInteger(bytes, littleEndian = false) {
         : bytes;
     return data.reduce((acc, b) => (acc << BigInt(8)) + BigInt(b), BigInt(0));
 }
+/**
+ * Ensures the input is a string.
+ * @param data - Input as a string or Uint8Array.
+ * @returns Input converted to string.
+ * @throws TypeError if input is neither string nor Uint8Array.
+ */
 export function ensureString(data) {
     if (data instanceof Uint8Array) {
         return new TextDecoder().decode(data);
@@ -118,6 +165,11 @@ export function ensureString(data) {
     }
     throw new TypeError('Invalid value for string');
 }
+/**
+ * Converts a string or Uint8Array to a bigint.
+ * @param data - Input string (hex) or Uint8Array.
+ * @returns bigint representation of input.
+ */
 export function stringToInteger(data) {
     let buf;
     if (typeof data === 'string') {
@@ -133,6 +185,12 @@ export function stringToInteger(data) {
     }
     return val;
 }
+/**
+ * Compares two Uint8Arrays for equality.
+ * @param a - First array.
+ * @param b - Second array.
+ * @returns true if arrays are equal, false otherwise.
+ */
 export function equalBytes(a, b) {
     if (a.length !== b.length)
         return false;
@@ -142,6 +200,13 @@ export function equalBytes(a, b) {
     }
     return true;
 }
+/**
+ * Converts a bigint or number to a Uint8Array.
+ * @param value - Value to convert.
+ * @param length - Optional fixed byte length for output.
+ * @param endianness - 'big' or 'little' endian. Default is 'big'.
+ * @returns Uint8Array representing the integer.
+ */
 export function integerToBytes(value, length, endianness = 'big') {
     // coerce to BigInt without using 0n
     let val = typeof value === 'number' ? BigInt(value) : value;
@@ -174,6 +239,11 @@ export function integerToBytes(value, length, endianness = 'big') {
     const result = new Uint8Array(bytes);
     return endianness === 'little' ? result.reverse() : result;
 }
+/**
+ * Concatenates multiple Uint8Arrays.
+ * @param chunks - Arrays to concatenate.
+ * @returns Concatenated Uint8Array.
+ */
 export function concatBytes(...chunks) {
     const totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
     const result = new Uint8Array(totalLength);
@@ -184,12 +254,23 @@ export function concatBytes(...chunks) {
     }
     return result;
 }
+/**
+ * Converts bytes to a binary string.
+ * @param data - Input bytes.
+ * @param zeroPadBits - Optional zero-padding to reach a specific bit length.
+ * @returns Binary string representation of bytes.
+ */
 export function bytesToBinaryString(data, zeroPadBits = 0) {
     const bits = Array.from(data)
         .map((b) => b.toString(2).padStart(8, '0'))
         .join('');
     return bits.length < zeroPadBits ? bits.padStart(zeroPadBits, '0') : bits;
 }
+/**
+ * Converts a binary string or bytes to a bigint.
+ * @param data - Binary string or Uint8Array.
+ * @returns bigint representation.
+ */
 export function binaryStringToInteger(data) {
     const bin = typeof data === 'string'
         ? data
@@ -197,6 +278,12 @@ export function binaryStringToInteger(data) {
     const clean = bin.trim();
     return BigInt('0b' + clean);
 }
+/**
+ * Converts an integer to a binary string.
+ * @param data - Input number or bigint.
+ * @param zeroPadBits - Optional zero-padding to reach a specific bit length.
+ * @returns Binary string.
+ */
 export function integerToBinaryString(data, zeroPadBits = 0) {
     const big = typeof data === 'bigint' ? data : BigInt(data);
     const bits = big.toString(2);
@@ -204,6 +291,12 @@ export function integerToBinaryString(data, zeroPadBits = 0) {
         ? bits.padStart(zeroPadBits, '0')
         : bits;
 }
+/**
+ * Converts a binary string or Uint8Array to bytes.
+ * @param data - Input binary string or bytes.
+ * @param zeroPadByteLen - Optional zero-padding to reach a specific byte length.
+ * @returns Uint8Array representation.
+ */
 export function binaryStringToBytes(data, zeroPadByteLen = 0) {
     const bits = typeof data === 'string'
         ? data.trim()
@@ -223,6 +316,11 @@ export function binaryStringToBytes(data, zeroPadByteLen = 0) {
     }
     return hexToBytes(hex);
 }
+/**
+ * Checks if all inputs are equal.
+ * @param inputs - Inputs of various types to compare.
+ * @returns true if all inputs are equal, false otherwise.
+ */
 export function isAllEqual(...inputs) {
     if (inputs.length < 2)
         return true;
@@ -295,6 +393,12 @@ export function isAllEqual(...inputs) {
         return true;
     });
 }
+/**
+ * Generates a random alphanumeric passphrase.
+ * @param length - Length of the passphrase. Default is 32.
+ * @param chars - Characters to use. Default is alphanumeric.
+ * @returns Randomly generated passphrase string.
+ */
 export function generatePassphrase(length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
     const bytes = randomBytes(length);
     let result = '';
@@ -303,6 +407,12 @@ export function generatePassphrase(length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVW
     }
     return result;
 }
+/**
+ * Returns HMAC seed based on ECC name.
+ * @param eccName - ECC curve name.
+ * @returns Seed as Uint8Array.
+ * @throws DerivationError if curve is unknown.
+ */
 export function getHmac(eccName) {
     const encoder = new TextEncoder();
     if ([
@@ -318,6 +428,12 @@ export function getHmac(eccName) {
     }
     throw new DerivationError('Unknown ECC name');
 }
+/**
+ * Excludes specific keys from nested objects recursively.
+ * @param nested - Input object.
+ * @param keys - Keys to exclude.
+ * @returns New object excluding specified keys.
+ */
 export function excludeKeys(nested, keys) {
     const out = {};
     const keySet = new Set(keys); // optional optimization
@@ -338,6 +454,12 @@ export function excludeKeys(nested, keys) {
     }
     return out;
 }
+/**
+ * Converts derivation path string to an array of indexes.
+ * @param path - Derivation path (e.g., "m/44'/0'/0'").
+ * @returns Array of numeric indexes.
+ * @throws DerivationError on invalid path.
+ */
 export function pathToIndexes(path) {
     if (path === 'm' || path === 'm/')
         return [];
@@ -351,6 +473,11 @@ export function pathToIndexes(path) {
         ? parseInt(i.slice(0, -1), 10) + 0x80000000
         : parseInt(i, 10));
 }
+/**
+ * Converts array of indexes to a derivation path string.
+ * @param indexes - Array of numeric indexes.
+ * @returns Derivation path string.
+ */
 export function indexesToPath(indexes) {
     return ('m' +
         indexes
@@ -359,6 +486,13 @@ export function indexesToPath(indexes) {
             : `/${i.toString()}`)
             .join(''));
 }
+/**
+ * Normalize a BIP32 derivation index to a tuple.
+ * @param index - Index as number, string (e.g., "0" or "0-3"), or tuple [from, to].
+ * @param hardened - Whether the index is hardened (default: false)
+ * @returns Normalized derivation tuple.
+ * @throws DerivationError on invalid input.
+ */
 export function normalizeIndex(index, hardened = false) {
     if (typeof index === 'number') {
         if (index < 0)
@@ -394,6 +528,13 @@ export function normalizeIndex(index, hardened = false) {
     }
     throw new DerivationError(`Invalid index instance, got ${typeof index}`);
 }
+/**
+ * Normalize a derivation path string or numeric indexes.
+ * @param path - Optional path string like "m/0'/1-3'"
+ * @param indexes - Optional array of numeric indexes
+ * @returns Tuple: [normalized path string, indexes array, derivation tuples]
+ * @throws DerivationError on invalid input
+ */
 export function normalizeDerivation(path, indexes) {
     let _path = 'm';
     const _indexes = [];
@@ -432,6 +573,11 @@ export function normalizeDerivation(path, indexes) {
     }
     return [_path, _indexes, _deriv];
 }
+/**
+ * Convert a derivation tuple to integer representation
+ * @param idx - Derivation tuple [index, hardened] or [from, to, hardened]
+ * @returns Integer value with hardened bit applied if necessary
+ */
 export function indexTupleToInteger(idx) {
     if (idx.length === 2) {
         const [i, h] = idx;
@@ -442,6 +588,11 @@ export function indexTupleToInteger(idx) {
         return to + (h ? 0x80000000 : 0);
     }
 }
+/**
+ * Convert a derivation tuple to a string representation
+ * @param idx - Derivation tuple [index, hardened] or [from, to, hardened]
+ * @returns String like "0'" or "0-3'"
+ */
 export function indexTupleToString(idx) {
     if (idx.length === 2) {
         const [i, h] = idx;
@@ -452,24 +603,50 @@ export function indexTupleToString(idx) {
         return `${from}-${to}${h ? "'" : ''}`;
     }
 }
+/**
+ * Convert a single index string "0'" into tuple [0, true]
+ * @param i - Index string
+ * @returns Tuple [index number, hardened boolean]
+ */
 export function indexStringToTuple(i) {
     const hardened = i.endsWith("'");
     const num = parseInt(hardened ? i.slice(0, -1) : i, 10);
     return [num, hardened];
 }
+/**
+ * XOR two Uint8Arrays of equal length
+ * @param a - First byte array
+ * @param b - Second byte array
+ * @returns New Uint8Array resulting from XOR
+ * @throws DerivationError if lengths mismatch
+ */
 export function xor(a, b) {
     if (a.length !== b.length)
         throw new DerivationError('Uint8Arrays must match length for XOR');
     return getBytes(a.map((x, i) => x ^ b[i]));
 }
+/**
+ * Add two Uint8Arrays element-wise modulo 256
+ * @param a - First byte array
+ * @param b - Second byte array
+ * @returns New Uint8Array result
+ * @throws DerivationError if lengths mismatch
+ */
 export function addNoCarry(a, b) {
     if (a.length !== b.length)
         throw new DerivationError('Uint8Arrays must match length for addNoCarry');
     return getBytes(a.map((x, i) => (x + b[i]) & 0xff));
 }
+/**
+ * Multiply each byte by a scalar modulo 256
+ * @param data - Byte array
+ * @param scalar - Integer scalar
+ * @returns New Uint8Array result
+ */
 export function multiplyScalarNoCarry(data, scalar) {
     return getBytes(data.map(x => (x * scalar) & 0xff));
 }
+/** Bit manipulation helpers */
 export function isBitsSet(value, bitNum) {
     return (value & (1 << bitNum)) !== 0;
 }
@@ -488,9 +665,21 @@ export function resetBit(value, bitNum) {
 export function resetBits(value, mask) {
     return value & ~mask;
 }
+/**
+ * Reverse a Uint8Array
+ * @param data - Byte array
+ * @returns New Uint8Array reversed
+ */
 export function bytesReverse(data) {
     return getBytes(data).reverse();
 }
+/**
+ * Convert bits between different widths
+ * @param data - Array of numbers or Uint8Array
+ * @param fromBits - Original bit width
+ * @param toBits - Target bit width
+ * @returns Array of converted bits or null if input invalid
+ */
 export function convertBits(data, fromBits, toBits) {
     const input = Array.isArray(data) ? data : Array.from(data);
     const maxVal = (1 << toBits) - 1;
@@ -514,6 +703,13 @@ export function convertBits(data, fromBits, toBits) {
     }
     return out;
 }
+/**
+ * Convert a byte chunk to mnemonic words
+ * @param bytesChunk - Uint8Array of bytes
+ * @param wordsList - Wordlist array
+ * @param endianness - "little" or "big"
+ * @returns Tuple of 3 mnemonic words
+ */
 export function bytesChunkToWords(bytesChunk, wordsList, endianness) {
     const len = BigInt(wordsList.length);
     let chunkNum = bytesToInteger(new Uint8Array(bytesChunk), endianness !== 'big');
@@ -522,6 +718,15 @@ export function bytesChunkToWords(bytesChunk, wordsList, endianness) {
     const i3 = Number(((chunkNum / len / len) + BigInt(i2)) % len);
     return [wordsList[i1], wordsList[i2], wordsList[i3]];
 }
+/**
+ * Convert 3 mnemonic words to a byte chunk
+ * @param w1 - Word 1
+ * @param w2 - Word 2
+ * @param w3 - Word 3
+ * @param wordsList - Wordlist array
+ * @param endianness - "little" or "big"
+ * @returns Uint8Array of bytes
+ */
 export function wordsToBytesChunk(w1, w2, w3, wordsList, endianness) {
     const len = BigInt(wordsList.length);
     const idxMap = new Map(wordsList.map((w, i) => [w, BigInt(i)]));
@@ -532,9 +737,22 @@ export function wordsToBytesChunk(w1, w2, w3, wordsList, endianness) {
     const u8 = integerToBytes(chunk, 4, endianness);
     return getBytes(u8);
 }
+/**
+ * Convert kebab-case string to camelCase
+ * @param input - Input string
+ * @returns CamelCase string
+ */
 export function toCamelCase(input) {
     return input.toLowerCase().replace(/-([a-z])/g, (_, char) => char.toUpperCase());
 }
+/**
+ * Ensure a value matches the expected type(s)
+ * @param instanceOrClass - Value or class instance
+ * @param expectedType - Expected type or constructor
+ * @param options - Optional object with otherTypes, strict, errorClass
+ * @returns Value or object with {value, isValid}
+ * @throws TypeError or custom error if type mismatch
+ */
 export function ensureTypeMatch(instanceOrClass, expectedType, options = {}) {
     const tryMatch = (type) => {
         if (type === 'any')

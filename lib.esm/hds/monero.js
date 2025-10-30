@@ -10,6 +10,12 @@ import { DerivationError, AddressError, NetworkError, PrivateKeyError, PublicKey
 import { Network } from '../cryptocurrencies/cryptocurrency';
 import { MoneroAddress } from '../addresses';
 import { HD } from './hd';
+/**
+ * Implements hierarchical deterministic (HD) wallet logic for Monero.
+ * Supports primary, integrated, and subaddresses according to Monero's key derivation rules.
+ * Provides methods to initialize from seed, private key, derivation, or watch-only mode.
+ *
+ */
 export class MoneroHD extends HD {
     network;
     seed;
@@ -19,6 +25,15 @@ export class MoneroHD extends HD {
     viewPrivateKey;
     spendPublicKey;
     viewPublicKey;
+    /**
+     * Creates a new MoneroHD instance.
+     * @param options HD wallet configuration options
+     * @param options.network Monero network (mainnet/testnet/stagenet)
+     * @param options.paymentID Optional payment ID for integrated addresses
+     * @param options.minor Derivation minor index (default: 1)
+     * @param options.major Derivation major index (default: 0)
+     * @throws {NetworkError} If network is invalid
+     */
     constructor(options = {
         minor: 1, major: 0
     }) {
@@ -37,9 +52,20 @@ export class MoneroHD extends HD {
             major: options.major ?? 0
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Monero'
+     */
     static getName() {
         return 'Monero';
     }
+    /**
+     * Initializes wallet from a seed.
+     * Automatically derives spend and view keys.
+     * @param seed Seed as Uint8Array, string, or Seed instance
+     * @returns {this} Current MoneroHD instance
+     * @throws {SeedError} If seed is invalid
+     */
     fromSeed(seed) {
         try {
             this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
@@ -51,6 +77,12 @@ export class MoneroHD extends HD {
             throw new SeedError('Invalid seed data');
         }
     }
+    /**
+     * Initializes wallet from a raw private key.
+     * @param privateKey Private key string
+     * @returns {this} Current MoneroHD instance
+     * @throws {PrivateKeyError} If private key is invalid
+     */
     fromPrivateKey(privateKey) {
         try {
             this.privateKeyRaw = getBytes(privateKey);
@@ -60,18 +92,39 @@ export class MoneroHD extends HD {
             throw new PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Sets the derivation path.
+     * @param derivation MoneroDerivation instance
+     * @returns {this} Current MoneroHD instance
+     * @throws {DerivationError} If derivation is invalid
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, MoneroDerivation, { errorClass: DerivationError });
         return this;
     }
+    /**
+     * Updates derivation path, cleaning previous derivation state.
+     * @param derivation MoneroDerivation instance
+     * @returns {this} Current MoneroHD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
+    /**
+     * Resets derivation state to initial.
+     * @returns {this} Current MoneroHD instance
+     */
     cleanDerivation() {
         this.derivation.clean();
         return this.fromDerivation(this.derivation);
     }
+    /**
+     * Initializes HD wallet from a spend private key.
+     * Automatically derives the corresponding view key.
+     * @param spendPrivateKey Spend private key as string or Uint8Array
+     * @returns {this} Current MoneroHD instance
+     */
     fromSpendPrivateKey(spendPrivateKey) {
         const spendKey = SLIP10Ed25519MoneroPrivateKey.fromBytes(getBytes(spendPrivateKey));
         const viewKey = SLIP10Ed25519MoneroPrivateKey.fromBytes(scalarReduce(keccak256(spendKey.getRaw())));
@@ -81,6 +134,14 @@ export class MoneroHD extends HD {
         this.viewPublicKey = viewKey.getPublicKey();
         return this;
     }
+    /**
+     * Initializes wallet in watch-only mode.
+     * Only view private key and spend public key are required.
+     * @param viewPrivateKey View private key string
+     * @param spendPublicKey Spend public key string
+     * @returns {this} Current MoneroHD instance
+     * @throws {PrivateKeyError|PublicKeyError} If keys are invalid
+     */
     fromWatchOnly(viewPrivateKey, spendPublicKey) {
         let viewKey;
         let spendKey;
@@ -102,6 +163,13 @@ export class MoneroHD extends HD {
         this.viewPublicKey = viewKey.getPublicKey();
         return this;
     }
+    /**
+     * Derives subaddress public keys at given minor and major indices.
+     * @param minorIndex Minor index
+     * @param majorIndex Major index
+     * @returns {[PublicKey, PublicKey]} Tuple of [subaddress spend key, subaddress view key]
+     * @throws {DerivationError} If indices are invalid
+     */
     drive(minorIndex, majorIndex) {
         const max = 2 ** 32 - 1;
         if (minorIndex < 0 || minorIndex > max) {
@@ -125,24 +193,52 @@ export class MoneroHD extends HD {
             SLIP10Ed25519MoneroPublicKey.fromPoint(subAddressViewPoint)
         ];
     }
+    /**
+     * Returns the raw seed as string.
+     * @returns {string|null} Seed string or null if not set
+     */
     getSeed() {
         return this.seed ? bytesToString(this.seed) : null;
     }
+    /**
+     * Returns the raw private key as string.
+     * @returns {string|null} Private key string or null if not set
+     */
     getPrivateKey() {
         return this.privateKeyRaw ? bytesToString(this.privateKeyRaw) : null;
     }
+    /**
+     * Returns spend private key as string.
+     * @returns {string|null} Spend private key string
+     */
     getSpendPrivateKey() {
         return this.spendPrivateKey ? bytesToString(this.spendPrivateKey.getRaw()) : null;
     }
+    /**
+     * Returns view private key as string.
+     * @returns {string} View private key string
+     */
     getViewPrivateKey() {
         return bytesToString(this.viewPrivateKey.getRaw());
     }
+    /**
+     * Returns spend public key as string.
+     * @returns {string} Spend public key string
+     */
     getSpendPublicKey() {
         return bytesToString(this.spendPublicKey.getRawCompressed());
     }
+    /**
+     * Returns view public key as string.
+     * @returns {string} View public key string
+     */
     getViewPublicKey() {
         return bytesToString(this.viewPublicKey.getRawCompressed());
     }
+    /**
+     * Generates the primary Monero address.
+     * @returns {string} Encoded primary address
+     */
     getPrimaryAddress() {
         return MoneroAddress.encode({
             spendPublicKey: this.spendPublicKey,
@@ -152,6 +248,11 @@ export class MoneroHD extends HD {
             addressType: Monero.ADDRESS_TYPES.STANDARD
         });
     }
+    /**
+     * Generates an integrated Monero address with optional payment ID.
+     * @param paymentID Optional payment ID
+     * @returns {string|null} Encoded integrated address or null if no payment ID
+     */
     getIntegratedAddress(paymentID) {
         if (!paymentID && !this.paymentID)
             return null;
@@ -164,6 +265,13 @@ export class MoneroHD extends HD {
             paymentID: paymentID ?? this.paymentID
         });
     }
+    /**
+     * Generates a subaddress for given minor and major indices.
+     * Defaults to current derivation indices.
+     * @param minor Minor index
+     * @param major Major index
+     * @returns {string} Encoded subaddress
+     */
     getSubAddress(minor = this.derivation.getMinor(), major = this.derivation.getMajor()) {
         if (minor === 0 && major === 0) {
             return this.getPrimaryAddress();
@@ -177,6 +285,17 @@ export class MoneroHD extends HD {
             addressType: Monero.ADDRESS_TYPES.SUB_ADDRESS
         });
     }
+    /**
+     * Generates a Monero address of the specified type.
+     * Supports standard, integrated, and subaddress types.
+     * @param options Address generation options
+     * @param options.addressType Type of address (STANDARD, INTEGRATED, SUB_ADDRESS)
+     * @param options.paymentID Payment ID for integrated addresses
+     * @param options.minor Minor index for subaddresses
+     * @param options.major Major index for subaddresses
+     * @returns {string|null} Encoded Monero address
+     * @throws {AddressError} If address type is invalid
+     */
     getAddress(options = {
         addressType: Monero.ADDRESS_TYPES.STANDARD
     }) {

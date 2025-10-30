@@ -7,11 +7,19 @@ const consts_1 = require("../consts");
 const addresses_1 = require("../addresses");
 const exceptions_1 = require("../exceptions");
 const bip32_1 = require("./bip32");
+/**
+ * Implements BIP141 hierarchical deterministic wallet functionality.
+ */
 class BIP141HD extends bip32_1.BIP32HD {
     address;
     xprivateKeyVersion;
     xpublicKeyVersion;
     semantic;
+    /**
+     * Creates a new BIP141HD instance with semantic validation.
+     * @param {HDOptionsInterface} [options={publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED}] - The HD wallet configuration options.
+     * @throws {SemanticError} If semantic type is missing.
+     */
     constructor(options = {
         publicKeyType: consts_1.PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -21,12 +29,27 @@ class BIP141HD extends bip32_1.BIP32HD {
         }
         this.fromSemantic(options.semantic, options);
     }
+    /**
+     * Returns the BIP standard name.
+     * @returns {string} The name "BIP141".
+     */
     static getName() {
         return 'BIP141';
     }
+    /**
+     * Retrieves the semantic type of the HD wallet.
+     * @returns {string} The semantic type.
+     */
     getSemantic() {
         return this.semantic;
     }
+    /**
+     * Initializes the HD wallet based on semantic type.
+     * @param {string} semantic - The semantic standard type (e.g., P2WPKH, P2WSH).
+     * @param {BIP141HDSemanticOptionsInterface} [options={}] - Optional BIP141-specific configuration.
+     * @returns {this} The initialized BIP141HD instance.
+     * @throws {SemanticError} If the semantic type is invalid.
+     */
     fromSemantic(semantic, options = {}) {
         if (!consts_1.SEMANTICS.getTypes().includes(semantic)) {
             throw new exceptions_1.SemanticError(`Invalid semantic type`, {
@@ -56,18 +79,48 @@ class BIP141HD extends bip32_1.BIP32HD {
         }
         return this;
     }
+    /**
+     * Returns the root extended private key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The root extended private key or null.
+     */
     getRootXPrivateKey(version, encoded = true) {
         return super.getRootXPrivateKey(version ?? this.xprivateKeyVersion, encoded);
     }
+    /**
+     * Returns the root extended public key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The root extended public key or null.
+     */
     getRootXPublicKey(version, encoded = true) {
         return super.getRootXPublicKey(version ?? this.xpublicKeyVersion, encoded);
     }
+    /**
+     * Returns the derived extended private key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The derived extended private key or null.
+     */
     getXPrivateKey(version, encoded = true) {
         return super.getXPrivateKey(version ?? this.xprivateKeyVersion, encoded);
     }
+    /**
+     * Returns the derived extended public key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The derived extended public key or null.
+     */
     getXPublicKey(version, encoded = true) {
         return super.getXPublicKey(version ?? this.xpublicKeyVersion, encoded);
     }
+    /**
+     * Encodes and returns the wallet address based on the selected semantic type.
+     * @param {HDAddressOptionsInterface} [options] - Address generation options such as prefix, HRP, and witness version.
+     * @returns {string} The encoded Bitcoin SegWit address.
+     * @throws {AddressError} If the address type is invalid.
+     */
     getAddress(options = {
         address: this.address,
         scriptAddressPrefix: cryptocurrencies_1.Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,

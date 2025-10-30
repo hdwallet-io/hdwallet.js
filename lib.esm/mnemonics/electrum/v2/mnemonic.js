@@ -23,6 +23,15 @@ export const ELECTRUM_V2_MNEMONIC_TYPES = {
     STANDARD_2FA: 'standard-2fa',
     SEGWIT_2FA: 'segwit-2fa'
 };
+/**
+ * Electrum V2 Mnemonic implementation.
+ *
+ * Provides methods for:
+ * - Generating mnemonics from entropy or directly from word count.
+ * - Encoding and decoding mnemonics.
+ * - Validating Electrum V2 mnemonics against BIP39 and Electrum V1.
+ * - Supporting multiple languages and mnemonic types (Standard, SegWit, 2FA).
+ */
 export class ElectrumV2Mnemonic extends Mnemonic {
     static wordBitLength = 11;
     static wordsList = [
@@ -46,9 +55,22 @@ export class ElectrumV2Mnemonic extends Mnemonic {
         [ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA]: '101',
         [ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT_2FA]: '102'
     };
+    /**
+     * Get the identifier name for this mnemonic scheme.
+     * @returns `"Electrum-V2"`
+     */
     static getName() {
         return 'Electrum-V2';
     }
+    /**
+     * Generate a mnemonic from a specified word count.
+     *
+     * @param count - Number of words (12 or 24)
+     * @param language - Wordlist language
+     * @param option - Mnemonic options (type + maxAttempts)
+     * @returns A valid Electrum-V2 mnemonic string
+     * @throws {MnemonicError} If word count is invalid
+     */
     static fromWords(count, language, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         maxAttempts: BigInt('1' + '0'.repeat(60))
@@ -62,6 +84,16 @@ export class ElectrumV2Mnemonic extends Mnemonic {
         const entropyBytes = ElectrumV2Entropy.generate(this.wordsToEntropyStrength[count]);
         return this.fromEntropy(entropyBytes, language, option);
     }
+    /**
+     * Generate a mnemonic from entropy.
+     *
+     * @param entropy - Raw entropy (hex string, byte array, or Entropy object)
+     * @param language - Wordlist language
+     * @param option - Mnemonic options (type + maxAttempts)
+     * @returns A valid Electrum-V2 mnemonic
+     * @throws {EntropyError} If entropy bits are insufficient
+     * @throws {MnemonicError} If mnemonic type is missing
+     */
     static fromEntropy(entropy, language, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         maxAttempts: BigInt('1' + '0'.repeat(60))
@@ -119,6 +151,15 @@ export class ElectrumV2Mnemonic extends Mnemonic {
         }
         throw new MnemonicError('Unable to generate a valid mnemonic');
     }
+    /**
+     * Encode entropy into an Electrum-V2 mnemonic.
+     *
+     * @param entropy - Raw entropy (hex, bytes)
+     * @param language - Wordlist language
+     * @param option - Mnemonic options
+     * @returns Mnemonic string
+     * @throws {EntropyError} If entropy strength is invalid or clashes with BIP39/ElectrumV1
+     */
     static encode(entropy, language, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -147,6 +188,14 @@ export class ElectrumV2Mnemonic extends Mnemonic {
         }
         return this.normalize(mnemonic).join(' ');
     }
+    /**
+     * Decode an Electrum-V2 mnemonic back into entropy.
+     *
+     * @param mnemonic - Mnemonic phrase
+     * @param option - Mnemonic options (type required)
+     * @returns Entropy as a string
+     * @throws {MnemonicError} If mnemonic is invalid or word count is incorrect
+     */
     static decode(mnemonic, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -174,6 +223,13 @@ export class ElectrumV2Mnemonic extends Mnemonic {
         const buf = integerToBytes(ent, byteLen, 'big');
         return bytesToString(buf);
     }
+    /**
+     * Validate whether input is a valid Electrum-V2 mnemonic.
+     *
+     * @param input - Mnemonic words
+     * @param option - Mnemonic options
+     * @returns True if valid, false otherwise
+     */
     static isValid(input, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -187,16 +243,35 @@ export class ElectrumV2Mnemonic extends Mnemonic {
         }
         return this.isType(input, option.mnemonicType ?? ELECTRUM_V2_MNEMONIC_TYPES.STANDARD);
     }
+    /**
+     * Check if a mnemonic belongs to the specified type.
+     *
+     * @param input - Mnemonic words
+     * @param mnemonicType - Target mnemonic type
+     * @returns True if mnemonic type matches
+     */
     static isType(input, mnemonicType) {
         const tag = bytesToString(hmacSha512(toBuffer('Seed version'), this.normalize(input).join(' ')));
         return tag.startsWith(this.mnemonicTypes[mnemonicType]);
     }
+    /**
+     * Get the mnemonic type from instance options.
+     *
+     * @returns The mnemonic type string
+     * @throws {MnemonicError} If mnemonicType is not found
+     */
     getMnemonicType() {
         if (!this.options?.mnemonicType) {
             throw new MnemonicError('mnemonicType is not found');
         }
         return this.options?.mnemonicType;
     }
+    /**
+     * Normalize input (string or array) into lowercase words (NFKD form).
+     *
+     * @param input - Mnemonic phrase or word array
+     * @returns Normalized word array
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());

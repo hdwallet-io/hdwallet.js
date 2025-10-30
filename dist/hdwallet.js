@@ -1,11 +1,11 @@
 const __$G = (typeof globalThis !== 'undefined' ? globalThis: typeof window !== 'undefined' ? window: typeof global !== 'undefined' ? global: typeof self !== 'undefined' ? self: {});
 // SPDX-License-Identifier: MIT
 const __name__ = 'hdwallet';
-const __version__ = '1.0.0-beta.10';
+const __version__ = '1.0.0-beta.11';
 const __license__ = 'MIT';
 const __author__ = 'Meheret Tesfaye Batu';
 const __email__ = 'meherett.batu@gmail.com';
-// export const __documentation__: string = '...';
+const __documentation__ = 'https://hdwallet.readthedocs.io/projects/typescript';
 const __description__ = 'A complete Hierarchical Deterministic (HD) Wallet generator for 200+ cryptocurrencies, built with TypeScript.';
 const __url__ = 'https://hdwallet.io';
 const __source__ = 'https://github.com/hdwallet-io/hdwallet.js';
@@ -20,7 +20,7 @@ const __keywords__ = [
 const __websites__ = [
     'https://talonlab.org',
     'https://talonlab.gitbook.io/hdwallet',
-    // __documentation__,
+    __documentation__,
     'https://hdwallet.online',
     'https://hd.wallet',
     __url__
@@ -33,6 +33,7 @@ var info = /*#__PURE__*/Object.freeze({
     __license__: __license__,
     __author__: __author__,
     __email__: __email__,
+    __documentation__: __documentation__,
     __description__: __description__,
     __url__: __url__,
     __source__: __source__,
@@ -331,6 +332,12 @@ function randomBytes$1(bytesLength = 32) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Converts input data to a Uint8Array.
+ * @param data - Input data as a string, number array, Uint8Array, or null/undefined.
+ * @param encoding - Encoding to use if input is a string ('hex', 'utf8', 'base64'). Default is 'hex'.
+ * @returns Uint8Array representation of the input data.
+ */
 function getBytes(data, encoding = 'hex') {
     if (data == null) {
         return new Uint8Array();
@@ -364,6 +371,12 @@ function getBytes(data, encoding = 'hex') {
             throw new Error(`Unsupported encoding: ${encoding}`);
     }
 }
+/**
+ * Converts input to a Uint8Array (buffer).
+ * @param input - Input as a string, ArrayBuffer, or Array-like number array.
+ * @param encoding - Encoding for string inputs ('utf8', 'hex', 'base64'). Default is 'utf8'.
+ * @returns Uint8Array representation of input.
+ */
 function toBuffer(input, encoding = 'utf8') {
     if (typeof input === 'string') {
         switch (encoding) {
@@ -390,6 +403,12 @@ function toBuffer(input, encoding = 'utf8') {
     // Fallback: try Array-like (e.g. number[])
     return Uint8Array.from(input);
 }
+/**
+ * Converts a hex string to a Uint8Array.
+ * @param hex - Hexadecimal string (optionally prefixed with '0x').
+ * @returns Uint8Array representing the hex string.
+ * @throws Error if hex string length is not even.
+ */
 function hexToBytes(hex) {
     const normalized = hex.startsWith('0x') ? hex.slice(2) : hex;
     if (normalized.length % 2 !== 0) {
@@ -401,12 +420,23 @@ function hexToBytes(hex) {
     }
     return bytes;
 }
+/**
+ * Converts a Uint8Array to a hex string.
+ * @param bytes - Data to convert.
+ * @param prefix - Whether to add '0x' prefix. Default is false.
+ * @returns Hexadecimal string.
+ */
 function bytesToHex(bytes, prefix = false) {
     const hex = Array.from(bytes)
         .map(b => b.toString(16).padStart(2, '0'))
         .join('');
     return prefix ? `0x${hex}` : hex;
 }
+/**
+ * Converts a string or Uint8Array to a hex string.
+ * @param data - Input string or Uint8Array.
+ * @returns Hexadecimal string representation of input.
+ */
 function bytesToString(data) {
     if (data == null ||
         (typeof data === 'string' && data.length === 0) ||
@@ -426,12 +456,24 @@ function bytesToString(data) {
     // Uint8Array case: just convert those bytes to hex
     return bytesToHex(data);
 }
+/**
+ * Generates cryptographically secure random bytes.
+ * @param len - Number of random bytes to generate.
+ * @returns Uint8Array of random bytes.
+ * @throws Error if length is not a positive integer.
+ */
 function randomBytes(len) {
     if (!Number.isInteger(len) || len <= 0) {
         throw new Error('randomBytes: length must be a positive integer');
     }
     return randomBytes$1(len);
 }
+/**
+ * Converts a Uint8Array to a bigint.
+ * @param bytes - Byte array to convert.
+ * @param littleEndian - Whether to interpret bytes in little-endian order. Default is false.
+ * @returns bigint representation of bytes.
+ */
 function bytesToInteger(bytes, littleEndian = false) {
     // if little-endian, reverse into a new array
     const data = littleEndian
@@ -439,6 +481,12 @@ function bytesToInteger(bytes, littleEndian = false) {
         : bytes;
     return data.reduce((acc, b) => (acc << BigInt(8)) + BigInt(b), BigInt(0));
 }
+/**
+ * Ensures the input is a string.
+ * @param data - Input as a string or Uint8Array.
+ * @returns Input converted to string.
+ * @throws TypeError if input is neither string nor Uint8Array.
+ */
 function ensureString(data) {
     if (data instanceof Uint8Array) {
         return new TextDecoder().decode(data);
@@ -448,6 +496,11 @@ function ensureString(data) {
     }
     throw new TypeError$1('Invalid value for string');
 }
+/**
+ * Converts a string or Uint8Array to a bigint.
+ * @param data - Input string (hex) or Uint8Array.
+ * @returns bigint representation of input.
+ */
 function stringToInteger(data) {
     let buf;
     if (typeof data === 'string') {
@@ -463,6 +516,12 @@ function stringToInteger(data) {
     }
     return val;
 }
+/**
+ * Compares two Uint8Arrays for equality.
+ * @param a - First array.
+ * @param b - Second array.
+ * @returns true if arrays are equal, false otherwise.
+ */
 function equalBytes(a, b) {
     if (a.length !== b.length)
         return false;
@@ -472,6 +531,13 @@ function equalBytes(a, b) {
     }
     return true;
 }
+/**
+ * Converts a bigint or number to a Uint8Array.
+ * @param value - Value to convert.
+ * @param length - Optional fixed byte length for output.
+ * @param endianness - 'big' or 'little' endian. Default is 'big'.
+ * @returns Uint8Array representing the integer.
+ */
 function integerToBytes(value, length, endianness = 'big') {
     // coerce to BigInt without using 0n
     let val = typeof value === 'number' ? BigInt(value) : value;
@@ -504,6 +570,11 @@ function integerToBytes(value, length, endianness = 'big') {
     const result = new Uint8Array(bytes);
     return endianness === 'little' ? result.reverse() : result;
 }
+/**
+ * Concatenates multiple Uint8Arrays.
+ * @param chunks - Arrays to concatenate.
+ * @returns Concatenated Uint8Array.
+ */
 function concatBytes(...chunks) {
     const totalLength = chunks.reduce((sum, arr) => sum + arr.length, 0);
     const result = new Uint8Array(totalLength);
@@ -514,12 +585,23 @@ function concatBytes(...chunks) {
     }
     return result;
 }
+/**
+ * Converts bytes to a binary string.
+ * @param data - Input bytes.
+ * @param zeroPadBits - Optional zero-padding to reach a specific bit length.
+ * @returns Binary string representation of bytes.
+ */
 function bytesToBinaryString(data, zeroPadBits = 0) {
     const bits = Array.from(data)
         .map((b) => b.toString(2).padStart(8, '0'))
         .join('');
     return bits.length < zeroPadBits ? bits.padStart(zeroPadBits, '0') : bits;
 }
+/**
+ * Converts a binary string or bytes to a bigint.
+ * @param data - Binary string or Uint8Array.
+ * @returns bigint representation.
+ */
 function binaryStringToInteger(data) {
     const bin = typeof data === 'string'
         ? data
@@ -527,6 +609,12 @@ function binaryStringToInteger(data) {
     const clean = bin.trim();
     return BigInt('0b' + clean);
 }
+/**
+ * Converts an integer to a binary string.
+ * @param data - Input number or bigint.
+ * @param zeroPadBits - Optional zero-padding to reach a specific bit length.
+ * @returns Binary string.
+ */
 function integerToBinaryString(data, zeroPadBits = 0) {
     const big = typeof data === 'bigint' ? data : BigInt(data);
     const bits = big.toString(2);
@@ -534,6 +622,12 @@ function integerToBinaryString(data, zeroPadBits = 0) {
         ? bits.padStart(zeroPadBits, '0')
         : bits;
 }
+/**
+ * Converts a binary string or Uint8Array to bytes.
+ * @param data - Input binary string or bytes.
+ * @param zeroPadByteLen - Optional zero-padding to reach a specific byte length.
+ * @returns Uint8Array representation.
+ */
 function binaryStringToBytes(data, zeroPadByteLen = 0) {
     const bits = typeof data === 'string'
         ? data.trim()
@@ -553,6 +647,11 @@ function binaryStringToBytes(data, zeroPadByteLen = 0) {
     }
     return hexToBytes(hex);
 }
+/**
+ * Checks if all inputs are equal.
+ * @param inputs - Inputs of various types to compare.
+ * @returns true if all inputs are equal, false otherwise.
+ */
 function isAllEqual(...inputs) {
     if (inputs.length < 2)
         return true;
@@ -625,6 +724,12 @@ function isAllEqual(...inputs) {
         return true;
     });
 }
+/**
+ * Generates a random alphanumeric passphrase.
+ * @param length - Length of the passphrase. Default is 32.
+ * @param chars - Characters to use. Default is alphanumeric.
+ * @returns Randomly generated passphrase string.
+ */
 function generatePassphrase(length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
     const bytes = randomBytes(length);
     let result = '';
@@ -633,6 +738,12 @@ function generatePassphrase(length = 32, chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcd
     }
     return result;
 }
+/**
+ * Returns HMAC seed based on ECC name.
+ * @param eccName - ECC curve name.
+ * @returns Seed as Uint8Array.
+ * @throws DerivationError if curve is unknown.
+ */
 function getHmac(eccName) {
     const encoder = new TextEncoder();
     if ([
@@ -648,6 +759,12 @@ function getHmac(eccName) {
     }
     throw new DerivationError('Unknown ECC name');
 }
+/**
+ * Excludes specific keys from nested objects recursively.
+ * @param nested - Input object.
+ * @param keys - Keys to exclude.
+ * @returns New object excluding specified keys.
+ */
 function excludeKeys(nested, keys) {
     const out = {};
     const keySet = new Set(keys); // optional optimization
@@ -668,6 +785,12 @@ function excludeKeys(nested, keys) {
     }
     return out;
 }
+/**
+ * Converts derivation path string to an array of indexes.
+ * @param path - Derivation path (e.g., "m/44'/0'/0'").
+ * @returns Array of numeric indexes.
+ * @throws DerivationError on invalid path.
+ */
 function pathToIndexes(path) {
     if (path === 'm' || path === 'm/')
         return [];
@@ -681,6 +804,11 @@ function pathToIndexes(path) {
         ? parseInt(i.slice(0, -1), 10) + 0x80000000
         : parseInt(i, 10));
 }
+/**
+ * Converts array of indexes to a derivation path string.
+ * @param indexes - Array of numeric indexes.
+ * @returns Derivation path string.
+ */
 function indexesToPath(indexes) {
     return ('m' +
         indexes
@@ -689,6 +817,13 @@ function indexesToPath(indexes) {
             : `/${i.toString()}`)
             .join(''));
 }
+/**
+ * Normalize a BIP32 derivation index to a tuple.
+ * @param index - Index as number, string (e.g., "0" or "0-3"), or tuple [from, to].
+ * @param hardened - Whether the index is hardened (default: false)
+ * @returns Normalized derivation tuple.
+ * @throws DerivationError on invalid input.
+ */
 function normalizeIndex(index, hardened = false) {
     if (typeof index === 'number') {
         if (index < 0)
@@ -724,6 +859,13 @@ function normalizeIndex(index, hardened = false) {
     }
     throw new DerivationError(`Invalid index instance, got ${typeof index}`);
 }
+/**
+ * Normalize a derivation path string or numeric indexes.
+ * @param path - Optional path string like "m/0'/1-3'"
+ * @param indexes - Optional array of numeric indexes
+ * @returns Tuple: [normalized path string, indexes array, derivation tuples]
+ * @throws DerivationError on invalid input
+ */
 function normalizeDerivation(path, indexes) {
     let _path = 'm';
     const _indexes = [];
@@ -762,6 +904,11 @@ function normalizeDerivation(path, indexes) {
     }
     return [_path, _indexes, _deriv];
 }
+/**
+ * Convert a derivation tuple to integer representation
+ * @param idx - Derivation tuple [index, hardened] or [from, to, hardened]
+ * @returns Integer value with hardened bit applied if necessary
+ */
 function indexTupleToInteger(idx) {
     if (idx.length === 2) {
         const [i, h] = idx;
@@ -772,6 +919,11 @@ function indexTupleToInteger(idx) {
         return to + (h ? 0x80000000 : 0);
     }
 }
+/**
+ * Convert a derivation tuple to a string representation
+ * @param idx - Derivation tuple [index, hardened] or [from, to, hardened]
+ * @returns String like "0'" or "0-3'"
+ */
 function indexTupleToString(idx) {
     if (idx.length === 2) {
         const [i, h] = idx;
@@ -782,24 +934,50 @@ function indexTupleToString(idx) {
         return `${from}-${to}${h ? "'" : ''}`;
     }
 }
+/**
+ * Convert a single index string "0'" into tuple [0, true]
+ * @param i - Index string
+ * @returns Tuple [index number, hardened boolean]
+ */
 function indexStringToTuple(i) {
     const hardened = i.endsWith("'");
     const num = parseInt(hardened ? i.slice(0, -1) : i, 10);
     return [num, hardened];
 }
+/**
+ * XOR two Uint8Arrays of equal length
+ * @param a - First byte array
+ * @param b - Second byte array
+ * @returns New Uint8Array resulting from XOR
+ * @throws DerivationError if lengths mismatch
+ */
 function xor(a, b) {
     if (a.length !== b.length)
         throw new DerivationError('Uint8Arrays must match length for XOR');
     return getBytes(a.map((x, i) => x ^ b[i]));
 }
+/**
+ * Add two Uint8Arrays element-wise modulo 256
+ * @param a - First byte array
+ * @param b - Second byte array
+ * @returns New Uint8Array result
+ * @throws DerivationError if lengths mismatch
+ */
 function addNoCarry(a, b) {
     if (a.length !== b.length)
         throw new DerivationError('Uint8Arrays must match length for addNoCarry');
     return getBytes(a.map((x, i) => (x + b[i]) & 0xff));
 }
+/**
+ * Multiply each byte by a scalar modulo 256
+ * @param data - Byte array
+ * @param scalar - Integer scalar
+ * @returns New Uint8Array result
+ */
 function multiplyScalarNoCarry(data, scalar) {
     return getBytes(data.map(x => (x * scalar) & 0xff));
 }
+/** Bit manipulation helpers */
 function isBitsSet(value, bitNum) {
     return (value & (1 << bitNum)) !== 0;
 }
@@ -818,9 +996,21 @@ function resetBit(value, bitNum) {
 function resetBits(value, mask) {
     return value & ~mask;
 }
+/**
+ * Reverse a Uint8Array
+ * @param data - Byte array
+ * @returns New Uint8Array reversed
+ */
 function bytesReverse(data) {
     return getBytes(data).reverse();
 }
+/**
+ * Convert bits between different widths
+ * @param data - Array of numbers or Uint8Array
+ * @param fromBits - Original bit width
+ * @param toBits - Target bit width
+ * @returns Array of converted bits or null if input invalid
+ */
 function convertBits$2(data, fromBits, toBits) {
     const input = Array.isArray(data) ? data : Array.from(data);
     const maxVal = (1 << toBits) - 1;
@@ -844,6 +1034,13 @@ function convertBits$2(data, fromBits, toBits) {
     }
     return out;
 }
+/**
+ * Convert a byte chunk to mnemonic words
+ * @param bytesChunk - Uint8Array of bytes
+ * @param wordsList - Wordlist array
+ * @param endianness - "little" or "big"
+ * @returns Tuple of 3 mnemonic words
+ */
 function bytesChunkToWords(bytesChunk, wordsList, endianness) {
     const len = BigInt(wordsList.length);
     let chunkNum = bytesToInteger(new Uint8Array(bytesChunk), endianness !== 'big');
@@ -852,6 +1049,15 @@ function bytesChunkToWords(bytesChunk, wordsList, endianness) {
     const i3 = Number(((chunkNum / len / len) + BigInt(i2)) % len);
     return [wordsList[i1], wordsList[i2], wordsList[i3]];
 }
+/**
+ * Convert 3 mnemonic words to a byte chunk
+ * @param w1 - Word 1
+ * @param w2 - Word 2
+ * @param w3 - Word 3
+ * @param wordsList - Wordlist array
+ * @param endianness - "little" or "big"
+ * @returns Uint8Array of bytes
+ */
 function wordsToBytesChunk(w1, w2, w3, wordsList, endianness) {
     const len = BigInt(wordsList.length);
     const idxMap = new Map(wordsList.map((w, i) => [w, BigInt(i)]));
@@ -862,9 +1068,22 @@ function wordsToBytesChunk(w1, w2, w3, wordsList, endianness) {
     const u8 = integerToBytes(chunk, 4, endianness);
     return getBytes(u8);
 }
+/**
+ * Convert kebab-case string to camelCase
+ * @param input - Input string
+ * @returns CamelCase string
+ */
 function toCamelCase(input) {
     return input.toLowerCase().replace(/-([a-z])/g, (_, char) => char.toUpperCase());
 }
+/**
+ * Ensure a value matches the expected type(s)
+ * @param instanceOrClass - Value or class instance
+ * @param expectedType - Expected type or constructor
+ * @param options - Optional object with otherTypes, strict, errorClass
+ * @returns Value or object with {value, isValid}
+ * @throws TypeError or custom error if type mismatch
+ */
 function ensureTypeMatch(instanceOrClass, expectedType, options = {}) {
     const tryMatch = (type) => {
         if (type === 'any')
@@ -961,6 +1180,10 @@ var utils = /*#__PURE__*/Object.freeze({
 });
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a nested namespace allowing dynamic hierarchical property access.
+ * @param {Set<string> | any[] | Record<string, any>} data - Data to initialize the namespace with.
+ */
 class NestedNamespace {
     constructor(data) {
         if (data instanceof Set) {
@@ -991,15 +1214,18 @@ class NestedNamespace {
         }
     }
 }
+/** SLIP10 constants for Ed25519 curve. */
 const SLIP10_ED25519_CONST = {
     PRIVATE_KEY_BYTE_LENGTH: 32,
     PUBLIC_KEY_PREFIX: integerToBytes(0x00),
     PUBLIC_KEY_BYTE_LENGTH: 32
 };
+/** KHOLAW constants for Ed25519 curve. */
 const KHOLAW_ED25519_CONST = {
     ...SLIP10_ED25519_CONST,
     PRIVATE_KEY_BYTE_LENGTH: 64
 };
+/** SLIP10 constants for SECP256K1 curve. */
 const SLIP10_SECP256K1_CONST = {
     POINT_COORDINATE_BYTE_LENGTH: 32,
     PRIVATE_KEY_BYTE_LENGTH: 32,
@@ -1010,6 +1236,10 @@ const SLIP10_SECP256K1_CONST = {
     PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH: 65,
     CHECKSUM_BYTE_LENGTH: 4
 };
+/**
+ * Stores cryptocurrency metadata such as source, whitepaper, and websites.
+ * @param {Record<string, any>} data - Metadata values.
+ */
 class Info extends NestedNamespace {
     SOURCE_CODE;
     WHITEPAPER;
@@ -1018,77 +1248,191 @@ class Info extends NestedNamespace {
         super(data);
     }
 }
+/**
+ * Manages witness versions for blockchain addresses.
+ */
 class WitnessVersions extends NestedNamespace {
+    /**
+     * Gets witness version for a given address.
+     * @param {string} address - Address string.
+     * @returns {number | undefined} Witness version or undefined.
+     */
     getWitnessVersion(address) {
         return this[address.toUpperCase()];
     }
 }
+/**
+ * Manages entropy values.
+ */
 class Entropies extends NestedNamespace {
+    /**
+     * Checks if a given entropy exists.
+     * @param {string} entropy - Entropy to check.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isEntropy(entropy) {
         return this.getEntropies().includes(entropy);
     }
+    /**
+     * Gets all stored entropies.
+     * @returns {string[]} List of entropies.
+     */
     getEntropies() {
         return Object.values(this);
     }
 }
+/**
+ * Manages mnemonic phrases.
+ */
 class Mnemonics extends NestedNamespace {
+    /**
+     * Checks if a given mnemonic exists.
+     * @param {string} mnemonic - Mnemonic to check.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isMnemonic(mnemonic) {
         return this.getMnemonics().includes(mnemonic);
     }
+    /**
+     * Gets all stored mnemonics.
+     * @returns {string[]} List of mnemonics.
+     */
     getMnemonics() {
         return Object.values(this);
     }
 }
+/**
+ * Manages seed values.
+ */
 class Seeds extends NestedNamespace {
+    /**
+     * Checks if a given seed exists.
+     * @param {string} seed - Seed to check.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isSeed(seed) {
         return this.getSeeds().includes(seed);
     }
+    /**
+     * Gets all stored seeds.
+     * @returns {string[]} List of seeds.
+     */
     getSeeds() {
         return Object.values(this);
     }
 }
+/**
+ * Manages hierarchical deterministic wallet identifiers.
+ */
 class HDs extends NestedNamespace {
+    /**
+     * Checks if a given HD type exists.
+     * @param {string} hd - HD identifier.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isHD(hd) {
         return this.getHDS().includes(hd);
     }
+    /**
+     * Gets all HD types.
+     * @returns {string[]} List of HD identifiers.
+     */
     getHDS() {
         return Object.values(this);
     }
 }
+/**
+ * Manages cryptocurrency addresses.
+ */
 class Addresses extends NestedNamespace {
+    /**
+     * Checks if a given address exists.
+     * @param {string} address - Address to check.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isAddress(address) {
         return this.getAddresses().includes(address);
     }
+    /**
+     * Gets all stored addresses.
+     * @returns {string[]} List of addresses.
+     */
     getAddresses() {
         return Object.values(this);
     }
+    /**
+     * Gets total number of addresses.
+     * @returns {number} Number of addresses.
+     */
     length() {
         return this.getAddresses().length;
     }
 }
+/**
+ * Manages address types.
+ */
 class AddressTypes extends NestedNamespace {
+    /**
+     * Checks if an address type exists.
+     * @param {string} addressType - Address type.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isAddressType(addressType) {
         return this.getAddressTypes().includes(addressType);
     }
+    /**
+     * Gets all address types.
+     * @returns {string[]} List of address types.
+     */
     getAddressTypes() {
         return Object.values(this);
     }
 }
+/**
+ * Manages address prefixes.
+ */
 class AddressPrefixes extends NestedNamespace {
+    /**
+     * Checks if an address prefix exists.
+     * @param {string} addressPrefix - Address prefix.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isAddressPrefix(addressPrefix) {
         return this.getAddressPrefixes().includes(addressPrefix);
     }
+    /**
+     * Gets all address prefixes.
+     * @returns {string[]} List of address prefixes.
+     */
     getAddressPrefixes() {
         return Object.values(this);
     }
 }
+/**
+ * Manages blockchain network configurations.
+ */
 class Networks extends NestedNamespace {
+    /**
+     * Checks if a network exists.
+     * @param {string} network - Network name.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isNetwork(network) {
         return this.getNetworks().includes(network.toLowerCase());
     }
+    /**
+     * Gets all networks.
+     * @returns {string[]} List of network names.
+     */
     getNetworks() {
         return Object.keys(this).map(k => k.toLowerCase());
     }
+    /**
+     * Gets network data by name.
+     * @param {string} network - Network name.
+     * @returns {any} Network configuration data.
+     * @throws {NetworkError} If the network does not exist.
+     */
     getNetwork(network) {
         if (!this.isNetwork(network)) {
             throw new NetworkError(`${network} network is not available`);
@@ -1096,53 +1440,108 @@ class Networks extends NestedNamespace {
         return this[network.toUpperCase()];
     }
 }
+/**
+ * Stores parameter values for networks or cryptos.
+ */
 class Params extends NestedNamespace {
 }
+/**
+ * Manages extended key version constants.
+ */
 class ExtendedKeyVersions extends NestedNamespace {
+    /**
+     * Checks if a version exists.
+     * @param {Uint8Array} version - Version bytes.
+     * @returns {boolean} True if exists, otherwise false.
+     */
     isVersion(version) {
         return Object.values(this).includes(Number(bytesToInteger(version)));
     }
+    /**
+     * Gets all version names.
+     * @returns {string[]} List of version names.
+     */
     getVersions() {
         return Object.keys(this).map(k => k.toLowerCase().replace(/_/g, '-'));
     }
+    /**
+     * Gets version value by name.
+     * @param {string} name - Version name.
+     * @returns {number | string | Uint8Array} Version value.
+     */
     getVersion(name) {
         return this[name.toUpperCase().replace(/-/g, '_')];
     }
+    /**
+     * Gets version name by version bytes.
+     * @param {Uint8Array} version - Version bytes.
+     * @returns {string | undefined} Version name or undefined.
+     */
     getName(version) {
         const intVer = bytesToInteger(version);
         return Object.entries(this).find(([, v]) => v === intVer)?.[0];
     }
 }
+/** Extended private key version manager. */
 class XPrivateKeyVersions extends ExtendedKeyVersions {
 }
+/** Extended public key version manager. */
 class XPublicKeyVersions extends ExtendedKeyVersions {
 }
+/**
+ * Enum-like class for public key types.
+ */
 class PUBLIC_KEY_TYPES {
     static UNCOMPRESSED = 'uncompressed';
     static COMPRESSED = 'compressed';
+    /**
+     * Gets all public key types.
+     * @returns {string[]} List of public key types.
+     */
     static getTypes() {
         return [this.UNCOMPRESSED, this.COMPRESSED];
     }
 }
+/**
+ * Enum-like class for WIF key types.
+ */
 class WIF_TYPES {
     static WIF = 'wif';
     static WIF_COMPRESSED = 'wif-compressed';
+    /**
+     * Gets all WIF types.
+     * @returns {string[]} List of WIF types.
+     */
     static getTypes() {
         return [this.WIF, this.WIF_COMPRESSED];
     }
 }
+/**
+ * Enum-like class for Bitcoin address semantics.
+ */
 class SEMANTICS {
     static P2WPKH = 'p2wpkh';
     static P2WPKH_IN_P2SH = 'p2wpkh-in-p2sh';
     static P2WSH = 'p2wsh';
     static P2WSH_IN_P2SH = 'p2wsh-in-p2sh';
+    /**
+     * Gets all semantic types.
+     * @returns {string[]} List of semantic types.
+     */
     static getTypes() {
         return [this.P2WPKH, this.P2WPKH_IN_P2SH, this.P2WSH, this.P2WSH_IN_P2SH];
     }
 }
+/**
+ * Enum-like class for operational modes.
+ */
 class MODES {
     static STANDARD = 'standard';
     static SEGWIT = 'segwit';
+    /**
+     * Gets all mode types.
+     * @returns {string[]} List of mode types.
+     */
     static getTypes() {
         return [this.STANDARD, this.SEGWIT];
     }
@@ -3566,14 +3965,35 @@ class ChaCha20Poly1305 {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Computes HMAC-SHA256 of the given data using the provided key.
+ * @param key - Secret key as a Uint8Array or string.
+ * @param data - Data to hash as a Uint8Array or string.
+ * @returns HMAC-SHA256 digest as Uint8Array.
+ */
 function hmacSha256(key, data) {
     const mac = hmac(sha256$1, toBuffer(key), toBuffer(data)); // ← key first!
     return getBytes(mac);
 }
+/**
+ * Computes HMAC-SHA512 of the given data using the provided key.
+ * @param key - Secret key as a Uint8Array or string.
+ * @param data - Data to hash as a Uint8Array or string.
+ * @returns HMAC-SHA512 digest as Uint8Array.
+ */
 function hmacSha512(key, data) {
     const mac = hmac(sha512$1, toBuffer(key), toBuffer(data)); // ← key first!
     return getBytes(mac);
 }
+/**
+ * Computes Blake2b hash of the input data.
+ * @param data - Data to hash.
+ * @param digestSize - Desired output length in bytes.
+ * @param key - Optional secret key.
+ * @param salt - Optional salt.
+ * @param personalize - Optional personalization string.
+ * @returns Blake2b digest as Uint8Array.
+ */
 function blake2b(data, digestSize, key = new Uint8Array(0), salt = new Uint8Array(0), personalize) {
     const msg = getBytes(data);
     const k = getBytes(key);
@@ -3587,12 +4007,62 @@ function blake2b(data, digestSize, key = new Uint8Array(0), salt = new Uint8Arra
     });
     return getBytes(hashBytes);
 }
+/**
+ * Computes a 32-bit (4-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 4-byte Blake2b digest as Uint8Array.
+ */
 const blake2b32 = (d, k, s) => blake2b(d, 4, k, s);
+/**
+ * Computes a 40-bit (5-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 5-byte Blake2b digest as Uint8Array.
+ */
 const blake2b40 = (d, k, s) => blake2b(d, 5, k, s);
+/**
+ * Computes a 160-bit (20-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 20-byte Blake2b digest as Uint8Array.
+ */
 const blake2b160 = (d, k, s) => blake2b(d, 20, k, s);
+/**
+ * Computes a 224-bit (28-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 28-byte Blake2b digest as Uint8Array.
+ */
 const blake2b224 = (d, k, s) => blake2b(d, 28, k, s);
+/**
+ * Computes a 256-bit (32-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 32-byte Blake2b digest as Uint8Array.
+ */
 const blake2b256 = (d, k, s) => blake2b(d, 32, k, s);
+/**
+ * Computes a 512-bit (64-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 64-byte Blake2b digest as Uint8Array.
+ */
 const blake2b512 = (d, k, s) => blake2b(d, 64, k, s);
+/**
+ * Encrypts plaintext using ChaCha20-Poly1305.
+ * @param key - 32-byte secret key.
+ * @param nonce - Nonce for encryption.
+ * @param aad - Additional authenticated data.
+ * @param plaintext - Data to encrypt.
+ * @returns Object containing cipherText and authentication tag.
+ */
 function chacha20Poly1305Encrypt(key, nonce, aad, plaintext) {
     const aead = new ChaCha20Poly1305(getBytes(key)); // key must be 32 bytes
     const ciphertextWithTag = aead.seal(getBytes(nonce), getBytes(plaintext), getBytes(aad));
@@ -3601,6 +4071,16 @@ function chacha20Poly1305Encrypt(key, nonce, aad, plaintext) {
     const tag = ciphertextWithTag.slice(-16);
     return { cipherText: getBytes(ct), tag: getBytes(tag) };
 }
+/**
+ * Decrypts ciphertext encrypted with ChaCha20-Poly1305.
+ * @param key - 32-byte secret key.
+ * @param nonce - Nonce used during encryption.
+ * @param aad - Additional authenticated data.
+ * @param ciphertext - Encrypted data.
+ * @param tag - Authentication tag.
+ * @returns Decrypted plaintext as Uint8Array.
+ * @throws Error if authentication fails.
+ */
 function chacha20Poly1305Decrypt(key, nonce, aad, ciphertext, tag) {
     const aead = new ChaCha20Poly1305(getBytes(key));
     const combined = concatBytes(getBytes(ciphertext), getBytes(tag));
@@ -3609,48 +4089,88 @@ function chacha20Poly1305Decrypt(key, nonce, aad, ciphertext, tag) {
         throw new Error('ChaCha20-Poly1305: authentication failed');
     return getBytes(pt);
 }
+/**
+ * Computes SHA-256 hash.
+ * @param data - Data to hash.
+ * @returns SHA-256 digest as Uint8Array.
+ */
 function sha256(data) {
     const bytes = getBytes(data);
     const digestBytes = sha256$1(bytes);
     return getBytes(digestBytes);
 }
+/**
+ * Computes double SHA-256 hash (SHA-256 of SHA-256).
+ */
 const doubleSha256 = (d) => sha256(sha256(d));
+/**
+ * Computes SHA-512 hash.
+ */
 function sha512(data) {
     const bytes = getBytes(data);
     const digestBytes = sha512$1(bytes);
     return getBytes(digestBytes);
 }
+/**
+ * Computes SHA-512/256 hash.
+ */
 function sha512_256(data) {
     const bytes = getBytes(data);
     const digestBytes = sha512_256$1(bytes);
     return getBytes(digestBytes);
 }
+/**
+ * Computes Keccak-256 hash.
+ */
 function keccak256(data) {
     const bytes = getBytes(data);
     const digestBytes = keccak_256(bytes);
     return getBytes(digestBytes);
 }
+/**
+ * Computes SHA3-256 hash.
+ */
 function sha3_256(data) {
     const bytes = getBytes(data);
     const digestBytes = sha3_256$1(bytes);
     return getBytes(digestBytes);
 }
+/**
+ * Computes RIPEMD-160 hash.
+ */
 function ripemd160(data) {
     const bytes = getBytes(data); // whatever util you already use
     return getBytes(ripemd160$1(bytes));
 }
+/**
+ * Computes HASH160 (RIPEMD-160 of SHA-256).
+ */
 function hash160(data) {
     const sha = sha256(data);
     return ripemd160(sha);
 }
+/**
+ * Computes CRC32 checksum.
+ */
 function crc32(data) {
     const num = t$2(toBuffer(data));
     return integerToBytes(num, 4);
 }
+/**
+ * Computes XMODEM CRC16 checksum.
+ */
 function xmodemCrc(data) {
     const num = t$1(toBuffer(data));
     return integerToBytes(num, 2);
 }
+/**
+ * Computes PBKDF2-HMAC-SHA512 key derivation.
+ * @param password - Password.
+ * @param salt - Salt.
+ * @param iterations - Number of iterations (>0).
+ * @param keyLen - Desired key length.
+ * @returns Derived key as Uint8Array.
+ */
 function pbkdf2HmacSha512(password, salt, iterations, keyLen = 64) {
     if (iterations <= 0 || !Number.isSafeInteger(iterations))
         throw new RangeError('iterations must be a positive integer');
@@ -3659,6 +4179,9 @@ function pbkdf2HmacSha512(password, salt, iterations, keyLen = 64) {
     const dk = pbkdf2(sha512$1, toBuffer(password), toBuffer(salt), { c: iterations, dkLen: keyLen });
     return getBytes(dk);
 }
+/**
+ * Returns checksum of data as first 4 bytes of double SHA-256.
+ */
 const getChecksum = (d) => doubleSha256(d).slice(0, SLIP10_SECP256K1_CONST.CHECKSUM_BYTE_LENGTH);
 
 var crypto$1 = /*#__PURE__*/Object.freeze({
@@ -3957,43 +4480,123 @@ const CoinTypes = {
 };
 
 // SPDX-License-Identifier: MIT
+/**
+ * Abstract base class representing a point on an elliptic curve.
+ *
+ * Provides a common interface for point-related operations across different elliptic curve implementations.
+ * Must be extended by concrete curve-specific point classes.
+ */
 class Point {
     point;
+    /**
+     * Constructs a new Point instance.
+     *
+     * @param point - The underlying point representation (curve-specific object).
+     */
     constructor(point) {
         this.point = point;
     }
+    /**
+     * Creates a Point instance from its byte representation.
+     *
+     * @param point - The encoded point as a Uint8Array.
+     * @returns A Point instance for the given bytes.
+     * @throws Error if not implemented in subclass.
+     */
     static fromBytes(point) {
         throw new Error('Must override fromBytes()');
     }
+    /**
+     * Creates a Point instance from X and Y coordinates.
+     *
+     * @param x - The X coordinate of the point.
+     * @param y - The Y coordinate of the point.
+     * @returns A Point instance representing the given coordinates.
+     * @throws Error if not implemented in subclass.
+     */
     static fromCoordinates(x, y) {
         throw new Error('Must override fromCoordinates()');
     }
+    /**
+     * Returns the raw byte representation of the point.
+     *
+     * @returns The encoded point as a Uint8Array.
+     */
     getRaw() {
         return this.getRawEncoded();
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Abstract base class representing a public key in elliptic curve cryptography (ECC).
+ *
+ * This class defines the common structure and interface for public key implementations.
+ * Subclasses for specific curves must implement all abstract and static methods.
+ */
 class PublicKey {
     publicKey;
+    /**
+     * Constructs a new PublicKey instance.
+     *
+     * @param publicKey - The underlying curve-specific public key object.
+     */
     constructor(publicKey) {
         this.publicKey = publicKey;
     }
+    /**
+     * Returns the name of the cryptographic curve or public key type.
+     *
+     * @returns The name of the public key (e.g., "secp256k1", "ed25519").
+     * @throws Error if not implemented by subclass.
+     */
     getName() {
         throw new Error('Must override getName()');
     }
+    /**
+     * Creates a PublicKey instance from its byte representation.
+     *
+     * @param publicKey - The public key as a byte array.
+     * @returns A new PublicKey instance.
+     * @throws Error if not implemented by subclass.
+     */
     static fromBytes(publicKey) {
         throw new Error('Must override fromBytes()');
     }
+    /**
+     * Creates a PublicKey instance from a given Point.
+     *
+     * @param point - The elliptic curve point representing the public key.
+     * @returns A new PublicKey instance.
+     * @throws Error if not implemented by subclass.
+     */
     static fromPoint(point) {
         throw new Error('Must override fromPoint()');
     }
+    /**
+     * Returns the length (in bytes) of a compressed public key.
+     *
+     * @returns The compressed key size in bytes.
+     * @throws Error if not implemented by subclass.
+     */
     static getCompressedLength() {
         throw new Error('Must override compressedLength()');
     }
+    /**
+     * Returns the length (in bytes) of an uncompressed public key.
+     *
+     * @returns The uncompressed key size in bytes.
+     * @throws Error if not implemented by subclass.
+     */
     static getUncompressedLength() {
         throw new Error('Must override uncompressedLength()');
     }
+    /**
+     * Validates whether the provided byte array represents a valid public key.
+     *
+     * @param bytes - The public key bytes to validate.
+     * @returns `true` if valid, otherwise `false`.
+     */
     static isValidBytes(bytes) {
         try {
             this.fromBytes(bytes);
@@ -4003,6 +4606,12 @@ class PublicKey {
             return false;
         }
     }
+    /**
+     * Validates whether the given elliptic curve point represents a valid public key.
+     *
+     * @param point - The point to validate.
+     * @returns `true` if valid, otherwise `false`.
+     */
     static isValidPoint(point) {
         try {
             this.fromPoint(point);
@@ -4015,22 +4624,59 @@ class PublicKey {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Abstract base class representing a private key in elliptic curve cryptography (ECC).
+ *
+ * This class defines the common interface and behavior expected for all private key implementations.
+ * Concrete subclasses (e.g., for specific curves) must override all abstract and static methods as needed.
+ */
 class PrivateKey {
     privateKey;
     options;
+    /**
+     * Constructs a new PrivateKey instance.
+     *
+     * @param privateKey - The underlying curve-specific private key object.
+     * @param options - Optional configuration for the private key.
+     */
     constructor(privateKey, options = {}) {
         this.privateKey = privateKey;
         this.options = options;
     }
+    /**
+     * Returns the name of the cryptographic curve or private key type.
+     *
+     * @returns The name of the private key (e.g., "secp256k1", "ed25519").
+     * @throws Error if not implemented by subclass.
+     */
     getName() {
         throw new Error('Must override getName()');
     }
+    /**
+     * Creates a PrivateKey instance from its byte representation.
+     *
+     * @param privateKey - The private key as a byte array.
+     * @returns A new PrivateKey instance.
+     * @throws Error if not implemented by subclass.
+     */
     static fromBytes(privateKey) {
         throw new Error('Must override fromBytes()');
     }
+    /**
+     * Returns the length (in bytes) of the private key.
+     *
+     * @returns The private key size in bytes.
+     * @throws Error if not implemented by subclass.
+     */
     static getLength() {
         throw new Error('Must override size()');
     }
+    /**
+     * Validates whether a given byte sequence represents a valid private key.
+     *
+     * @param bytes - The private key bytes to validate.
+     * @returns `true` if the bytes represent a valid private key, otherwise `false`.
+     */
     static isValidBytes(bytes) {
         try {
             this.fromBytes(bytes);
@@ -5634,10 +6280,22 @@ const ed25519Defaults = /* @__PURE__ */ (() => ({
 const ed25519 = /* @__PURE__ */ (() => twistedEdwards(ed25519Defaults))();
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a point on the SLIP10-Ed25519 elliptic curve.
+ * Provides encoding, arithmetic, and coordinate access methods.
+ * @extends Point
+ */
 class SLIP10Ed25519Point extends Point {
+    /** @returns {string} The name of the elliptic curve point. */
     getName() {
         return 'SLIP10-Ed25519';
     }
+    /**
+     * Create a point from raw bytes.
+     * @param {Uint8Array} point - Encoded point bytes.
+     * @returns {Point} The constructed point.
+     * @throws {Error} If the byte length is invalid or data is invalid.
+     */
     static fromBytes(point) {
         if (point.length !== SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH) {
             throw new Error('Invalid point bytes length');
@@ -5650,6 +6308,13 @@ class SLIP10Ed25519Point extends Point {
             throw new Error('Invalid point bytes');
         }
     }
+    /**
+     * Create a point from affine coordinates.
+     * @param {bigint} x - X coordinate.
+     * @param {bigint} y - Y coordinate.
+     * @returns {Point} The constructed point.
+     * @throws {Error} If coordinates are invalid.
+     */
     static fromCoordinates(x, y) {
         try {
             const pt = ed25519.Point.fromAffine({ x, y });
@@ -5659,28 +6324,43 @@ class SLIP10Ed25519Point extends Point {
             throw new Error('Invalid coordinates for ed25519');
         }
     }
+    /** @returns {any} The underlying curve point object. */
     getUnderlyingObject() {
         return this.point;
     }
+    /** @returns {bigint} The X coordinate of the point. */
     getX() {
         return this.point.x;
     }
+    /** @returns {bigint} The Y coordinate of the point. */
     getY() {
         return this.point.y;
     }
+    /** @returns {Uint8Array} Raw encoded point bytes. */
     getRawEncoded() {
         return this.point.toRawBytes();
     }
+    /** @returns {Uint8Array} Raw decoded point bytes (X||Y). */
     getRawDecoded() {
         const xBytes = this.point.x.toString(16).padStart(64, '0');
         const yBytes = this.point.y.toString(16).padStart(64, '0');
         return Uint8Array.from(toBuffer(xBytes + yBytes, 'hex'));
     }
+    /**
+     * Add another point to this point.
+     * @param {Point} point - The point to add.
+     * @returns {Point} The sum of the two points.
+     */
     add(point) {
         const other = point.getUnderlyingObject();
         const sum = this.point.add(other);
         return new SLIP10Ed25519Point(sum);
     }
+    /**
+     * Multiply this point by a scalar.
+     * @param {bigint} scalar - The multiplier.
+     * @returns {Point} The resulting point.
+     */
     multiply(scalar) {
         const prod = this.point.multiply(scalar);
         return new SLIP10Ed25519Point(prod);
@@ -5688,10 +6368,22 @@ class SLIP10Ed25519Point extends Point {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a public key for the SLIP10-Ed25519 elliptic curve.
+ * Provides encoding, compressed/uncompressed bytes, and point access.
+ * @extends PublicKey
+ */
 class SLIP10Ed25519PublicKey extends PublicKey {
+    /** @returns {string} The name of the elliptic curve. */
     getName() {
         return 'SLIP10-Ed25519';
     }
+    /**
+     * Create a public key from raw bytes.
+     * @param {Uint8Array} publicKey - Encoded public key bytes.
+     * @returns {PublicKey} The constructed public key.
+     * @throws {Error} If the byte length is invalid or data is invalid.
+     */
     static fromBytes(publicKey) {
         let data = publicKey;
         const prefix = SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX;
@@ -5710,35 +6402,58 @@ class SLIP10Ed25519PublicKey extends PublicKey {
             throw new Error('Invalid key bytes');
         }
     }
+    /**
+     * Create a public key from a point.
+     * @param {Point} point - The elliptic curve point.
+     * @returns {PublicKey} The constructed public key.
+     */
     static fromPoint(point) {
         const raw = point.getRawEncoded();
         return this.fromBytes(raw);
     }
+    /** @returns {number} The length of the compressed public key in bytes. */
     static getCompressedLength() {
         return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH + SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX.length;
     }
+    /** @returns {number} The length of the uncompressed public key in bytes. */
     static getUncompressedLength() {
         return this.getCompressedLength();
     }
+    /** @returns {any} The underlying public key object. */
     getUnderlyingObject() {
         return this.publicKey;
     }
+    /** @returns {Uint8Array} The compressed public key bytes. */
     getRawCompressed() {
         return concatBytes(SLIP10_ED25519_CONST.PUBLIC_KEY_PREFIX, this.publicKey.toRawBytes());
     }
+    /** @returns {Uint8Array} The uncompressed public key bytes (same as compressed). */
     getRawUncompressed() {
         return this.getRawCompressed();
     }
+    /** @returns {Point} The elliptic curve point corresponding to this public key. */
     getPoint() {
         return new SLIP10Ed25519Point(this.publicKey);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a private key for the SLIP10-Ed25519 elliptic curve.
+ * Provides encoding, raw access, and public key derivation.
+ * @extends PrivateKey
+ */
 class SLIP10Ed25519PrivateKey extends PrivateKey {
+    /** @returns {string} The name of the elliptic curve. */
     getName() {
         return 'SLIP10-Ed25519';
     }
+    /**
+     * Create a private key from raw bytes.
+     * @param {Uint8Array} privateKey - Encoded private key bytes.
+     * @returns {PrivateKey} The constructed private key.
+     * @throws {Error} If the byte length is invalid or data is invalid.
+     */
     static fromBytes(privateKey) {
         if (privateKey.length !== SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
             throw new Error('Invalid private key bytes length');
@@ -5750,15 +6465,22 @@ class SLIP10Ed25519PrivateKey extends PrivateKey {
             throw new Error('Invalid private key bytes');
         }
     }
+    /** @returns {number} The expected length of the private key in bytes. */
     static getLength() {
         return SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH;
     }
+    /** @returns {Uint8Array} Raw private key bytes. */
     getRaw() {
         return this.privateKey;
     }
+    /** @returns {any} The underlying private key object. */
     getUnderlyingObject() {
         return this.privateKey;
     }
+    /**
+     * Derive the corresponding public key from this private key.
+     * @returns {PublicKey} The derived public key.
+     */
     getPublicKey() {
         const pub = ed25519.getPublicKey(this.getRaw());
         return SLIP10Ed25519PublicKey.fromBytes(pub);
@@ -5766,6 +6488,11 @@ class SLIP10Ed25519PrivateKey extends PrivateKey {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the SLIP10-Ed25519 elliptic curve cryptography scheme.
+ * Provides point, public key, and private key definitions for Ed25519 curve operations.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Ed25519ECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519';
     static ORDER = BigInt('7237005577332262213973186563042994240857116359379907606001950938285454250989');
@@ -5776,17 +6503,37 @@ class SLIP10Ed25519ECC extends EllipticCurveCryptography {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a point on the SLIP10-Ed25519-Blake2b elliptic curve.
+ * @extends SLIP10Ed25519Point
+ */
 class SLIP10Ed25519Blake2bPoint extends SLIP10Ed25519Point {
+    /**
+     * Returns the name of the elliptic curve point.
+     * @returns {string} The curve name.
+     */
     getName() {
         return 'SLIP10-Ed25519-Blake2b';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a SLIP10 Ed25519 Blake2b public key.
+ * @extends SLIP10Ed25519PublicKey
+ */
 class SLIP10Ed25519Blake2bPublicKey extends SLIP10Ed25519PublicKey {
+    /**
+     * Returns the name of the public key curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Ed25519-Blake2b';
     }
+    /**
+     * Returns the point associated with this public key.
+     * @returns {SLIP10Ed25519Blake2bPoint} Point instance.
+     */
     getPoint() {
         return new SLIP10Ed25519Blake2bPoint(this.publicKey);
     }
@@ -8249,10 +8996,24 @@ function requireNaclFast () {
 var naclFastExports = requireNaclFast();
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a SLIP10 Ed25519 Blake2b private key.
+ * @extends PrivateKey
+ */
 class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
+    /**
+     * Returns the name of the private key curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Ed25519-Blake2b';
     }
+    /**
+     * Creates a private key instance from raw bytes.
+     * @param {Uint8Array} privateKey - The private key bytes.
+     * @returns {SLIP10Ed25519Blake2bPrivateKey} The private key instance.
+     * @throws {Error} If the bytes are invalid or length is incorrect.
+     */
     static fromBytes(privateKey) {
         if (privateKey.length !== SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
             throw new Error('Invalid private key bytes length');
@@ -8265,16 +9026,32 @@ class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
             throw new Error('Invalid private key bytes');
         }
     }
+    /**
+     * Returns the length of the private key in bytes.
+     * @returns {number} Private key byte length.
+     */
     static getLength() {
         return SLIP10_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH;
     }
+    /**
+     * Returns the raw private key bytes.
+     * @returns {Uint8Array} Private key bytes.
+     */
     getRaw() {
         const secret = this.privateKey.secretKey;
         return new Uint8Array(secret.subarray(0, naclFastExports.sign.seedLength));
     }
+    /**
+     * Returns the underlying private key object.
+     * @returns {any} Underlying key object.
+     */
     getUnderlyingObject() {
         return this.privateKey;
     }
+    /**
+     * Returns the corresponding public key.
+     * @returns {SLIP10Ed25519Blake2bPublicKey} The public key instance.
+     */
     getPublicKey() {
         const publicKey = this.privateKey.publicKey;
         return SLIP10Ed25519Blake2bPublicKey.fromBytes(publicKey);
@@ -8282,6 +9059,11 @@ class SLIP10Ed25519Blake2bPrivateKey extends PrivateKey {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the SLIP10-Ed25519-Blake2b elliptic curve cryptography class.
+ * Provides access to generator, order, points, public and private key classes.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Ed25519Blake2bECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519-Blake2b';
     static ORDER = SLIP10Ed25519ECC.ORDER;
@@ -8292,23 +9074,51 @@ class SLIP10Ed25519Blake2bECC extends EllipticCurveCryptography {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a point on the SLIP10 Ed25519 Monero elliptic curve.
+ * @extends SLIP10Ed25519Point
+ */
 class SLIP10Ed25519MoneroPoint extends SLIP10Ed25519Point {
+    /**
+     * Get the name of the curve.
+     * @returns {string} Curve name
+     */
     getName() {
         return 'SLIP10-Ed25519-Monero';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a public key for the SLIP10 Ed25519 Monero curve.
+ * @extends SLIP10Ed25519PublicKey
+ */
 class SLIP10Ed25519MoneroPublicKey extends SLIP10Ed25519PublicKey {
+    /**
+     * Get the name of the curve.
+     * @returns {string} Curve name
+     */
     getName() {
         return 'SLIP10-Ed25519-Monero';
     }
+    /**
+     * Get the compressed raw bytes of the public key.
+     * @returns {Uint8Array} Compressed public key bytes
+     */
     getRawCompressed() {
         return this.publicKey.toRawBytes();
     }
+    /**
+     * Get the expected length of the compressed public key.
+     * @returns {number} Length in bytes
+     */
     static getCompressedLength() {
         return SLIP10_ED25519_CONST.PUBLIC_KEY_BYTE_LENGTH;
     }
+    /**
+     * Get the underlying point representation of the public key.
+     * @returns {Point} The point corresponding to this public key
+     */
     getPoint() {
         return new SLIP10Ed25519MoneroPoint(this.publicKey);
     }
@@ -8346,16 +9156,32 @@ function scalarReduce(s) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a private key for the SLIP10 Ed25519 Monero curve.
+ * @extends SLIP10Ed25519PrivateKey
+ */
 class SLIP10Ed25519MoneroPrivateKey extends SLIP10Ed25519PrivateKey {
+    /**
+     * Get the name of the curve.
+     * @returns {string} Curve name
+     */
     getName() {
         return 'SLIP10-Ed25519-Monero';
     }
+    /**
+     * Derive the corresponding public key from this private key.
+     * @returns {PublicKey} The derived public key
+     */
     getPublicKey() {
         return SLIP10Ed25519MoneroPublicKey.fromBytes(pointScalarMulBase(this.getRaw()));
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the SLIP10 Ed25519 Monero elliptic curve.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Ed25519MoneroECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519-Monero';
     static ORDER = SLIP10Ed25519ECC.ORDER;
@@ -9553,10 +10379,24 @@ const p256 = p256$1;
 p256$1;
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a point on the SLIP10 NIST P-256 elliptic curve.
+ * @extends Point
+ */
 class SLIP10Nist256p1Point extends Point {
+    /**
+     * Returns the name of the curve point.
+     * @returns {string} Curve point name.
+     */
     getName() {
         return 'SLIP10-Nist256p1';
     }
+    /**
+     * Creates a point from raw bytes.
+     * @param {Uint8Array} point - The byte array representing the point.
+     * @returns {SLIP10Nist256p1Point} The curve point instance.
+     * @throws {Error} If the input bytes are invalid.
+     */
     static fromBytes(point) {
         try {
             const pt = p256.Point.fromHex(getBytes(point));
@@ -9571,39 +10411,89 @@ class SLIP10Nist256p1Point extends Point {
             throw new Error('Invalid point bytes');
         }
     }
+    /**
+     * Creates a point from x and y coordinates.
+     * @param {bigint} x - X coordinate.
+     * @param {bigint} y - Y coordinate.
+     * @returns {SLIP10Nist256p1Point} The curve point instance.
+     */
     static fromCoordinates(x, y) {
         const pt = new p256.Point(BigInt(x), BigInt(y), 1n);
         return new SLIP10Nist256p1Point(pt);
     }
+    /**
+     * Returns the underlying curve point object.
+     * @returns {any} Underlying point object.
+     */
     getUnderlyingObject() {
         return this.point;
     }
+    /**
+     * Returns the X coordinate of the point.
+     * @returns {bigint} X coordinate.
+     */
     getX() {
         return this.point.toAffine().x;
     }
+    /**
+     * Returns the Y coordinate of the point.
+     * @returns {bigint} Y coordinate.
+     */
     getY() {
         return this.point.toAffine().y;
     }
+    /**
+     * Returns the point encoded as a compressed byte array.
+     * @returns {Uint8Array} Compressed point bytes.
+     */
     getRawEncoded() {
         return this.point.toRawBytes(true);
     }
+    /**
+     * Returns the point encoded as an uncompressed byte array (without leading 0x04).
+     * @returns {Uint8Array} Uncompressed point bytes.
+     */
     getRawDecoded() {
         return this.point.toRawBytes(false).slice(1); // strip leading `0x04`
     }
+    /**
+     * Adds another point to this point.
+     * @param {Point} other - The point to add.
+     * @returns {SLIP10Nist256p1Point} The resulting point.
+     */
     add(other) {
         const p = other.getUnderlyingObject();
         return new SLIP10Nist256p1Point(this.point.add(p));
     }
+    /**
+     * Multiplies this point by a scalar.
+     * @param {bigint} scalar - The scalar to multiply by.
+     * @returns {SLIP10Nist256p1Point} The resulting point.
+     */
     multiply(scalar) {
         return new SLIP10Nist256p1Point(this.point.multiply(scalar));
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a public key on the SLIP10 NIST P-256 elliptic curve.
+ * @extends PublicKey
+ */
 class SLIP10Nist256p1PublicKey extends PublicKey {
+    /**
+     * Returns the name of the public key curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Nist256p1';
     }
+    /**
+     * Creates a public key from raw bytes.
+     * @param {Uint8Array} publicKey - Raw public key bytes.
+     * @returns {SLIP10Nist256p1PublicKey} Public key instance.
+     * @throws {Error} If the input bytes are invalid.
+     */
     static fromBytes(publicKey) {
         try {
             const point = p256.Point.fromHex(getBytes(publicKey));
@@ -9613,38 +10503,85 @@ class SLIP10Nist256p1PublicKey extends PublicKey {
             throw new Error('Invalid key bytes');
         }
     }
+    /**
+     * Creates a public key from a point.
+     * @param {Point} point - Elliptic curve point.
+     * @returns {SLIP10Nist256p1PublicKey} Public key instance.
+     */
     static fromPoint(point) {
         const base = point.getUnderlyingObject();
         return new SLIP10Nist256p1PublicKey(base);
     }
+    /**
+     * Returns the length of the compressed public key in bytes.
+     * @returns {number} Compressed key length.
+     */
     static getCompressedLength() {
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH;
     }
+    /**
+     * Returns the length of the uncompressed public key in bytes.
+     * @returns {number} Uncompressed key length.
+     */
     static getUncompressedLength() {
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH;
     }
+    /**
+     * Returns the underlying public key object.
+     * @returns {any} Underlying public key object.
+     */
     getUnderlyingObject() {
         return this.publicKey;
     }
+    /**
+     * Returns the compressed raw bytes of the public key.
+     * @returns {Uint8Array} Compressed key bytes.
+     */
     getRawCompressed() {
         return this.publicKey.toRawBytes(true);
     }
+    /**
+     * Returns the uncompressed raw bytes of the public key.
+     * @returns {Uint8Array} Uncompressed key bytes.
+     */
     getRawUncompressed() {
         return this.publicKey.toRawBytes(false);
     }
+    /**
+     * Returns the raw bytes of the public key (default: compressed).
+     * @returns {Uint8Array} Raw key bytes.
+     */
     getRaw() {
         return this.getRawCompressed();
     }
+    /**
+     * Returns the elliptic curve point corresponding to the public key.
+     * @returns {Point} Elliptic curve point.
+     */
     getPoint() {
         return new SLIP10Nist256p1Point(this.publicKey);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a private key on the SLIP10 NIST P-256 elliptic curve.
+ * @extends PrivateKey
+ */
 class SLIP10Nist256p1PrivateKey extends PrivateKey {
+    /**
+     * Returns the name of the private key curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Nist256p1';
     }
+    /**
+     * Creates a private key from raw bytes.
+     * @param {Uint8Array} privateKey - Raw private key bytes.
+     * @returns {SLIP10Nist256p1PrivateKey} The private key instance.
+     * @throws {Error} If the input bytes are invalid or of incorrect length.
+     */
     static fromBytes(privateKey) {
         if (privateKey.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
             throw new Error('Invalid private key bytes length');
@@ -9658,21 +10595,41 @@ class SLIP10Nist256p1PrivateKey extends PrivateKey {
             throw new Error('Invalid private key bytes');
         }
     }
+    /**
+     * Returns the byte length of the private key.
+     * @returns {number} Length in bytes.
+     */
     static getLength() {
         return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH;
     }
+    /**
+     * Returns the raw private key bytes.
+     * @returns {Uint8Array} Private key as bytes.
+     */
     getRaw() {
         return numberToBytesBE(this.privateKey.priv, SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH);
     }
+    /**
+     * Returns the underlying private key object.
+     * @returns {any} Underlying private key object.
+     */
     getUnderlyingObject() {
         return this.privateKey;
     }
+    /**
+     * Derives the public key corresponding to this private key.
+     * @returns {PublicKey} The associated public key.
+     */
     getPublicKey() {
         return new SLIP10Nist256p1PublicKey(this.privateKey.point);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the SLIP10 NIST P-256 elliptic curve cryptography implementation.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Nist256p1ECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Nist256p1';
     static ORDER = p256.CURVE.n;
@@ -9782,10 +10739,24 @@ const secp256k1 = createCurve({
 }, sha256$1);
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a point on the SLIP10 Secp256k1 elliptic curve.
+ * @extends Point
+ */
 class SLIP10Secp256k1Point extends Point {
+    /**
+     * Returns the name of the elliptic curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Secp256k1';
     }
+    /**
+     * Creates a point from raw bytes.
+     * @param {Uint8Array} point - Raw point bytes.
+     * @returns {SLIP10Secp256k1Point} Point instance.
+     * @throws {Error} If the bytes are invalid.
+     */
     static fromBytes(point) {
         try {
             const pubPoint = secp256k1.Point.fromHex(getBytes(point));
@@ -9795,30 +10766,66 @@ class SLIP10Secp256k1Point extends Point {
             throw new Error('Invalid point bytes');
         }
     }
+    /**
+     * Creates a point from coordinates.
+     * @param {bigint} x - X coordinate.
+     * @param {bigint} y - Y coordinate.
+     * @returns {SLIP10Secp256k1Point} Point instance.
+     */
     static fromCoordinates(x, y) {
         const pt = new secp256k1.Point(x, y, 1n);
         return new SLIP10Secp256k1Point(pt);
     }
+    /**
+     * Returns the underlying point object.
+     * @returns {any} Underlying point object.
+     */
     getUnderlyingObject() {
         return this.point;
     }
+    /**
+     * Returns the X coordinate of the point.
+     * @returns {bigint} X coordinate.
+     */
     getX() {
         return this.point.toAffine().x;
     }
+    /**
+     * Returns the Y coordinate of the point.
+     * @returns {bigint} Y coordinate.
+     */
     getY() {
         return this.point.toAffine().y;
     }
+    /**
+     * Returns the encoded raw bytes of the point (compressed).
+     * @returns {Uint8Array} Compressed point bytes.
+     */
     getRawEncoded() {
         return this.point.toRawBytes(true);
     }
+    /**
+     * Returns the decoded raw bytes of the point (uncompressed, without prefix).
+     * @returns {Uint8Array} Uncompressed point bytes.
+     */
     getRawDecoded() {
         return this.point.toRawBytes(false).slice(1);
     }
+    /**
+     * Adds another point to this point.
+     * @param {Point} point - Point to add.
+     * @returns {SLIP10Secp256k1Point} Resulting point.
+     */
     add(point) {
         const other = point.getUnderlyingObject();
         const sum = this.point.add(other);
         return new SLIP10Secp256k1Point(sum);
     }
+    /**
+     * Multiplies this point by a scalar.
+     * @param {bigint} scalar - Scalar value.
+     * @returns {SLIP10Secp256k1Point} Resulting point.
+     */
     multiply(scalar) {
         const prod = this.point.multiply(scalar);
         return new SLIP10Secp256k1Point(prod);
@@ -9826,10 +10833,24 @@ class SLIP10Secp256k1Point extends Point {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a SLIP10 Secp256k1 public key.
+ * @extends PublicKey
+ */
 class SLIP10Secp256k1PublicKey extends PublicKey {
+    /**
+     * Returns the name of the elliptic curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Secp256k1';
     }
+    /**
+     * Creates a public key from raw bytes.
+     * @param {Uint8Array} publicKey - Raw public key bytes.
+     * @returns {SLIP10Secp256k1PublicKey} Public key instance.
+     * @throws {Error} If the bytes are invalid.
+     */
     static fromBytes(publicKey) {
         try {
             const point = secp256k1.Point.fromHex(getBytes(publicKey));
@@ -9839,38 +10860,85 @@ class SLIP10Secp256k1PublicKey extends PublicKey {
             throw new Error('Invalid key bytes');
         }
     }
+    /**
+     * Creates a public key from a Point instance.
+     * @param {Point} point - Elliptic curve point.
+     * @returns {SLIP10Secp256k1PublicKey} Public key instance.
+     */
     static fromPoint(point) {
         const base = point.getUnderlyingObject();
         return new SLIP10Secp256k1PublicKey(base);
     }
+    /**
+     * Returns the length of a compressed public key in bytes.
+     * @returns {number} Compressed key length.
+     */
     static getCompressedLength() {
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_COMPRESSED_BYTE_LENGTH;
     }
+    /**
+     * Returns the length of an uncompressed public key in bytes.
+     * @returns {number} Uncompressed key length.
+     */
     static getUncompressedLength() {
         return SLIP10_SECP256K1_CONST.PUBLIC_KEY_UNCOMPRESSED_BYTE_LENGTH;
     }
+    /**
+     * Returns the underlying public key object.
+     * @returns {any} Underlying public key object.
+     */
     getUnderlyingObject() {
         return this.publicKey;
     }
+    /**
+     * Returns the compressed raw bytes of the public key.
+     * @returns {Uint8Array} Compressed public key bytes.
+     */
     getRawCompressed() {
         return this.publicKey.toRawBytes(true);
     }
+    /**
+     * Returns the uncompressed raw bytes of the public key.
+     * @returns {Uint8Array} Uncompressed public key bytes.
+     */
     getRawUncompressed() {
         return this.publicKey.toRawBytes(false);
     }
+    /**
+     * Returns the default raw bytes (compressed) of the public key.
+     * @returns {Uint8Array} Raw public key bytes.
+     */
     getRaw() {
         return this.getRawCompressed();
     }
+    /**
+     * Returns the corresponding Point instance of this public key.
+     * @returns {Point} Elliptic curve point.
+     */
     getPoint() {
         return new SLIP10Secp256k1Point(this.publicKey);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a SLIP10 Secp256k1 private key.
+ * @extends PrivateKey
+ */
 class SLIP10Secp256k1PrivateKey extends PrivateKey {
+    /**
+     * Returns the name of the elliptic curve.
+     * @returns {string} Curve name.
+     */
     getName() {
         return 'SLIP10-Secp256k1';
     }
+    /**
+     * Creates a private key from raw bytes.
+     * @param {Uint8Array} privateKey - Raw private key bytes.
+     * @returns {SLIP10Secp256k1PrivateKey} Private key instance.
+     * @throws {Error} If the bytes are invalid or wrong length.
+     */
     static fromBytes(privateKey) {
         if (privateKey.length !== SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH) {
             throw new Error('Invalid private key bytes length');
@@ -9884,21 +10952,41 @@ class SLIP10Secp256k1PrivateKey extends PrivateKey {
             throw new Error('Invalid private key bytes');
         }
     }
+    /**
+     * Returns the length of the private key in bytes.
+     * @returns {number} Private key byte length.
+     */
     static getLength() {
         return SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH;
     }
+    /**
+     * Returns the raw bytes of the private key.
+     * @returns {Uint8Array} Raw private key bytes.
+     */
     getRaw() {
         return numberToBytesBE(this.privateKey.priv, SLIP10_SECP256K1_CONST.PRIVATE_KEY_BYTE_LENGTH);
     }
+    /**
+     * Returns the underlying private key object.
+     * @returns {any} Underlying private key object.
+     */
     getUnderlyingObject() {
         return this.privateKey;
     }
+    /**
+     * Returns the corresponding public key for this private key.
+     * @returns {PublicKey} Public key instance.
+     */
     getPublicKey() {
         return new SLIP10Secp256k1PublicKey(this.privateKey.point);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the SLIP10 Secp256k1 elliptic curve cryptography.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Secp256k1ECC extends EllipticCurveCryptography {
     static NAME = 'SLIP10-Secp256k1';
     static ORDER = BigInt('0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141');
@@ -9909,24 +10997,53 @@ class SLIP10Secp256k1ECC extends EllipticCurveCryptography {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * @class KholawEd25519Point
+ * @extends SLIP10Ed25519Point
+ */
 class KholawEd25519Point extends SLIP10Ed25519Point {
+    /**
+     * @returns {string} The curve name identifier.
+     */
     getName() {
         return 'Kholaw-Ed25519';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a Kholaw Ed25519 public key implementation.
+ * @extends SLIP10Ed25519PublicKey
+ */
 class KholawEd25519PublicKey extends SLIP10Ed25519PublicKey {
+    /**
+     * Returns the name of the public key curve.
+     * @returns {string} The curve name "Kholaw-Ed25519".
+     */
     getName() {
         return 'Kholaw-Ed25519';
     }
+    /**
+     * Returns the point representation of this public key.
+     * @returns {Point} A KholawEd25519Point instance representing the public key.
+     */
     getPoint() {
         return new KholawEd25519Point(this.publicKey);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a Kholaw Ed25519 private key with an extended key.
+ * @extends SLIP10Ed25519PrivateKey
+ */
 class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
+    /**
+     * Creates a new KholawEd25519PrivateKey instance.
+     * @param {Uint8Array} privateKey - The private key bytes.
+     * @param {OptionsPrivateKey} options - The private key options including the extended key.
+     * @throws {Error} If the extended key is missing or has an invalid length.
+     */
     constructor(privateKey, options) {
         if (!options.extendedKey) {
             throw new Error('Extended key is required');
@@ -9936,9 +11053,19 @@ class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
         }
         super(privateKey, options);
     }
+    /**
+     * Returns the curve name identifier.
+     * @returns {string} The curve name "Kholaw-Ed25519".
+     */
     getName() {
         return 'Kholaw-Ed25519';
     }
+    /**
+     * Creates a private key instance from serialized bytes.
+     * @param {Uint8Array} privateKey - The serialized private key bytes.
+     * @returns {PrivateKey} A new KholawEd25519PrivateKey instance.
+     * @throws {Error} If the private key length is invalid.
+     */
     static fromBytes(privateKey) {
         if (privateKey.length !== KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH) {
             throw new Error('Invalid private key bytes length');
@@ -9947,9 +11074,18 @@ class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
         const extendedKeyBytes = privateKey.slice(SLIP10Ed25519PrivateKey.getLength());
         return new KholawEd25519PrivateKey(privateKeyBytes, { extendedKey: extendedKeyBytes });
     }
+    /**
+     * Returns the total byte length of the private key including the extended key.
+     * @returns {number} The byte length of the private key.
+     */
     static getLength() {
         return KHOLAW_ED25519_CONST.PRIVATE_KEY_BYTE_LENGTH;
     }
+    /**
+     * Returns the serialized form of the private key including the extended key.
+     * @returns {Uint8Array} The raw serialized private key bytes.
+     * @throws {Error} If the extended key is missing.
+     */
     getRaw() {
         const combined = new Uint8Array(KholawEd25519PrivateKey.getLength());
         combined.set(this.privateKey);
@@ -9958,6 +11094,10 @@ class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
         combined.set(this.options.extendedKey, SLIP10Ed25519PrivateKey.getLength());
         return combined;
     }
+    /**
+     * Derives and returns the corresponding KholawEd25519 public key.
+     * @returns {PublicKey} The derived KholawEd25519PublicKey instance.
+     */
     getPublicKey() {
         const point = pointScalarMulBase(this.privateKey);
         return KholawEd25519PublicKey.fromBytes(point);
@@ -9965,6 +11105,11 @@ class KholawEd25519PrivateKey extends SLIP10Ed25519PrivateKey {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the Kholaw-Ed25519 elliptic curve cryptography implementation.
+ * Extends the SLIP10-Ed25519 curve with Kholaw-specific key handling.
+ * @extends EllipticCurveCryptography
+ */
 class KholawEd25519ECC extends EllipticCurveCryptography {
     static NAME = 'Kholaw-Ed25519';
     static ORDER = SLIP10Ed25519ECC.ORDER;
@@ -9975,6 +11120,14 @@ class KholawEd25519ECC extends EllipticCurveCryptography {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * The `ECCS` class manages and provides access to supported
+ * Elliptic Curve Cryptography (ECC) implementations.
+ *
+ * It maintains a dictionary of available ECC algorithm classes,
+ * such as Ed25519, Ed25519-Blake2b, Ed25519-Monero, Nist256p1, and Secp256k1.
+ * This class allows retrieval, validation, and enumeration of these ECC types.
+ */
 class ECCS {
     static dictionary = {
         [KholawEd25519ECC.NAME]: KholawEd25519ECC,
@@ -9984,22 +11137,48 @@ class ECCS {
         [SLIP10Nist256p1ECC.NAME]: SLIP10Nist256p1ECC,
         [SLIP10Secp256k1ECC.NAME]: SLIP10Secp256k1ECC
     };
+    /**
+     * Get the names of all supported ECC implementations.
+     * @returns {string[]} List of ECC class names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Get all available ECC classes.
+     * @returns {typeof _EllipticCurveCryptography[]} Array of ECC classes.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieve an ECC class by its name.
+     * @param {string} name - The ECC class name.
+     * @returns {typeof _EllipticCurveCryptography} The corresponding ECC class.
+     * @throws {ECCError} If the name is invalid.
+     */
     static getECCClass(name) {
         if (!this.isECC(name)) {
             throw new ECCError(`Invalid ECC name`, { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Check if a given name corresponds to a valid ECC implementation.
+     * @param {string} name - The ECC name to verify.
+     * @returns {boolean} True if valid, false otherwise.
+     */
     static isECC(name) {
         return this.getNames().includes(name);
     }
 }
+/**
+ * Validate and normalize a public key input.
+ * @param {Uint8Array | string | _PublicKey} publicKey - Public key data or object.
+ * @param {typeof _PublicKey} publicKeyCls - Expected public key class.
+ * @returns {_PublicKey} Validated and instantiated public key.
+ * @throws {PublicKeyError} If the public key is invalid or of the wrong type.
+ */
 function validateAndGetPublicKey(publicKey, publicKeyCls) {
     try {
         if (publicKey instanceof Uint8Array) {
@@ -24095,10 +25274,19 @@ var symbols = /*#__PURE__*/Object.freeze({
 });
 
 // SPDX-License-Identifier: MIT
+/**
+ * Base class for entropy types.
+ * @class
+ */
 class Entropy {
     entropy;
     strength;
     static strengths;
+    /**
+     * Construct an entropy instance.
+     * @param {string} entropy - Entropy hex string
+     * @throws {EntropyError} If entropy is invalid or unsupported
+     */
     constructor(entropy) {
         const entropyBytes = getBytes(entropy);
         const strength = entropyBytes.length;
@@ -24116,33 +25304,77 @@ class Entropy {
         }
         this.entropy = bytesToHex(entropyBytes);
     }
+    /**
+     * Get the class name (to be overridden in subclasses)
+     * @returns {string}
+     * @throws {Error} If not overridden
+     */
     static getName() {
         throw new Error('Must override getName()');
     }
+    /**
+     * Get the name of this entropy instance.
+     * @returns {string}
+     */
     getName() {
         return this.constructor.getName();
     }
+    /**
+     * Get the entropy value as hex.
+     * @returns {string} Hex string of entropy
+     */
     getEntropy() {
         return this.entropy;
     }
+    /**
+     * Get the entropy strength in bits.
+     * @returns {number} Strength in bits
+     */
     getStrength() {
         return this.strength;
     }
+    /**
+     * Generate a new entropy string.
+     * @param {number} strength - Strength in bits
+     * @returns {string} Generated entropy as hex
+     * @throws {Error} If strength is invalid
+     */
     static generate(strength) {
         if (!this.strengths.includes(strength)) {
             throw new Error(`Invalid strength ${strength}`);
         }
         return bytesToHex(crypto.getRandomValues(new Uint8Array(strength / 8)));
     }
+    /**
+     * Check if a string is a valid entropy.
+     * @param {string} entropy - Entropy hex string
+     * @returns {boolean} True if valid, false otherwise
+     */
     static isValid(entropy) {
         return /^[0-9a-fA-F]+$/.test(entropy) && this.isValidStrength(entropy.length * 4);
     }
+    /**
+     * Check if a strength in bits is valid.
+     * @param {number} strength - Strength in bits
+     * @returns {boolean} True if valid, false otherwise
+     */
     static isValidStrength(strength) {
         return this.strengths.includes(strength);
     }
+    /**
+     * Check if a byte-length strength is valid.
+     * @param {number} bytesStrength - Strength in bytes
+     * @returns {boolean} True if valid, false otherwise
+     */
     static isValidBytesStrength(bytesStrength) {
         return this.isValidStrength(bytesStrength * 8);
     }
+    /**
+     * Check if entropy bits are enough (override in subclasses).
+     * @param {Uint8Array | number} entropy - Entropy bytes
+     * @returns {boolean}
+     * @throws {Error} Not implemented
+     */
     static areEntropyBitsEnough(entropy) {
         throw new Error('Not implemented');
     }
@@ -24152,16 +25384,41 @@ class Entropy {
 const ALGORAND_ENTROPY_STRENGTHS = {
     TWO_HUNDRED_FIFTY_SIX: 256
 };
+/**
+ * AlgorandEntropy class.
+ *
+ * Uses entropy to generate a mnemonic phrase specific to Algorand,
+ * ensuring secure account creation with a unique checksum.
+ *
+ * This class extends `Entropy`, so all base functionality is available.
+ *
+ * @extends Entropy
+ */
 class AlgorandEntropy extends Entropy {
+    /**
+    * List of supported entropy strengths for Algorand.
+    *
+    * @type {number[]}
+    */
     static strengths = [
         ALGORAND_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     ];
+    /**
+    * Get the name of this entropy class.
+    *
+    * @returns {string} The name of the entropy class.
+    */
     static getName() {
         return 'Algorand';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Constants representing the allowed entropy strengths for BIP39.
+ * @readonly
+ * @enum {number}
+ */
 const BIP39_ENTROPY_STRENGTHS = {
     ONE_HUNDRED_TWENTY_EIGHT: 128,
     ONE_HUNDRED_SIXTY: 160,
@@ -24169,7 +25426,20 @@ const BIP39_ENTROPY_STRENGTHS = {
     TWO_HUNDRED_TWENTY_FOUR: 224,
     TWO_HUNDRED_FIFTY_SIX: 256
 };
+/**
+ * BIP39Entropy class for generating mnemonic phrases according to the BIP39 standard.
+ *
+ * Uses entropy to generate a mnemonic phrase specific to BIP39, ensuring secure wallet
+ * creation with a checksum.
+ *
+ * This class inherits from the `Entropy` base class, so all base functionality
+ * (entropy validation, generation, etc.) is available.
+ */
 class BIP39Entropy extends Entropy {
+    /**
+     * Supported entropy strengths for BIP39.
+     * @type {number[]}
+     */
     static strengths = [
         BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
         BIP39_ENTROPY_STRENGTHS.ONE_HUNDRED_SIXTY,
@@ -24177,37 +25447,92 @@ class BIP39Entropy extends Entropy {
         BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_TWENTY_FOUR,
         BIP39_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     ];
+    /**
+     * Returns the name of this entropy class.
+     * @returns {string} - The name of the entropy type.
+     */
     static getName() {
         return 'BIP39';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Constants representing the allowed entropy strengths for Electrum V1.
+ * @readonly
+ * @enum {number}
+ */
 const ELECTRUM_V1_ENTROPY_STRENGTHS = {
     ONE_HUNDRED_TWENTY_EIGHT: 128
 };
+/**
+ * ElectrumV1Entropy class for generating mnemonic phrases according to the
+ * Electrum V1 standard.
+ *
+ * Uses 128-bit entropy to generate mnemonic phrases specific to Electrum V1.
+ *
+ * This class inherits from the `Entropy` base class, so all base functionality
+ * (entropy validation, generation, etc.) is available.
+ */
 class ElectrumV1Entropy extends Entropy {
+    /**
+     * Supported entropy strengths for Electrum V1.
+     * @type {number[]}
+     */
     static strengths = [
         ELECTRUM_V1_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT
     ];
+    /**
+     * Returns the name of this entropy class.
+     * @returns {string} - The name of the entropy type.
+     */
     static getName() {
         return 'Electrum-V1';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Constants representing the allowed entropy strengths for Electrum V2.
+ * @readonly
+ * @enum {number}
+ */
 const ELECTRUM_V2_ENTROPY_STRENGTHS = {
     ONE_HUNDRED_THIRTY_TWO: 132,
     TWO_HUNDRED_SIXTY_FOUR: 264
 };
+/**
+ * ElectrumV2Entropy class for handling entropy used in Electrum V2 wallets.
+ *
+ * Electrum V2 supports variable entropy sizes (132 or 264 bits), unlike V1.
+ * This ensures compatibility with the Electrum V2 mnemonic scheme.
+ *
+ * Inherits core functionality such as entropy validation and generation
+ * from the Entropy base class.
+ */
 class ElectrumV2Entropy extends Entropy {
+    /**
+     * Supported entropy strengths for Electrum V2.
+     * @type {number[]}
+     */
     static strengths = [
         ELECTRUM_V2_ENTROPY_STRENGTHS.ONE_HUNDRED_THIRTY_TWO,
         ELECTRUM_V2_ENTROPY_STRENGTHS.TWO_HUNDRED_SIXTY_FOUR
     ];
+    /**
+     * Returns the name of this entropy class.
+     * @returns {string} - The name of the entropy type.
+     */
     static getName() {
         return 'Electrum-V2';
     }
+    /**
+     * Generate a random Electrum V2 entropy value.
+     *
+     * @param {number} strength - Entropy strength in bits (132 or 264).
+     * @returns {string} Hex-encoded entropy string.
+     * @throws {Error} If the provided strength is not valid.
+     */
     static generate(strength) {
         if (!this.strengths.includes(strength)) {
             throw new Error(`Invalid strength ${strength}`);
@@ -24221,12 +25546,30 @@ class ElectrumV2Entropy extends Entropy {
         const outBytes = integerToBytes(combined, byteLen);
         return bytesToHex(outBytes);
     }
+    /**
+     * Validate whether the given entropy string is valid for Electrum V2.
+     *
+     * @param {string} entropy - The entropy value in hex.
+     * @returns {boolean} True if valid, false otherwise.
+     */
     static isValid(entropy) {
         return /^[0-9a-fA-F]+$/.test(entropy) && this.areEntropyBitsEnough(hexToBytes(entropy));
     }
+    /**
+     * Check if a given entropy strength is valid for Electrum V2.
+     *
+     * @param {number} strength - The entropy strength in bits.
+     * @returns {boolean} True if the strength is valid, false otherwise.
+     */
     static isValidStrength(strength) {
         return this.strengths.some((s) => strength >= s - 11 && strength <= s);
     }
+    /**
+     * Verify if the provided entropy contains enough bits for Electrum V2.
+     *
+     * @param {Uint8Array|number} entropy - Entropy bytes or integer value.
+     * @returns {boolean} True if enough entropy bits, false otherwise.
+     */
     static areEntropyBitsEnough(entropy) {
         let intVal = entropy instanceof Uint8Array ? bytesToInteger(entropy) : BigInt(entropy);
         if (intVal <= BigInt(0))
@@ -24241,18 +25584,46 @@ const MONERO_ENTROPY_STRENGTHS = {
     ONE_HUNDRED_TWENTY_EIGHT: 128,
     TWO_HUNDRED_FIFTY_SIX: 256
 };
+/**
+ * MoneroEntropy class.
+ *
+ * Uses entropy to generate a mnemonic phrase specific to Monero,
+ * ensuring secure account creation with a unique checksum.
+ *
+ * This class extends `Entropy`, so all base functionality is available.
+ *
+ * @extends Entropy
+ */
 class MoneroEntropy extends Entropy {
+    /**
+     * List of supported entropy strengths for Monero.
+     *
+     * @type {number[]}
+     */
     static strengths = [
         MONERO_ENTROPY_STRENGTHS.ONE_HUNDRED_TWENTY_EIGHT,
         MONERO_ENTROPY_STRENGTHS.TWO_HUNDRED_FIFTY_SIX
     ];
+    /**
+     * Get the name of this entropy class.
+     *
+     * @returns {string} The name of the entropy class.
+     */
     static getName() {
         return 'Monero';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * A class containing all supported entropy types.
+ * @class
+ */
 class ENTROPIES {
+    /**
+     * Dictionary of all entropy classes by name.
+     * @type {Record<string, typeof Entropy>}
+     */
     static dictionary = {
         [AlgorandEntropy.getName()]: AlgorandEntropy,
         [BIP39Entropy.getName()]: BIP39Entropy,
@@ -24260,18 +25631,37 @@ class ENTROPIES {
         [ElectrumV2Entropy.getName()]: ElectrumV2Entropy,
         [MoneroEntropy.getName()]: MoneroEntropy
     };
+    /**
+     * Return all entropy names.
+     * @returns {string[]} Array of entropy names
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Return all entropy classes.
+     * @returns {typeof Entropy[]} Array of entropy classes
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Get a specific entropy class by name.
+     * @param {string} name - The entropy name
+     * @returns {typeof Entropy} The entropy class
+     * @throws {EntropyError} If the name is invalid
+     */
     static getEntropyClass(name) {
         if (!this.isEntropy(name)) {
             throw new EntropyError('Invalid Entropy name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Check if a name is a valid entropy.
+     * @param {string} name - The entropy name
+     * @returns {boolean} True if the entropy exists, false otherwise
+     */
     static isEntropy(name) {
         return this.getNames().includes(name);
     }
@@ -24294,6 +25684,18 @@ var entropies = /*#__PURE__*/Object.freeze({
 });
 
 // SPDX-License-Identifier: MIT
+/**
+ * Abstract base class for Mnemonic implementations.
+ *
+ * Provides common functionality for handling mnemonics such as:
+ * - Normalizing word arrays
+ * - Validating mnemonics against wordlists
+ * - Detecting language
+ *
+ * Specific standards (e.g., BIP39, Electrum V1, Electrum V2, Monero)
+ * must extend this class and override methods like `getName`, `fromWords`,
+ * `fromEntropy`, `encode`, and `decode`.
+ */
 class Mnemonic {
     mnemonic;
     words;
@@ -24302,6 +25704,13 @@ class Mnemonic {
     static wordsList = [];
     static languages = [];
     static wordLists = {};
+    /**
+     * Create a new mnemonic instance.
+     *
+     * @param mnemonic - A string or array of words representing the mnemonic.
+     * @param options - Optional settings including custom wordlists.
+     * @throws {MnemonicError} If the mnemonic is invalid.
+     */
     constructor(mnemonic, options = {}) {
         const constructor = this.constructor;
         const words = constructor.normalize(mnemonic);
@@ -24314,36 +25723,113 @@ class Mnemonic {
         this.language = language;
         this.options = options;
     }
+    /**
+     * Get the mnemonic scheme name.
+     * Must be overridden by subclasses (e.g., "BIP39", "Electrum-V1").
+     *
+     * @returns {string}
+     * @throws {Error} If not implemented in subclass.
+     */
     static getName() {
         throw new Error('Must override getName()');
     }
+    /**
+     * Instance method to get the scheme name.
+     *
+     * @returns {string} The name of the mnemonic type.
+     */
     getName() {
         return this.constructor.getName();
     }
+    /**
+     * Get the full mnemonic phrase as a string.
+     *
+     * @returns {string} The mnemonic phrase.
+     */
     getMnemonic() {
         return this.mnemonic.join(' ');
     }
+    /**
+     * Get the mnemonic type (scheme-specific).
+     * Must be overridden by subclasses.
+     *
+     * @returns {string}
+     * @throws {Error} If not implemented.
+     */
     getMnemonicType() {
         throw new Error('Not implemented');
     }
+    /**
+     * Get the number of words in the mnemonic.
+     *
+     * @returns {number} Word count.
+     */
     getWords() {
         return this.words;
     }
+    /**
+     * Get the language of the mnemonic.
+     *
+     * @returns {string} The detected language.
+     */
     getLanguage() {
         return this.language;
     }
+    /**
+     * Generate a mnemonic from word count and language.
+     * Must be overridden by subclasses.
+     *
+     * @param words - The number of words.
+     * @param language - Language code.
+     * @param options - Optional settings.
+     * @returns {string} Generated mnemonic.
+     */
     static fromWords(words, language, options = {}) {
         throw new Error('Must override fromWords()');
     }
+    /**
+     * Generate a mnemonic from entropy.
+     * Must be overridden by subclasses.
+     *
+     * @param entropy - Entropy as hex, bytes, or Entropy instance.
+     * @param language - Language code.
+     * @param options - Optional settings.
+     * @returns {string} Generated mnemonic.
+     */
     static fromEntropy(entropy, language, options = {}) {
         throw new Error('Must override fromEntropy()');
     }
+    /**
+     * Encode entropy into a mnemonic phrase.
+     * Must be overridden by subclasses.
+     *
+     * @param entropy - Entropy as hex or bytes.
+     * @param language - Language code.
+     * @param options - Optional settings.
+     * @returns {string} Encoded mnemonic.
+     */
     static encode(entropy, language, options = {}) {
         throw new Error('Must override encode()');
     }
+    /**
+     * Decode a mnemonic phrase into entropy.
+     * Must be overridden by subclasses.
+     *
+     * @param mnemonic - Mnemonic as string or array of words.
+     * @param options - Optional settings.
+     * @returns {string} Decoded entropy in hex.
+     */
     static decode(mnemonic, options = {}) {
         throw new Error('Must override decode()');
     }
+    /**
+     * Get a wordlist by language.
+     *
+     * @param language - Language code.
+     * @param wordLists - Optional custom wordlists.
+     * @returns {string[]} The wordlist for the given language.
+     * @throws {MnemonicError} If no wordlist is available.
+     */
     static getWordsListByLanguage(language, wordLists) {
         const wordList = (wordLists ?? this.wordLists)[language];
         if (!wordList) {
@@ -24351,6 +25837,14 @@ class Mnemonic {
         }
         return wordList;
     }
+    /**
+     * Detect the language of a mnemonic by matching words to wordlists.
+     *
+     * @param mnemonic - Array of words to check.
+     * @param wordLists - Optional custom wordlists.
+     * @returns {[string[], string]} A tuple containing the matched wordlist and language.
+     * @throws {MnemonicError} If no matching language is found.
+     */
     static findLanguage(mnemonic, wordLists) {
         for (const language of this.languages) {
             try {
@@ -24369,6 +25863,13 @@ class Mnemonic {
         }
         throw new MnemonicError(`Invalid language for mnemonic: '${mnemonic.join(' ')}'`);
     }
+    /**
+     * Validate if a mnemonic is correct for its scheme.
+     *
+     * @param mnemonic - Mnemonic as string or word array.
+     * @param options - Optional settings.
+     * @returns {boolean} True if valid, false otherwise.
+     */
     static isValid(mnemonic, options = {}) {
         try {
             this.decode(mnemonic, options);
@@ -24378,12 +25879,30 @@ class Mnemonic {
             return false;
         }
     }
+    /**
+     * Check if a language is supported.
+     *
+     * @param language - Language code.
+     * @returns {boolean} True if valid.
+     */
     static isValidLanguage(language) {
         return this.languages.includes(language);
     }
+    /**
+     * Check if the number of words is supported.
+     *
+     * @param words - Word count.
+     * @returns {boolean} True if supported.
+     */
     static isValidWords(words) {
         return this.wordsList.includes(words);
     }
+    /**
+     * Normalize a mnemonic into a word array.
+     *
+     * @param mnemonic - Mnemonic as string or word array.
+     * @returns {string[]} Normalized word array.
+     */
     static normalize(mnemonic) {
         return typeof mnemonic === 'string' ? mnemonic.trim().split(/\s+/) : mnemonic;
     }
@@ -26448,6 +27967,16 @@ const ALGORAND_MNEMONIC_WORDS = {
 const ALGORAND_MNEMONIC_LANGUAGES = {
     ENGLISH: 'english'
 };
+/**
+ * Represents an Algorand mnemonic implementation.
+ *
+ * This class provides functionality to generate, encode, decode,
+ * and validate mnemonics based on Algorand's specification.
+ *
+ * - Uses 25-word mnemonics
+ * - Uses a checksum mechanism (2 bytes, 11-bit words)
+ * - Supported languages: English
+ */
 class AlgorandMnemonic extends Mnemonic {
     static checksumLength = 2;
     static wordBitLength = 11;
@@ -26461,9 +27990,23 @@ class AlgorandMnemonic extends Mnemonic {
     static wordLists = {
         [ALGORAND_MNEMONIC_LANGUAGES.ENGLISH]: WORDLIST$r
     };
+    /**
+     * Returns the name of this mnemonic type.
+     *
+     * @returns The string `"Algorand"`.
+     */
     static getName() {
         return 'Algorand';
     }
+    /**
+     * Generate a new mnemonic from word count and language.
+     *
+     * @param words - Number of words (must be 25).
+     * @param language - Language of the wordlist.
+     * @param options - Optional mnemonic generation options.
+     * @returns A space-separated mnemonic string.
+     * @throws {MnemonicError} If word count is invalid.
+     */
     static fromWords(words, language, options = {}) {
         if (!this.wordsList.includes(words)) {
             throw new MnemonicError(`Invalid words count`, { expected: this.wordsList, got: words });
@@ -26472,12 +28015,30 @@ class AlgorandMnemonic extends Mnemonic {
         const entropyHex = AlgorandEntropy.generate(strength);
         return this.encode(entropyHex, language, options);
     }
+    /**
+     * Generate a mnemonic from entropy input.
+     *
+     * @param entropy - Entropy (hex string, Uint8Array, or Entropy object).
+     * @param language - Target language.
+     * @param options - Optional mnemonic options.
+     * @returns A mnemonic phrase.
+     */
     static fromEntropy(entropy, language, options = {}) {
         const entropyBytes = typeof entropy === 'string'
             ? getBytes(entropy) : entropy instanceof Uint8Array
             ? entropy : getBytes(entropy.getEntropy());
         return this.encode(entropyBytes, language, options);
     }
+    /**
+     * Encode entropy bytes into an Algorand mnemonic phrase.
+     *
+     * @param entropyInput - Entropy (hex string or bytes).
+     * @param language - Language for wordlist.
+     * @param options - Optional encode options.
+     * @returns A space-separated mnemonic.
+     * @throws {EntropyError} If entropy length is invalid.
+     * @throws {Error} If conversion to checksum/data words fails.
+     */
     static encode(entropyInput, language, options = {}) {
         const entropyBytes = getBytes(entropyInput);
         if (!AlgorandEntropy.isValidBytesStrength(entropyBytes.length)) {
@@ -26495,6 +28056,15 @@ class AlgorandMnemonic extends Mnemonic {
         const indexes = [...dataWords, checksumWords[0]];
         return indexes.map(i => wordList[i]).join(' ');
     }
+    /**
+     * Decode an Algorand mnemonic back into entropy.
+     *
+     * @param mnemonic - Mnemonic string or array of words.
+     * @param options - Optional decode options.
+     * @returns Hex string representing entropy.
+     * @throws {MnemonicError} If mnemonic length or words are invalid.
+     * @throws {ChecksumError} If checksum does not match.
+     */
     static decode(mnemonic, options = {}) {
         const words = this.normalize(mnemonic);
         if (!this.wordsList.includes(words.length)) {
@@ -26524,6 +28094,12 @@ class AlgorandMnemonic extends Mnemonic {
         }
         return bytesToString(entropyBytes);
     }
+    /**
+     * Normalize input mnemonic into lowercase array of words.
+     *
+     * @param input - Mnemonic string or array.
+     * @returns Normalized array of words.
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());
@@ -51176,6 +52752,22 @@ const BIP39_MNEMONIC_LANGUAGES = {
     SPANISH: 'spanish',
     TURKISH: 'turkish'
 };
+/**
+ * Implements the BIP-39 mnemonic standard.
+ *
+ * BIP-39 mnemonics are human-readable sequences of words that encode entropy
+ * with a checksum, making it easier to back up and restore HD wallets.
+ *
+ * Supported word counts: 12, 15, 18, 21, 24
+ * Supported languages: Chinese (Simplified/Traditional), Czech, English, French,
+ * Italian, Japanese, Korean, Portuguese, Russian, Spanish, Turkish.
+ *
+ * Features:
+ * - Generate mnemonics from entropy or word count.
+ * - Encode entropy into mnemonic phrases.
+ * - Decode mnemonic phrases back to entropy.
+ * - Verify and normalize mnemonics across languages.
+ */
 class BIP39Mnemonic extends Mnemonic {
     static wordBitLength = 11;
     static wordsListNumber = 2048;
@@ -51208,9 +52800,22 @@ class BIP39Mnemonic extends Mnemonic {
         [BIP39_MNEMONIC_LANGUAGES.SPANISH]: WORDLIST$g,
         [BIP39_MNEMONIC_LANGUAGES.TURKISH]: WORDLIST$f
     };
+    /**
+     * Get the human-readable name of this mnemonic standard.
+     * @returns `"BIP39"`
+     */
     static getName() {
         return 'BIP39';
     }
+    /**
+     * Generate a new mnemonic phrase by word count.
+     *
+     * @param words Number of words (12, 15, 18, 21, or 24).
+     * @param language Language of the wordlist.
+     * @param options Additional encoding options.
+     * @throws {MnemonicError} If word count is invalid.
+     * @returns Mnemonic phrase as a string.
+     */
     static fromWords(words, language, options = {}) {
         if (!this.wordsList.includes(words)) {
             throw new MnemonicError(`Invalid words`, { expected: this.wordsList, got: words });
@@ -51219,6 +52824,14 @@ class BIP39Mnemonic extends Mnemonic {
         const entropyHex = BIP39Entropy.generate(strength);
         return this.encode(entropyHex, language, options);
     }
+    /**
+     * Generate a mnemonic phrase from entropy.
+     *
+     * @param entropy Hex string, byte array, or Entropy instance.
+     * @param language Language of the wordlist.
+     * @param options Additional encoding options.
+     * @returns Mnemonic phrase as a string.
+     */
     static fromEntropy(entropy, language, options = {}) {
         let hex;
         if (typeof entropy === 'string') {
@@ -51232,6 +52845,16 @@ class BIP39Mnemonic extends Mnemonic {
         }
         return this.encode(hex, language, options);
     }
+    /**
+     * Encode entropy into a BIP-39 mnemonic phrase.
+     *
+     * @param entropyInput Hex string or byte array.
+     * @param language Wordlist language.
+     * @param options Additional options.
+     * @throws {EntropyError} If entropy length is invalid.
+     * @throws {Error} If wordlist size is not 2048.
+     * @returns Mnemonic phrase as a string.
+     */
     static encode(entropyInput, language, options = {}) {
         const entropyBytes = typeof entropyInput === 'string' ?
             hexToBytes(entropyInput) : entropyInput;
@@ -51255,6 +52878,15 @@ class BIP39Mnemonic extends Mnemonic {
         }
         return words.join(' ');
     }
+    /**
+     * Decode a mnemonic phrase back into entropy.
+     *
+     * @param mnemonic Mnemonic phrase as string or array of words.
+     * @param options Options for checksum verification and custom wordlists.
+     * @throws {MnemonicError} If word count or words are invalid.
+     * @throws {ChecksumError} If checksum does not match.
+     * @returns Hex string of entropy.
+     */
     static decode(mnemonic, options = { checksum: false }) {
         const words = this.normalize(mnemonic);
         if (!this.wordsList.includes(words.length)) {
@@ -51296,6 +52928,12 @@ class BIP39Mnemonic extends Mnemonic {
         }
         return bytesToHex(entropyBytes);
     }
+    /**
+     * Normalize a mnemonic phrase into lowercase NFKD words.
+     *
+     * @param input Mnemonic as string or array of words.
+     * @returns Array of normalized words.
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());
@@ -52939,6 +54577,12 @@ const ELECTRUM_V1_MNEMONIC_WORDS = {
 const ELECTRUM_V1_MNEMONIC_LANGUAGES = {
     ENGLISH: 'english'
 };
+/**
+ * Electrum-V1 mnemonic implementation.
+ *
+ * Electrum-V1 mnemonics are generated by encoding entropy into
+ * a sequence of words using the Electrum-V1 algorithm.
+ */
 class ElectrumV1Mnemonic extends Mnemonic {
     static wordsListNumber = 1626;
     static wordsList = [
@@ -52951,9 +54595,23 @@ class ElectrumV1Mnemonic extends Mnemonic {
     static wordLists = {
         [ELECTRUM_V1_MNEMONIC_LANGUAGES.ENGLISH]: WORDLIST$e
     };
+    /**
+     * Get the name of this mnemonic type.
+     *
+     * @returns The string `"Electrum-V1"`.
+     */
     static getName() {
         return 'Electrum-V1';
     }
+    /**
+     * Generate a mnemonic from word count and language.
+     *
+     * @param count - Number of words (must be in `wordsList`).
+     * @param language - Language of the wordlist.
+     * @param options - Optional mnemonic generation options.
+     * @throws {MnemonicError} If the word count is invalid.
+     * @returns A space-separated mnemonic string.
+     */
     static fromWords(count, language, options = {}) {
         if (!this.wordsList.includes(count)) {
             throw new MnemonicError('Invalid mnemonic words number', { expected: this.wordsList, got: count });
@@ -52961,6 +54619,14 @@ class ElectrumV1Mnemonic extends Mnemonic {
         const entropy = ElectrumV1Entropy.generate(this.wordsToStrength[count]);
         return this.encode(entropy, language, options);
     }
+    /**
+     * Generate a mnemonic from entropy.
+     *
+     * @param entropy - Entropy in hex string, Uint8Array, or Entropy object form.
+     * @param language - Language of the wordlist.
+     * @param options - Optional mnemonic generation options.
+     * @returns A space-separated mnemonic string.
+     */
     static fromEntropy(entropy, language, options = {}) {
         let raw;
         if (typeof entropy === 'string') {
@@ -52974,6 +54640,15 @@ class ElectrumV1Mnemonic extends Mnemonic {
         }
         return this.encode(raw, language, options);
     }
+    /**
+     * Encode entropy into an Electrum-V1 mnemonic.
+     *
+     * @param entropy - Entropy as hex string or Uint8Array.
+     * @param language - Language of the wordlist.
+     * @param options - Optional mnemonic encoding options.
+     * @throws {EntropyError} If entropy strength is invalid.
+     * @returns A space-separated mnemonic string.
+     */
     static encode(entropy, language, options = {}) {
         const entropyBytes = getBytes(entropy);
         if (!ElectrumV1Entropy.isValidBytesStrength(entropyBytes.length)) {
@@ -52994,6 +54669,14 @@ class ElectrumV1Mnemonic extends Mnemonic {
         }
         return this.normalize(mnemonic).join(' ');
     }
+    /**
+     * Decode an Electrum-V1 mnemonic back to entropy.
+     *
+     * @param mnemonic - Mnemonic string or array of words.
+     * @param options - Decoding options (e.g. checksum).
+     * @throws {MnemonicError} If word count is invalid.
+     * @returns Hex-encoded entropy string.
+     */
     static decode(mnemonic, options = { checksum: false }) {
         const words = this.normalize(mnemonic);
         const count = words.length;
@@ -53028,6 +54711,13 @@ class ElectrumV1Mnemonic extends Mnemonic {
         }
         return bytesToHex(concatBytes(...bufs), false);
     }
+    /**
+     * Validate if the given input is a valid Electrum-V1 mnemonic.
+     *
+     * @param input - Mnemonic string or array of words.
+     * @param options - Validation options.
+     * @returns True if valid, false otherwise.
+     */
     static isValid(input, options = {}) {
         try {
             this.decode(input, options);
@@ -53037,6 +54727,12 @@ class ElectrumV1Mnemonic extends Mnemonic {
             return false;
         }
     }
+    /**
+     * Normalize input mnemonic or words list.
+     *
+     * @param input - Mnemonic string or array of words.
+     * @returns Normalized array of lowercase words (NFKD).
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());
@@ -61268,6 +62964,15 @@ const ELECTRUM_V2_MNEMONIC_TYPES = {
     STANDARD_2FA: 'standard-2fa',
     SEGWIT_2FA: 'segwit-2fa'
 };
+/**
+ * Electrum V2 Mnemonic implementation.
+ *
+ * Provides methods for:
+ * - Generating mnemonics from entropy or directly from word count.
+ * - Encoding and decoding mnemonics.
+ * - Validating Electrum V2 mnemonics against BIP39 and Electrum V1.
+ * - Supporting multiple languages and mnemonic types (Standard, SegWit, 2FA).
+ */
 class ElectrumV2Mnemonic extends Mnemonic {
     static wordBitLength = 11;
     static wordsList = [
@@ -61291,9 +62996,22 @@ class ElectrumV2Mnemonic extends Mnemonic {
         [ELECTRUM_V2_MNEMONIC_TYPES.STANDARD_2FA]: '101',
         [ELECTRUM_V2_MNEMONIC_TYPES.SEGWIT_2FA]: '102'
     };
+    /**
+     * Get the identifier name for this mnemonic scheme.
+     * @returns `"Electrum-V2"`
+     */
     static getName() {
         return 'Electrum-V2';
     }
+    /**
+     * Generate a mnemonic from a specified word count.
+     *
+     * @param count - Number of words (12 or 24)
+     * @param language - Wordlist language
+     * @param option - Mnemonic options (type + maxAttempts)
+     * @returns A valid Electrum-V2 mnemonic string
+     * @throws {MnemonicError} If word count is invalid
+     */
     static fromWords(count, language, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         maxAttempts: BigInt('1' + '0'.repeat(60))
@@ -61307,6 +63025,16 @@ class ElectrumV2Mnemonic extends Mnemonic {
         const entropyBytes = ElectrumV2Entropy.generate(this.wordsToEntropyStrength[count]);
         return this.fromEntropy(entropyBytes, language, option);
     }
+    /**
+     * Generate a mnemonic from entropy.
+     *
+     * @param entropy - Raw entropy (hex string, byte array, or Entropy object)
+     * @param language - Wordlist language
+     * @param option - Mnemonic options (type + maxAttempts)
+     * @returns A valid Electrum-V2 mnemonic
+     * @throws {EntropyError} If entropy bits are insufficient
+     * @throws {MnemonicError} If mnemonic type is missing
+     */
     static fromEntropy(entropy, language, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD,
         maxAttempts: BigInt('1' + '0'.repeat(60))
@@ -61364,6 +63092,15 @@ class ElectrumV2Mnemonic extends Mnemonic {
         }
         throw new MnemonicError('Unable to generate a valid mnemonic');
     }
+    /**
+     * Encode entropy into an Electrum-V2 mnemonic.
+     *
+     * @param entropy - Raw entropy (hex, bytes)
+     * @param language - Wordlist language
+     * @param option - Mnemonic options
+     * @returns Mnemonic string
+     * @throws {EntropyError} If entropy strength is invalid or clashes with BIP39/ElectrumV1
+     */
     static encode(entropy, language, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -61392,6 +63129,14 @@ class ElectrumV2Mnemonic extends Mnemonic {
         }
         return this.normalize(mnemonic).join(' ');
     }
+    /**
+     * Decode an Electrum-V2 mnemonic back into entropy.
+     *
+     * @param mnemonic - Mnemonic phrase
+     * @param option - Mnemonic options (type required)
+     * @returns Entropy as a string
+     * @throws {MnemonicError} If mnemonic is invalid or word count is incorrect
+     */
     static decode(mnemonic, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -61419,6 +63164,13 @@ class ElectrumV2Mnemonic extends Mnemonic {
         const buf = integerToBytes(ent, byteLen, 'big');
         return bytesToString(buf);
     }
+    /**
+     * Validate whether input is a valid Electrum-V2 mnemonic.
+     *
+     * @param input - Mnemonic words
+     * @param option - Mnemonic options
+     * @returns True if valid, false otherwise
+     */
     static isValid(input, option = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -61432,16 +63184,35 @@ class ElectrumV2Mnemonic extends Mnemonic {
         }
         return this.isType(input, option.mnemonicType ?? ELECTRUM_V2_MNEMONIC_TYPES.STANDARD);
     }
+    /**
+     * Check if a mnemonic belongs to the specified type.
+     *
+     * @param input - Mnemonic words
+     * @param mnemonicType - Target mnemonic type
+     * @returns True if mnemonic type matches
+     */
     static isType(input, mnemonicType) {
         const tag = bytesToString(hmacSha512(toBuffer('Seed version'), this.normalize(input).join(' ')));
         return tag.startsWith(this.mnemonicTypes[mnemonicType]);
     }
+    /**
+     * Get the mnemonic type from instance options.
+     *
+     * @returns The mnemonic type string
+     * @throws {MnemonicError} If mnemonicType is not found
+     */
     getMnemonicType() {
         if (!this.options?.mnemonicType) {
             throw new MnemonicError('mnemonicType is not found');
         }
         return this.options?.mnemonicType;
     }
+    /**
+     * Normalize input (string or array) into lowercase words (NFKD form).
+     *
+     * @param input - Mnemonic phrase or word array
+     * @returns Normalized word array
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());
@@ -77767,6 +79538,13 @@ const MONERO_MNEMONIC_LANGUAGES = {
     RUSSIAN: 'russian',
     SPANISH: 'spanish',
 };
+/**
+ * MoneroMnemonic
+ *
+ * Implements the Monero-specific mnemonic system which supports multiple languages
+ * and variable word counts (12, 13, 24, or 25 words). Provides encoding and decoding
+ * between entropy and mnemonic phrases with optional checksum validation.
+ */
 class MoneroMnemonic extends Mnemonic {
     static wordBitLength = 11;
     static wordsList = [
@@ -77810,9 +79588,21 @@ class MoneroMnemonic extends Mnemonic {
         [MONERO_MNEMONIC_LANGUAGES.RUSSIAN]: WORDLIST$1,
         [MONERO_MNEMONIC_LANGUAGES.SPANISH]: WORDLIST
     };
+    /**
+     * Returns the name of this mnemonic type.
+     * @returns {string} `"Monero"`
+     */
     static getName() {
         return 'Monero';
     }
+    /**
+     * Generates a mnemonic phrase from a given word count.
+     *
+     * @param {number} count - The number of words (12, 13, 24, or 25).
+     * @param {string} language - The language of the mnemonic (must be one of `MONERO_MNEMONIC_LANGUAGES`).
+     * @returns {string} Mnemonic phrase.
+     * @throws {MnemonicError} If the word count is invalid.
+     */
     static fromWords(count, language) {
         if (!this.wordsList.includes(count)) {
             throw new MnemonicError('Invalid word count', { expected: this.wordsList, got: count });
@@ -77825,6 +79615,14 @@ class MoneroMnemonic extends Mnemonic {
         const entropyBytes = MoneroEntropy.generate(strength);
         return this.encode(entropyBytes, language, options);
     }
+    /**
+     * Generates a mnemonic phrase from entropy.
+     *
+     * @param {string | Uint8Array | Entropy} entropy - Entropy in hex, bytes, or Entropy object.
+     * @param {string} language - Target language for words.
+     * @param {MnemonicOptionsInterface} [options={}] - Options (e.g., checksum).
+     * @returns {string} Mnemonic phrase.
+     */
     static fromEntropy(entropy, language, options = {}) {
         let raw;
         if (typeof entropy === 'string') {
@@ -77838,6 +79636,16 @@ class MoneroMnemonic extends Mnemonic {
         }
         return this.encode(raw, language, options);
     }
+    /**
+     * Encodes raw entropy bytes into a Monero mnemonic phrase.
+     *
+     * @param {string | Uint8Array} entropy - Raw entropy.
+     * @param {string} language - Language for the mnemonic.
+     * @param {MnemonicOptionsInterface} [options={}] - Options, supports `{ checksum: true }`.
+     * @returns {string} Encoded mnemonic phrase.
+     * @throws {EntropyError} If entropy length is invalid.
+     * @throws {Error} If the wordlist length is incorrect.
+     */
     static encode(entropy, language, options = {}) {
         const entropyBytes = getBytes(entropy);
         if (!MoneroEntropy.isValidBytesStrength(entropyBytes.length)) {
@@ -77863,6 +79671,15 @@ class MoneroMnemonic extends Mnemonic {
         }
         return this.normalize(mnemonic).join(' ');
     }
+    /**
+     * Decodes a Monero mnemonic phrase into entropy.
+     *
+     * @param {string | string[]} input - Mnemonic phrase as string or array of words.
+     * @param {MnemonicOptionsInterface} [options={}] - Options (checksum validation).
+     * @returns {string} Hex string of entropy.
+     * @throws {MnemonicError} If mnemonic length is invalid.
+     * @throws {ChecksumError} If checksum is invalid.
+     */
     static decode(input, options = {}) {
         const words = this.normalize(input);
         const count = words.length;
@@ -77894,6 +79711,12 @@ class MoneroMnemonic extends Mnemonic {
         }
         return bytesToHex(concatBytes(...buffers), false);
     }
+    /**
+     * Normalizes mnemonic input into a lowercase word array.
+     *
+     * @param {string | string[]} input - Mnemonic phrase (string or array).
+     * @returns {string[]} Normalized words.
+     */
     static normalize(input) {
         const arr = typeof input === 'string' ? input.trim().split(/\s+/) : input;
         return arr.map(w => w.normalize('NFKD').toLowerCase());
@@ -77901,7 +79724,19 @@ class MoneroMnemonic extends Mnemonic {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Registry for all supported mnemonic schemes.
+ *
+ * Provides utility functions to:
+ *  - List all available mnemonic names (`getNames`).
+ *  - Retrieve classes for each mnemonic (`getClasses`).
+ *  - Lookup a specific mnemonic implementation by name (`getMnemonicClass`).
+ *  - Validate whether a mnemonic name is supported (`isMnemonic`).
+ */
 class MNEMONICS {
+    /**
+     * Internal dictionary mapping mnemonic names to their class implementations.
+     */
     static dictionary = {
         [AlgorandMnemonic.getName()]: AlgorandMnemonic,
         [BIP39Mnemonic.getName()]: BIP39Mnemonic,
@@ -77909,18 +79744,41 @@ class MNEMONICS {
         [ElectrumV2Mnemonic.getName()]: ElectrumV2Mnemonic,
         [MoneroMnemonic.getName()]: MoneroMnemonic
     };
+    /**
+     * Get the list of all supported mnemonic names.
+     *
+     * @returns {string[]} Array of mnemonic names, e.g. `["Algorand", "BIP39", "Electrum-V1", "Electrum-V2", "Monero"]`.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Get the list of all supported mnemonic classes.
+     *
+     * @returns {typeof Mnemonic[]} Array of mnemonic class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Lookup a mnemonic class by name.
+     *
+     * @param {string} name - The mnemonic name to lookup (e.g. `"BIP39"`).
+     * @throws {MnemonicError} If the name is invalid or unsupported.
+     * @returns {typeof Mnemonic} The corresponding mnemonic class.
+     */
     static getMnemonicClass(name) {
         if (!this.isMnemonic(name)) {
             throw new MnemonicError('Invalid Mnemonic name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Check if a given name corresponds to a supported mnemonic.
+     *
+     * @param {string} name - The mnemonic name to check.
+     * @returns {boolean} `true` if the name is supported, otherwise `false`.
+     */
     static isMnemonic(name) {
         return this.getNames().includes(name);
     }
@@ -77971,10 +79829,34 @@ class Seed {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the **Algorand** seed implementation.
+ *
+ * The `AlgorandSeed` class extends the base `Seed` class and provides
+ * functionality for generating and validating Algorand-compatible seeds.
+ *
+ * This class primarily handles conversion from mnemonic phrases
+ * (either as plain strings or `Mnemonic` instances) into seed bytes.
+ */
 class AlgorandSeed extends Seed {
+    /**
+     * Returns the name identifier for this seed type.
+     *
+     * @returns {string} The string `"Algorand"`.
+     */
     static getName() {
         return 'Algorand';
     }
+    /**
+     * Derives a seed from an Algorand mnemonic phrase.
+     *
+     * Accepts either a string-based mnemonic or a `Mnemonic` instance.
+     * If the mnemonic is invalid, a `MnemonicError` is thrown.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase or `Mnemonic` object.
+     * @returns {string} The derived seed as a string (typically base-encoded or hex-encoded).
+     * @throws {MnemonicError} If the provided mnemonic is not a valid Algorand phrase.
+     */
     static fromMnemonic(mnemonic) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         if (!AlgorandMnemonic.isValid(phrase)) {
@@ -77985,12 +79867,28 @@ class AlgorandSeed extends Seed {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * BIP39Seed provides functionality for deriving a cryptographic seed
+ * from a valid BIP39 mnemonic phrase using PBKDF2 with HMAC-SHA512.
+ */
 class BIP39Seed extends Seed {
     static seedSaltModifier = 'mnemonic';
     static seedPbkdf2Rounds = 2048;
+    /**
+     * Returns the name of this seed type.
+     *
+     * @returns {string}
+     */
     static getName() {
         return 'BIP39';
     }
+    /**
+     * Derives a cryptographic seed from a BIP39 mnemonic phrase.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase or Mnemonic instance.
+     * @param {SeedOptionsInterface} [options={}] - Optional derivation parameters.
+     * @returns {string} The derived seed as a hexadecimal string.
+     */
     static fromMnemonic(mnemonic, options = {}) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         if (!BIP39Mnemonic.isValid(phrase)) {
@@ -78318,7 +80216,19 @@ const S=!h$2();function O(e){if(typeof e=="object"&&e){if(e.constructor!==Number
 function c(i){const e={...w$1.defaultDecodeOptions};if(i.dcbor?Object.assign(e,w$1.dcborDecodeOptions):i.cde&&Object.assign(e,w$1.cdeDecodeOptions),Object.assign(e,i),Object.hasOwn(e,"rejectLongNumbers"))throw new TypeError("rejectLongNumbers has changed to requirePreferred");return e.boxed&&(e.saveOriginal=!0),e}class d{parent=void 0;ret=void 0;step(e,n,t){if(this.ret=w$1.create(e,this.parent,n,t),e[2]===N$2.BREAK)if(this.parent?.isStreaming)this.parent.left=0;else throw new Error("Unexpected BREAK");else this.parent&&this.parent.push(this.ret,t,e[3]);for(this.ret instanceof w$1&&(this.parent=this.ret);this.parent?.done;){this.ret=this.parent.convert(t);const r=this.parent.parent;r?.replaceLast(this.ret,this.parent,t),this.parent=r;}}}function l(i,e={}){const n=c(e),t=new y$2(i,n),r=new d;for(const o of t)r.step(o,n,t);return r.ret}
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a Cardano seed generator, supporting multiple
+ * derivation standards including Byron (Icarus, Ledger, Legacy)
+ * and Shelley (Icarus, Ledger).
+ */
 class CardanoSeed extends Seed {
+    /**
+     * Creates a new instance of CardanoSeed.
+     *
+     * @param {string} seed - The hexadecimal seed string.
+     * @param {SeedOptionsInterface} [options={ cardanoType: Cardano.TYPES.BYRON_ICARUS }] - Optional seed configuration including the Cardano type.
+     * @throws {SeedError} If the provided cardanoType is invalid.
+     */
     constructor(seed, options = {
         cardanoType: Cardano.TYPES.BYRON_ICARUS
     }) {
@@ -78329,15 +80239,35 @@ class CardanoSeed extends Seed {
         }
         super(seed, options);
     }
+    /**
+     * Returns the name of this seed type.
+     *
+     * @returns {string} The string `"Cardano"`.
+     */
     static getName() {
         return 'Cardano';
     }
+    /**
+     * Returns the current Cardano type assigned to this seed instance.
+     *
+     * @returns {string} The selected Cardano type.
+     * @throws {SeedError} If no `cardanoType` is found in the options.
+     */
     getCardanoType() {
         if (!this.options?.cardanoType) {
             throw new SeedError('cardanoType is not found');
         }
         return this.options?.cardanoType;
     }
+    /**
+     * Generates a Cardano seed from a mnemonic phrase, supporting multiple Cardano derivation types.
+     *
+     * @param {string | Mnemonic} mnemonic - A mnemonic phrase or Mnemonic object.
+     * @param {SeedOptionsInterface} [options={ cardanoType: Cardano.TYPES.BYRON_ICARUS }] - Optional parameters including passphrase and cardanoType.
+     * @returns {string} A hexadecimal string representing the derived Cardano seed.
+     * @throws {MnemonicError} If the mnemonic is invalid.
+     * @throws {SeedError} If the Cardano type is invalid.
+     */
     static fromMnemonic(mnemonic, options = {
         cardanoType: Cardano.TYPES.BYRON_ICARUS
     }) {
@@ -78358,6 +80288,13 @@ class CardanoSeed extends Seed {
                 });
         }
     }
+    /**
+     * Generates a Byron-Icarus seed from a valid BIP39 mnemonic.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase.
+     * @returns {string} The derived seed as a hexadecimal string.
+     * @throws {MnemonicError} If the mnemonic is invalid.
+     */
     static generateByronIcarus(mnemonic) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         if (!BIP39Mnemonic.isValid(phrase)) {
@@ -78365,10 +80302,24 @@ class CardanoSeed extends Seed {
         }
         return BIP39Mnemonic.decode(phrase);
     }
+    /**
+     * Generates a Byron-Ledger seed using PBKDF2-HMAC-SHA512.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase.
+     * @param {string | null} [passphrase] - Optional passphrase for additional entropy.
+     * @returns {string} The derived seed as a hexadecimal string.
+     */
     static generateByronLedger(mnemonic, passphrase) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         return BIP39Seed.fromMnemonic(phrase, { passphrase: passphrase });
     }
+    /**
+     * Generates a Byron-Legacy seed by CBOR encoding and hashing the decoded mnemonic.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase.
+     * @returns {string} The derived seed as a hexadecimal string.
+     * @throws {MnemonicError} If the mnemonic is invalid.
+     */
     static generateByronLegacy(mnemonic) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         if (!BIP39Mnemonic.isValid(phrase)) {
@@ -78380,20 +80331,56 @@ class CardanoSeed extends Seed {
         const hash = blake2b256(cborBytes);
         return bytesToString(hash);
     }
+    /**
+     * Generates a Shelley-Icarus seed (same as Byron-Icarus).
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase.
+     * @returns {string} The derived seed as a hexadecimal string.
+     */
     static generateShelleyIcarus(mnemonic) {
         return this.generateByronIcarus(mnemonic);
     }
+    /**
+     * Generates a Shelley-Ledger seed (same as Byron-Ledger).
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase.
+     * @param {string | null} [passphrase] - Optional passphrase.
+     * @returns {string} The derived seed as a hexadecimal string.
+     */
     static generateShelleyLedger(mnemonic, passphrase) {
         return this.generateByronLedger(mnemonic, passphrase);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the Electrum-V1 seed generation process.
+ *
+ * This class is responsible for creating a seed from an Electrum-V1 mnemonic phrase.
+ * The mnemonic is validated and decoded, and the resulting entropy is hashed iteratively
+ * using SHA-256 to derive the final Electrum-V1 seed.
+ */
 class ElectrumV1Seed extends Seed {
     static hashIterationNumber = 10 ** 5;
+    /**
+     * Returns the name of this seed type.
+     *
+     * @returns {string} The string `'Electrum-V1'`.
+     */
     static getName() {
         return 'Electrum-V1';
     }
+    /**
+     * Derives an Electrum-V1 seed from a mnemonic phrase.
+     *
+     * The mnemonic is validated using `ElectrumV1Mnemonic.isValid()`.
+     * Then, it is decoded to entropy, and hashed 100,000 times with SHA-256,
+     * concatenating the entropy at each step to derive the final seed.
+     *
+     * @param {string | Mnemonic} mnemonic - The Electrum-V1 mnemonic phrase or a Mnemonic instance.
+     * @returns {string} The derived Electrum-V1 seed as a hexadecimal string.
+     * @throws {MnemonicError} If the provided mnemonic is invalid.
+     */
     static fromMnemonic(mnemonic) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         if (!ElectrumV1Mnemonic.isValid(phrase)) {
@@ -78410,12 +80397,33 @@ class ElectrumV1Seed extends Seed {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents an Electrum-V2 seed derived from an Electrum V2 mnemonic phrase.
+ *
+ * Implements the PBKDF2-HMAC-SHA512 key derivation using the salt "electrum"
+ * plus an optional passphrase. Compatible with Standard, Segwit, and 2FA mnemonic types.
+ */
 class ElectrumV2Seed extends Seed {
     static seedSaltModifier = 'electrum';
     static seedPbkdf2Rounds = 2048;
+    /**
+     * Returns the name of this seed type.
+     *
+     * @returns {string} The seed name, `'Electrum-V2'`.
+     */
     static getName() {
         return 'Electrum-V2';
     }
+    /**
+     * Derives an Electrum-V2 seed from a given mnemonic.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase or `Mnemonic` object.
+     * @param {SeedOptionsInterface} [options] - Optional parameters including:
+     *   - `mnemonicType` (`ELECTRUM_V2_MNEMONIC_TYPES`): The type of Electrum V2 mnemonic.
+     *   - `passphrase` (`string`): An optional passphrase for seed derivation.
+     * @returns {string} The derived Electrum-V2 seed as a hex string.
+     * @throws {MnemonicError} If the mnemonic is invalid for the specified type.
+     */
     static fromMnemonic(mnemonic, options = {
         mnemonicType: ELECTRUM_V2_MNEMONIC_TYPES.STANDARD
     }) {
@@ -78427,6 +80435,12 @@ class ElectrumV2Seed extends Seed {
         const seedBytes = pbkdf2HmacSha512(phrase, saltBase, this.seedPbkdf2Rounds);
         return bytesToString(seedBytes);
     }
+    /**
+     * Retrieves the mnemonic type from the seed options.
+     *
+     * @returns {string} The mnemonic type (e.g., `'standard'`, `'segwit'`, `'2fa'`).
+     * @throws {SeedError} If the mnemonic type is not set.
+     */
     getMnemonicType() {
         if (!this.options?.mnemonicType) {
             throw new SeedError('mnemonicType is not found');
@@ -78436,10 +80450,30 @@ class ElectrumV2Seed extends Seed {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the Monero-specific seed derivation implementation.
+ *
+ * The `MoneroSeed` class provides functionality for validating and
+ * decoding Monero mnemonic phrases into their corresponding seed value.
+ *
+ * Each Monero seed follows the Monero-specific encoding and decoding scheme.
+ */
 class MoneroSeed extends Seed {
+    /**
+     * Returns the name of the seed type.
+     *
+     * @returns {string} The name `"Monero"`.
+     */
     static getName() {
         return 'Monero';
     }
+    /**
+     * Derives a Monero seed from a given mnemonic phrase.
+     *
+     * @param {string | Mnemonic} mnemonic - The mnemonic phrase or `Mnemonic` instance.
+     * @returns {string} The derived Monero seed as a hexadecimal string.
+     * @throws {MnemonicError} If the provided mnemonic phrase is invalid.
+     */
     static fromMnemonic(mnemonic) {
         const phrase = typeof mnemonic === 'string' ? mnemonic : mnemonic.getMnemonic();
         if (!MoneroMnemonic.isValid(phrase)) {
@@ -78450,6 +80484,14 @@ class MoneroSeed extends Seed {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * The SEEDS class acts as a centralized registry for all supported seed types.
+ *
+ * It provides a unified interface for accessing, validating, and retrieving seed classes
+ * (such as Algorand, BIP39, Cardano, Electrum, and Monero).
+ *
+ * Each seed class implements the `Seed` base class and defines its own derivation logic.
+ */
 class SEEDS {
     static dictionary = {
         [AlgorandSeed.getName()]: AlgorandSeed,
@@ -78459,18 +80501,41 @@ class SEEDS {
         [ElectrumV2Seed.getName()]: ElectrumV2Seed,
         [MoneroSeed.getName()]: MoneroSeed
     };
+    /**
+     * Returns the names of all available seed classes.
+     *
+     * @returns {string[]} Array of seed class names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns all seed class constructors.
+     *
+     * @returns {typeof Seed[]} Array of seed class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieves a specific seed class by name.
+     *
+     * @param {string} name - The name of the seed class.
+     * @returns {typeof Seed} The corresponding seed class.
+     * @throws {SeedError} If the provided seed name is invalid.
+     */
     static getSeedClass(name) {
         if (!this.isSeed(name)) {
             throw new SeedError('Invalid seed name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks if a given name corresponds to a valid registered seed type.
+     *
+     * @param {string} name - The seed name to check.
+     * @returns {boolean} `true` if valid, otherwise `false`.
+     */
     static isSeed(name) {
         return this.getNames().includes(name);
     }
@@ -78489,69 +80554,182 @@ var seeds = /*#__PURE__*/Object.freeze({
 });
 
 // SPDX-License-Identifier: MIT
+/**
+ * Base abstract class for all hierarchical deterministic derivations.
+ *
+ * Provides common functionality such as normalization, path management,
+ * and standard interface definitions for BIP-based and custom derivations.
+ *
+ * Subclasses (like BIP44Derivation, CIP1852Derivation, etc.) must override
+ * abstract methods like `getName()`, `clean()`, `getPurpose()`, `getCoinType()`, etc.
+ */
 class Derivation {
     path;
     indexes;
     derivations;
     purpose = [0, true];
+    /**
+     * Creates a new derivation instance.
+     *
+     * @param {DerivationOptionsInterface} [options] - Optional derivation configuration.
+     * @param {string} [options.path] - Derivation path (e.g., `'m/44'/0'/0'/0/0'`).
+     * @param {number[]} [options.indexes] - Array of derivation indexes.
+     */
     constructor(options = {}) {
         const [path, indexes, derivations] = normalizeDerivation(options?.path, options?.indexes);
         this.derivations = derivations;
         this.indexes = indexes;
         this.path = path;
     }
+    /**
+     * Returns the name of the derivation standard (e.g., `'BIP44'`).
+     * Must be overridden in subclasses.
+     * @returns {string}
+     * @throws {Error} Must override in subclass.
+     */
     static getName() {
         throw new Error('Must override getName()');
     }
+    /**
+     * Returns the derivation standard name for the current instance.
+     * @returns {string} The derivation standard name.
+     */
     getName() {
         return this.constructor.getName();
     }
+    /**
+     * Resets the derivation to its default clean state.
+     * Must be implemented by subclasses.
+     * @returns {this}
+     * @throws {Error} Must override in subclass.
+     */
     clean() {
         throw new Error('Must override clean()');
     }
+    /**
+     * Returns the full derivation path.
+     * @returns {string} The derivation path (e.g., `'m/44'/0'/0'/0/0'`).
+     */
     getPath() {
         return this.path;
     }
+    /**
+     * Returns the list of indexes in the derivation path.
+     * @returns {number[]} Array of index numbers.
+     */
     getIndexes() {
         return this.indexes;
     }
+    /**
+     * Returns the structured derivations array.
+     * @returns {DerivationsType[]} Array of derivation tuples.
+     */
     getDerivations() {
         return this.derivations;
     }
+    /**
+     * Returns the depth (number of derivation levels).
+     * @returns {number} The depth of the derivation path.
+     */
     getDepth() {
         return this.derivations.length;
     }
+    /**
+     * Returns the derivation purpose (e.g., `44` for BIP44).
+     * Must be implemented by subclasses.
+     * @returns {number}
+     */
     getPurpose() {
         throw new Error('Must override getPurpose()');
     }
+    /**
+     * Returns the coin type (e.g., `0` for Bitcoin).
+     * Must be implemented by subclasses.
+     * @returns {number}
+     */
     getCoinType() {
         throw new Error('Must override getCoinType()');
     }
+    /**
+     * Returns the account index.
+     * Must be implemented by subclasses.
+     * @returns {number}
+     */
     getAccount() {
         throw new Error('Must override getAccount()');
     }
+    /**
+     * Returns the change chain identifier.
+     * Must be implemented by subclasses.
+     * @param {...any} args - Optional arguments for change formatting.
+     * @returns {string|number}
+     */
     getChange(...args) {
         throw new Error('Must override getChange()');
     }
+    /**
+     * Returns the role name in role-based derivations (e.g., `'external'`, `'staking'`).
+     * Must be implemented by subclasses.
+     * @param {...any} args - Optional arguments for role formatting.
+     * @returns {string}
+     */
     getRole(...args) {
         throw new Error('Must override getRole()');
     }
+    /**
+     * Returns the address index.
+     * Must be implemented by subclasses.
+     * @returns {number}
+     */
     getAddress() {
         throw new Error('Must override getAddress()');
     }
+    /**
+     * Returns the minor index (if applicable in hierarchical standards).
+     * Must be implemented by subclasses.
+     * @returns {number}
+     */
     getMinor() {
         throw new Error('Must override getMinor()');
     }
+    /**
+     * Returns the major index (if applicable in hierarchical standards).
+     * Must be implemented by subclasses.
+     * @returns {number}
+     */
     getMajor() {
         throw new Error('Must override getMajor()');
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents a custom derivation path that does not conform to a specific standard (like BIP44).
+ *
+ * This class allows flexible derivation path construction based on either:
+ * - a direct string path (e.g. `"m/44'/0'/0'/0/0"`)
+ * - a list of indexes (e.g. `[44, 0, 0, 0, 0]`)
+ *
+ * @extends Derivation
+ */
 class CustomDerivation extends Derivation {
+    /**
+     * Returns the derivation name.
+     *
+     * @returns {string} The string `'Custom'`.
+     */
     static getName() {
         return 'Custom';
     }
+    /**
+     * Derives from a given string path.
+     *
+     * The path must start with `"m/"`, e.g. `"m/44'/0'/0'/0/0"`.
+     *
+     * @param {string} path - The derivation path string.
+     * @returns {this} The current instance for chaining.
+     * @throws {DerivationError} If the path format is invalid.
+     */
     fromPath(path) {
         if (!path.startsWith('m/')) {
             throw new DerivationError('Bad path format', { expected: "like this type of path \'m/0'/0\'", got: path });
@@ -78562,6 +80740,14 @@ class CustomDerivation extends Derivation {
         this.path = _path;
         return this;
     }
+    /**
+     * Derives from an array of indexes.
+     *
+     * Automatically generates a valid derivation path from the given index sequence.
+     *
+     * @param {number[]} indexes - The list of indexes (e.g. `[44, 0, 0, 0, 0]`).
+     * @returns {this} The current instance for chaining.
+     */
     fromIndexes(indexes) {
         const [path, _indexes, derivations] = normalizeDerivation(undefined, indexes);
         this.derivations = derivations;
@@ -78569,10 +80755,24 @@ class CustomDerivation extends Derivation {
         this.path = path;
         return this;
     }
+    /**
+     * Extends the current derivation path by appending an index.
+     *
+     * Optionally marks the index as hardened using the `'` suffix.
+     *
+     * @param {number} index - The index to append.
+     * @param {boolean} [hardened=false] - Whether the index is hardened.
+     * @returns {this} The current instance for chaining.
+     */
     fromIndex(index, hardened = false) {
         const path = hardened ? `${index}'` : `${index}`;
         return this.fromPath(this.path === 'm/' ? `${this.path}${path}` : `${this.path}/${path}`);
     }
+    /**
+     * Resets the derivation to its default (empty) state.
+     *
+     * @returns {this} The current instance for chaining.
+     */
     clean() {
         const [path, indexes, derivations] = normalizeDerivation(undefined, undefined);
         this.derivations = derivations;
@@ -78587,12 +80787,28 @@ const CHANGES = {
     EXTERNAL_CHAIN: 'external-chain',
     INTERNAL_CHAIN: 'internal-chain'
 };
+/**
+ * Implements the BIP44 hierarchical deterministic derivation standard.
+ *
+ * BIP44 defines a path structure:
+ * `m / purpose' / coin_type' / account' / change / address_index`
+ */
 class BIP44Derivation extends Derivation {
     purpose = [44, true];
     coinType;
     account;
     change;
     address;
+    /**
+     * Creates a new BIP44 derivation path.
+     *
+     * @param {DerivationOptionsInterface} [options] - Derivation configuration.
+     * @param {number|string} [options.coinType=Bitcoin.COIN_TYPE] - Cryptocurrency coin type.
+     * @param {number} [options.account=0] - Account index.
+     * @param {string|number} [options.change='external-chain'] - Change type or index.
+     * @param {number} [options.address=0] - Address index.
+     * @throws {DerivationError} If the change parameter is invalid.
+     */
     constructor(options = {
         coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
     }) {
@@ -78603,9 +80819,22 @@ class BIP44Derivation extends Derivation {
         this.address = normalizeIndex(options.address ?? 0, false);
         this.updateDerivation();
     }
+    /**
+     * Returns the derivation standard name.
+     * @returns {string} `'BIP44'`
+     */
     static getName() {
         return 'BIP44';
     }
+    /**
+     * Maps the given change value to its numeric or name form.
+     *
+     * @protected
+     * @param {IndexType} change - Change value (`0`, `1`, `'external-chain'`, or `'internal-chain'`).
+     * @param {boolean} [nameOnly=false] - If true, returns string name; otherwise numeric index.
+     * @returns {number|string} Mapped change value.
+     * @throws {DerivationError} If the change parameter is invalid.
+     */
     getChangeValue(change, nameOnly = false) {
         if (Array.isArray(change)) {
             throw new DerivationError('Bad change instance', {
@@ -78627,6 +80856,10 @@ class BIP44Derivation extends Derivation {
         if (internalChange.includes(change))
             return nameOnly ? CHANGES.INTERNAL_CHAIN : 1;
     }
+    /**
+     * Updates internal path, derivations, and indexes based on current parameters.
+     * @protected
+     */
     updateDerivation() {
         const [path, indexes, derivations] = normalizeDerivation(`m/${indexTupleToString(this.purpose)}/` +
             `${indexTupleToString(this.coinType)}/` +
@@ -78637,26 +80870,51 @@ class BIP44Derivation extends Derivation {
         this.indexes = indexes;
         this.path = path;
     }
+    /**
+     * Updates the coin type and regenerates the derivation path.
+     * @param {string|number} coinType - Coin type index (e.g., `0` for Bitcoin).
+     * @returns {this} Current instance for chaining.
+     */
     fromCoinType(coinType) {
         this.coinType = normalizeIndex(coinType, true);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Updates the account index and regenerates the derivation path.
+     * @param {IndexType} account - Account index.
+     * @returns {this} Current instance for chaining.
+     */
     fromAccount(account) {
         this.account = normalizeIndex(account, true);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Updates the change type and regenerates the derivation path.
+     * @param {string|number} change - Change type or index.
+     * @returns {this} Current instance for chaining.
+     * @throws {DerivationError} If the change value is invalid.
+     */
     fromChange(change) {
         this.change = normalizeIndex(this.getChangeValue(change), false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Updates the address index and regenerates the derivation path.
+     * @param {IndexType} address - Address index.
+     * @returns {this} Current instance for chaining.
+     */
     fromAddress(address) {
         this.address = normalizeIndex(address, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Resets the derivation to account `0`, change `'external-chain'`, and address `0`.
+     * @returns {this} Current instance for chaining.
+     */
     clean() {
         this.account = normalizeIndex(0, true);
         this.change = normalizeIndex(this.getChangeValue(CHANGES.EXTERNAL_CHAIN), false);
@@ -78664,60 +80922,147 @@ class BIP44Derivation extends Derivation {
         this.updateDerivation();
         return this;
     }
+    /**
+     * Gets the BIP purpose (always `44`).
+     * @returns {number} The BIP purpose index.
+     */
     getPurpose() {
         return this.purpose[0];
     }
+    /**
+     * Gets the current coin type index.
+     * @returns {number} Coin type index.
+     */
     getCoinType() {
         return this.coinType[0];
     }
+    /**
+     * Gets the current account index.
+     * @returns {number} Account index.
+     */
     getAccount() {
         return this.account.length === 3 ? this.account[1] : this.account[0];
     }
+    /**
+     * Gets the change name or index value.
+     * @param {boolean} [nameOnly=true] - Whether to return `'external-chain'` or `'internal-chain'` instead of `0` or `1`.
+     * @returns {string} The change name if `nameOnly=true`; otherwise the index.
+     */
     getChange(nameOnly = true) {
         return this.getChangeValue(this.change[0], nameOnly);
     }
+    /**
+     * Gets the address index.
+     * @returns {number} Address index.
+     */
     getAddress() {
         return this.address.length === 3 ? this.address[1] : this.address[0];
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Represents the BIP49 derivation standard.
+ *
+ * BIP49 defines the derivation scheme for hierarchical deterministic (HD)
+ * wallets using P2WPKH-nested-in-P2SH addresses (i.e., SegWit wrapped in
+ * P2SH). It extends BIP44 derivation and changes the purpose field to `49'`.
+ *
+ */
 class BIP49Derivation extends BIP44Derivation {
     purpose = [49, true];
+    /**
+     * Creates a new instance of the BIP49 derivation class.
+     *
+     * @param {DerivationOptionsInterface} [options] - Optional configuration object.
+     * @param {number} [options.coinType=Bitcoin.COIN_TYPE] - The SLIP-44 coin type (default is Bitcoin).
+     * @param {number} [options.account=0] - The account index in the derivation path.
+     * @param {number} [options.change=CHANGES.EXTERNAL_CHAIN] - The change type (0 for external, 1 for internal).
+     * @param {number} [options.address=0] - The address index.
+     * @returns {BIP49Derivation} Returns a configured instance of `BIP49Derivation`.
+     */
     constructor(options = {
         coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
     }) {
         super(options);
         this.updateDerivation();
     }
+    /**
+     * Retrieves the derivation name identifier.
+     *
+     * @returns {string} Returns the name `"BIP49"`.
+     */
     static getName() {
         return 'BIP49';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP84 hierarchical deterministic derivation standard.
+ *
+ * BIP84 defines a path structure:
+ * `m / purpose' / coin_type' / account' / change / address_index`
+ *
+ * This class extends BIP44Derivation but uses purpose `84` (native SegWit addresses).
+ */
 class BIP84Derivation extends BIP44Derivation {
     purpose = [84, true];
+    /**
+     * Creates a new BIP84 derivation path.
+     *
+     * @param {DerivationOptionsInterface} [options] - Derivation configuration.
+     * @param {number|string} [options.coinType=Bitcoin.COIN_TYPE] - Cryptocurrency coin type.
+     * @param {number} [options.account=0] - Account index.
+     * @param {string|number} [options.change='external-chain'] - Change type or index.
+     * @param {number} [options.address=0] - Address index.
+     */
     constructor(options = {
         coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
     }) {
         super(options);
         this.updateDerivation();
     }
+    /**
+     * Returns the derivation standard name.
+     * @returns {string} `'BIP84'`
+     */
     static getName() {
         return 'BIP84';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP86 hierarchical deterministic derivation standard.
+ *
+ * BIP86 defines a path structure:
+ * `m / purpose' / coin_type' / account' / change / address_index`
+ * where purpose is 86.
+ *
+ * Extends BIP44Derivation.
+ */
 class BIP86Derivation extends BIP44Derivation {
     purpose = [86, true];
+    /**
+     * Creates a new BIP86 derivation path.
+     *
+     * @param {DerivationOptionsInterface} [options] - Derivation configuration.
+     * @param {number|string} [options.coinType=Bitcoin.COIN_TYPE] - Cryptocurrency coin type.
+     * @param {number} [options.account=0] - Account index.
+     * @param {string|number} [options.change='external-chain'] - Change type or index.
+     * @param {number} [options.address=0] - Address index.
+     */
     constructor(options = {
         coinType: Bitcoin.COIN_TYPE, account: 0, change: CHANGES.EXTERNAL_CHAIN, address: 0
     }) {
         super(options);
         this.updateDerivation();
     }
+    /**
+     * Returns the derivation standard name.
+     * @returns {string} `'BIP86'`
+     */
     static getName() {
         return 'BIP86';
     }
@@ -78729,12 +81074,28 @@ const ROLES = {
     INTERNAL_CHAIN: 'internal-chain',
     STAKING_KEY: 'staking-key'
 };
+/**
+ * Implements the CIP-1852 hierarchical deterministic derivation standard for Cardano.
+ *
+ * The derivation path structure is:
+ * `m / purpose' / coin_type' / account' / role / address_index`
+ */
 class CIP1852Derivation extends Derivation {
     purpose = [1852, true];
     coinType;
     account;
     role;
     address;
+    /**
+     * Creates a new CIP1852 derivation path.
+     *
+     * @param {DerivationOptionsInterface} [options] - Derivation configuration.
+     * @param {number|string} [options.coinType=Cardano.COIN_TYPE] - Coin type index.
+     * @param {number} [options.account=0] - Account index.
+     * @param {string|number} [options.role='external-chain'] - Role type or index.
+     * @param {number} [options.address=0] - Address index.
+     * @throws {DerivationError} If the role value is invalid.
+     */
     constructor(options = {
         coinType: Cardano.COIN_TYPE, account: 0, role: ROLES.EXTERNAL_CHAIN, address: 0
     }) {
@@ -78745,9 +81106,22 @@ class CIP1852Derivation extends Derivation {
         this.address = normalizeIndex(options.address ?? 0, false);
         this.updateDerivation();
     }
+    /**
+     * Returns the derivation standard name.
+     * @returns {string} `'CIP1852'`
+     */
     static getName() {
         return 'CIP1852';
     }
+    /**
+     * Maps the given role value to its numeric or name form.
+     *
+     * @protected
+     * @param {IndexType} role - Role value (`0`, `1`, `2`, or corresponding role name).
+     * @param {boolean} [nameOnly=false] - If true, returns string name; otherwise numeric index.
+     * @returns {number|string} Mapped role value.
+     * @throws {DerivationError} If the role value is invalid.
+     */
     getRoleValue(role, nameOnly = false) {
         if (Array.isArray(role)) {
             throw new DerivationError('Bad role instance', {
@@ -78782,26 +81156,50 @@ class CIP1852Derivation extends Derivation {
         this.indexes = indexes;
         this.path = path;
     }
+    /**
+     * Sets the coin type and updates the derivation.
+     * @param {string|number} coinType
+     * @returns {this} Current instance for chaining.
+     */
     fromCoinType(coinType) {
         this.coinType = normalizeIndex(coinType, true);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Sets the account index and updates the derivation.
+     * @param {IndexType} account
+     * @returns {this} Current instance for chaining.
+     */
     fromAccount(account) {
         this.account = normalizeIndex(account, true);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Sets the role and updates the derivation.
+     * @param {string|number} role
+     * @returns {this} Current instance for chaining.
+     */
     fromRole(role) {
         this.role = normalizeIndex(this.getRoleValue(role), false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Sets the address index and updates the derivation.
+     * @param {IndexType} address
+     * @returns {this} Current instance for chaining.
+     */
     fromAddress(address) {
         this.address = normalizeIndex(address, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Resets derivation to default Cardano parameters.
+     * @returns {this} Current instance for chaining.
+     */
     clean() {
         this.coinType = normalizeIndex(Cardano.COIN_TYPE, true);
         this.account = normalizeIndex(0, true);
@@ -78810,27 +81208,61 @@ class CIP1852Derivation extends Derivation {
         this.updateDerivation();
         return this;
     }
+    /**
+     * Returns the purpose index (always 1852).
+     * @returns {number}
+     */
     getPurpose() {
         return this.purpose[0];
     }
+    /**
+     * Returns the coin type index.
+     * @returns {number}
+     */
     getCoinType() {
         return this.coinType[0];
     }
+    /**
+     * Returns the account index.
+     * @returns {number}
+     */
     getAccount() {
         return this.account.length === 3 ? this.account[1] : this.account[0];
     }
+    /**
+     * Returns the role name or index.
+     * @param {boolean} [nameOnly=true] - If true, returns role name; otherwise numeric index.
+     * @returns {string|number}
+     */
     getRole(nameOnly = true) {
         return this.getRoleValue(this.role[0], nameOnly);
     }
+    /**
+     * Returns the address index.
+     * @returns {number}
+     */
     getAddress() {
         return this.address.length === 3 ? this.address[1] : this.address[0];
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements Electrum-style derivation for hierarchical deterministic wallets.
+ *
+ * Electrum derivation paths are simplified as:
+ * `m / change / address_index`
+ */
 class ElectrumDerivation extends Derivation {
     change;
     address;
+    /**
+     * Creates a new Electrum derivation path.
+     *
+     * @param {DerivationOptionsInterface} [options] - Configuration options.
+     * @param {number} [options.change=0] - Change index.
+     * @param {number} [options.address=0] - Address index.
+     */
     constructor(options = {
         change: 0, address: 0
     }) {
@@ -78839,6 +81271,10 @@ class ElectrumDerivation extends Derivation {
         this.address = normalizeIndex(options.address ?? 0, false);
         this.updateDerivation();
     }
+    /**
+     * Returns the derivation standard name.
+     * @returns {string} `'Electrum'`
+     */
     static getName() {
         return 'Electrum';
     }
@@ -78849,34 +81285,64 @@ class ElectrumDerivation extends Derivation {
         this.indexes = indexes;
         this.path = path;
     }
+    /**
+     * Updates the change index and regenerates the derivation path.
+     * @param {IndexType} change - Change index.
+     * @returns {this} Current instance for chaining.
+     */
     fromChange(change) {
         this.change = normalizeIndex(change, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Updates the address index and regenerates the derivation path.
+     * @param {IndexType} address - Address index.
+     * @returns {this} Current instance for chaining.
+     */
     fromAddress(address) {
         this.address = normalizeIndex(address, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Resets the derivation to change 0 and address 0.
+     * @returns {this} Current instance for chaining.
+     */
     clean() {
         this.change = normalizeIndex(0, false);
         this.address = normalizeIndex(0, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Gets the current change index.
+     * @returns {number} Change index.
+     */
     getChange() {
         return this.change.length === 3 ? this.change[1] : this.change[0];
     }
+    /**
+     * Gets the current address index.
+     * @returns {number} Address index.
+     */
     getAddress() {
         return this.address.length === 3 ? this.address[1] : this.address[0];
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * MoneroDerivation implements a hierarchical derivation path for Monero wallets.
+ *
+ **/
 class MoneroDerivation extends Derivation {
     minor;
     major;
+    /**
+     * Constructor to initialize Monero derivation.
+     * @param options - Options including minor and major indices.
+     */
     constructor(options = {
         minor: 1, major: 0
     }) {
@@ -78885,6 +81351,10 @@ class MoneroDerivation extends Derivation {
         this.major = normalizeIndex(options.major ?? 0, false);
         this.updateDerivation();
     }
+    /**
+     * Returns the name of this derivation class.
+     * @returns {string} - 'Monero'
+     */
     static getName() {
         return 'Monero';
     }
@@ -78895,35 +81365,66 @@ class MoneroDerivation extends Derivation {
         this.indexes = indexes;
         this.path = path;
     }
+    /**
+     * Set a new minor index.
+     * @param minor - The minor index.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     fromMinor(minor) {
         this.minor = normalizeIndex(minor, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Set a new major index.
+     * @param major - The major index.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     fromMajor(major) {
         this.major = normalizeIndex(major, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Reset the derivation to default values.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     clean() {
         this.minor = normalizeIndex(1, false);
         this.major = normalizeIndex(0, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Get the minor index.
+     * @returns {number} - The minor index.
+     */
     getMinor() {
         return this.minor.length === 3 ? this.minor[1] : this.minor[0];
     }
+    /**
+     * Get the major index.
+     * @returns {number} - The major index.
+     */
     getMajor() {
         return this.major.length === 3 ? this.major[1] : this.major[0];
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * HDWDerivation implements a generic hierarchical deterministic wallet derivation
+ * supporting multiple elliptic curves.
+ *
+ **/
 class HDWDerivation extends Derivation {
     account;
     ecc;
     address;
+    /**
+     * Constructor to initialize the HDW derivation.
+     * @param options - Options including account, ECC type, and address.
+     */
     constructor(options = {
         account: 0, ecc: SLIP10Secp256k1ECC, address: 0
     }) {
@@ -78933,9 +81434,20 @@ class HDWDerivation extends Derivation {
         this.address = normalizeIndex(options.address ?? 0, false);
         this.updateDerivation();
     }
+    /**
+     * Returns the name of this derivation class.
+     * @returns {string} - 'HDW'
+     */
     static getName() {
         return 'HDW';
     }
+    /**
+     * Converts an ECC input to a valid internal representation.
+     * @param ecc - ECC name, index, or EllipticCurveCryptography instance.
+     * @param nameOnly - If true, returns the ECC name instead of numeric index.
+     * @returns {number|string} - Numeric index or ECC name.
+     * @throws {DerivationError} If the ECC type is invalid.
+     */
     getECCValue(ecc, nameOnly = false) {
         const { value, isValid } = ensureTypeMatch(ecc, EllipticCurveCryptography, { otherTypes: ['string', 'number'] });
         const curve = isValid ? value.NAME : ecc;
@@ -78975,21 +81487,40 @@ class HDWDerivation extends Derivation {
         this.indexes = indexes;
         this.path = path;
     }
+    /**
+     * Set a new account index.
+     * @param account - The new account index.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     fromAccount(account) {
         this.account = normalizeIndex(account, true);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Set a new ECC type.
+     * @param ecc - ECC name, index, or EllipticCurveCryptography instance.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     fromECC(ecc) {
         this.ecc = normalizeIndex(this.getECCValue(ecc), false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Set a new address index.
+     * @param address - The new address index.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     fromAddress(address) {
         this.address = normalizeIndex(address, false);
         this.updateDerivation();
         return this;
     }
+    /**
+     * Reset the derivation to default values.
+     * @returns {this} - Returns the derivation instance for chaining.
+     */
     clean() {
         this.account = normalizeIndex(0, true);
         this.ecc = normalizeIndex(this.getECCValue(SLIP10Secp256k1ECC), false);
@@ -78997,19 +81528,40 @@ class HDWDerivation extends Derivation {
         this.updateDerivation();
         return this;
     }
+    /**
+     * Get the account index.
+     * @returns {number} - The account index.
+     */
     getAccount() {
         return this.account.length === 3 ? this.account[1] : this.account[0];
     }
+    /**
+     * Get the ECC type used.
+     * @param nameOnly - If true, returns the ECC name; otherwise returns numeric index.
+     * @returns {string|number} - ECC name or numeric index.
+     */
     getECC(nameOnly = true) {
         return this.getECCValue(this.ecc[0], nameOnly);
     }
+    /**
+     * Get the address index.
+     * @returns {number} - The address index.
+     */
     getAddress() {
         return this.address.length === 3 ? this.address[1] : this.address[0];
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * A registry for all derivation classes.
+ * Provides methods to access, validate, and retrieve derivation class definitions.
+ */
 class DERIVATIONS {
+    /**
+     * A dictionary mapping derivation names to their corresponding classes.
+     * @type {Record<string, typeof Derivation>}
+     */
     static dictionary = {
         [CustomDerivation.getName()]: CustomDerivation,
         [BIP44Derivation.getName()]: BIP44Derivation,
@@ -79021,18 +81573,37 @@ class DERIVATIONS {
         [MoneroDerivation.getName()]: MoneroDerivation,
         [HDWDerivation.getName()]: HDWDerivation
     };
+    /**
+     * Returns all available derivation names.
+     * @returns {string[]} List of derivation names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns all available derivation classes.
+     * @returns {typeof Derivation[]} List of derivation class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieves a derivation class by name.
+     * @param {string} name - The derivation name.
+     * @returns {typeof Derivation} The derivation class corresponding to the given name.
+     * @throws {DerivationError} If the provided name is not a valid derivation.
+     */
     static getDerivationClass(name) {
         if (!this.isDerivation(name)) {
             throw new DerivationError('Invalid derivation name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks if a derivation name exists in the dictionary.
+     * @param {string} name - The derivation name to check.
+     * @returns {boolean} True if the derivation name exists, false otherwise.
+     */
     static isDerivation(name) {
         return this.dictionary.hasOwnProperty(name);
     }
@@ -79056,193 +81627,462 @@ var derivations = /*#__PURE__*/Object.freeze({
 });
 
 // SPDX-License-Identifier: MIT
+/**
+ * Base class for Hierarchical Deterministic (HD) wallets.
+ * Provides a common interface for key and address derivation across multiple blockchain protocols.
+ */
 class HD {
     ecc;
     derivation;
+    /**
+     * Creates an instance of an HD wallet.
+     * @param {HDOptionsInterface} [options={}] - Configuration options including ECC implementation.
+     */
     constructor(options = {}) {
         if (!options.ecc) {
             throw new ECCError('Elliptic Curve Cryptography (ECC) is required');
         }
         this.ecc = options.ecc;
     }
+    /**
+     * Returns the name of the HD wallet implementation.
+     * @returns {string} The HD wallet name.
+     */
     static getName() {
         throw new Error('Must override getName()');
     }
+    /**
+     * Gets the name of the current HD wallet instance.
+     * @returns {string} The name of the HD wallet.
+     */
     getName() {
         return this.constructor.getName();
     }
+    /**
+     * Initializes the HD wallet from a seed.
+     * @returns {this} The initialized HD instance.
+     */
     fromSeed(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes the HD wallet from an extended private key.
+     * @returns {this} The initialized HD instance.
+     */
     fromXPrivateKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes the HD wallet from an extended public key.
+     * @returns {this} The initialized HD instance.
+     */
     fromXPublicKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Loads HD wallet from a Wallet Import Format (WIF) string.
+     * @param {string} wif - WIF string.
+     * @returns {this} The initialized HD instance.
+     */
     fromWIF(wif) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes HD wallet from a private key.
+     * @param {string} privateKey - Private key string.
+     * @returns {this} The initialized HD instance.
+     */
     fromPrivateKey(privateKey) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes HD wallet from a spend private key.
+     * @param {string} spendPrivateKey - Spend private key string.
+     * @returns {this} The initialized HD instance.
+     */
     fromSpendPrivateKey(spendPrivateKey) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes HD wallet from a public key.
+     * @param {string} publicKey - Public key string.
+     * @returns {this} The initialized HD instance.
+     */
     fromPublicKey(publicKey) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes HD wallet from a view private key and spend public key.
+     * @param {string} viewPrivateKey - View private key string.
+     * @param {string} spendPublicKey - Spend public key string.
+     * @returns {this} The initialized HD instance.
+     */
     fromWatchOnly(viewPrivateKey, spendPublicKey) {
         throw new Error('Not implemented');
     }
+    /**
+     * Initializes HD wallet from a derivation object.
+     * @param {Derivation} derivation - Derivation path or object.
+     * @returns {this} The initialized HD instance.
+     */
     fromDerivation(derivation) {
         throw new Error('Not implemented');
     }
+    /**
+     * Updates the wallet derivation.
+     * @param {Derivation} derivation - New derivation object.
+     * @returns {this} The updated HD instance.
+     */
     updateDerivation(derivation) {
         throw new Error('Not implemented');
     }
+    /**
+     * Resets the current derivation state.
+     * @returns {this} The HD instance with cleared derivation.
+     */
     cleanDerivation() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the current derivation object.
+     * @returns {Derivation} The derivation instance.
+     */
     getDerivation() {
         return this.derivation;
     }
+    /**
+     * Returns the wallet seed.
+     * @returns {string | null} The seed as a string or null if not available.
+     */
     getSeed() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the wallet semantic identifier (if applicable).
+     * @returns {string | null} The semantic or null.
+     */
     getSemantic() {
         return null;
     }
+    /**
+     * Returns the root extended private key.
+     * @returns {string | null} The root xprv.
+     */
     getRootXPrivateKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the root extended public key.
+     * @returns {string | null} The root xpub.
+     */
     getRootXPublicKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the master extended private key (alias of root).
+     * @returns {string | null} The master xprv.
+     */
     getMasterXPrivateKey(...args) {
         return this.getRootXPrivateKey(...args);
     }
+    /**
+     * Returns the master extended public key (alias of root).
+     * @returns {string | null} The master xpub.
+     */
     getMasterXPublicKey(...args) {
         return this.getRootXPublicKey(...args);
     }
+    /**
+     * Returns the root private key.
+     * @returns {string | null} The private key or null.
+     */
     getRootPrivateKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the root WIF key.
+     * @returns {string | null} The WIF string or null.
+     */
     getRootWIF(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the root chain code.
+     * @returns {string | null} The chain code or null.
+     */
     getRootChainCode() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the root public key.
+     * @returns {string | null} The public key or null.
+     */
     getRootPublicKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the master private key.
+     * @returns {string | null} The private key or null.
+     */
     getMasterPrivateKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the master WIF.
+     * @returns {string | null} The WIF string or null.
+     */
     getMasterWIF(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the master chain code.
+     * @returns {string | null} The chain code or null.
+     */
     getMasterChainCode(...args) {
         return this.getRootChainCode();
     }
+    /**
+     * Returns the master public key.
+     * @returns {string | null} The public key or null.
+     */
     getMasterPublicKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the derived extended private key.
+     * @returns {string | null} The xprv key or null if unavailable.
+     */
     getXPrivateKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the derived extended public key.
+     * @returns {string | null} The xpub key or null if unavailable.
+     */
     getXPublicKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the derived private key.
+     * @returns {string | null} The private key string or null.
+     */
     getPrivateKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Indicates if strict derivation mode is enabled.
+     * @returns {boolean | null} True if strict mode is on, otherwise null.
+     */
     getStrict() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the spend private key (used in Monero-like systems).
+     * @returns {string | null} The spend private key or null.
+     */
     getSpendPrivateKey() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the view private key (used in Monero-like systems).
+     * @returns {string} The view private key string.
+     */
     getViewPrivateKey() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the Wallet Import Format (WIF) string.
+     * @returns {string | null} The WIF key string or null.
+     */
     getWIF(..._args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the WIF encoding type used.
+     * @returns {any} The WIF type identifier.
+     */
     getWIFType() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the chain code for key derivation.
+     * @returns {any} The chain code object or value.
+     */
     getChainCode() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the derived public key.
+     * @returns {any} The public key instance or object.
+     */
     getPublicKey(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the compressed public key representation.
+     * @returns {string} The compressed public key.
+     */
     getCompressed() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the uncompressed public key representation.
+     * @returns {string} The uncompressed public key.
+     */
     getUncompressed() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the spend public key (used in Monero-like systems).
+     * @returns {string} The spend public key string.
+     */
     getSpendPublicKey() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the view public key (used in Monero-like systems).
+     * @returns {string} The view public key string.
+     */
     getViewPublicKey() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the public key type or encoding.
+     * @returns {string} The public key type (e.g., 'compressed', 'uncompressed').
+     */
     getPublicKeyType() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the derivation or address mode (e.g., legacy, segwit).
+     * @returns {string} The mode string.
+     */
     getMode() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the hash of the derived public key or address.
+     * @returns {string} The hash string.
+     */
     getHash() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the fingerprint of the key or node.
+     * @returns {string} The fingerprint string.
+     */
     getFingerprint() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the parent node's fingerprint.
+     * @returns {any} The parent fingerprint value.
+     */
     getParentFingerprint() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the depth of the current derivation in the HD tree.
+     * @returns {number} The derivation depth.
+     */
     getDepth() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the full derivation path string.
+     * @returns {string} The derivation path (e.g., "m/44'/0'/0'/0").
+     */
     getPath() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns a key representation of the current derivation path.
+     * @returns {string | null} The path key or null.
+     */
     getPathKey() {
         return null;
     }
+    /**
+     * Returns the index of the current derivation level.
+     * @returns {number} The derivation index.
+     */
     getIndex() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the list of indexes used in the current derivation path.
+     * @returns {number[]} An array of index values.
+     */
     getIndexes() {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the integrated address (used in Monero for payment IDs).
+     * @returns {string | null} The integrated address or null.
+     */
     getIntegratedAddress(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the primary wallet address.
+     * @returns {string} The main wallet address string.
+     */
     getPrimaryAddress(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the sub-address for a given index or derivation.
+     * @returns {string} The generated sub-address.
+     */
     getSubAddress(...args) {
         throw new Error('Not implemented');
     }
+    /**
+     * Returns the general address derived from the current state.
+     * @returns {string | null} The address string or null.
+     */
     getAddress(...args) {
         throw new Error('Not implemented');
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Abstract base class for all cryptocurrency address implementations.
+ * Provides a standardized interface for encoding and decoding addresses.
+ */
 class Address {
+    /**
+     * Returns the name of the address implementation.
+     * Must be overridden by subclasses.
+     *
+     * @throws {Error} If not implemented in a subclass
+     * @returns {string} Name of the address type
+     */
     static getName() {
         throw new Error('Address.getName() not implemented');
     }
+    /**
+     * Encodes a public key (or other required data) into a blockchain address.
+     * Must be overridden by subclasses.
+     *
+     * @param publicKey The public key or object to encode
+     * @param options Optional encoding parameters
+     * @throws {Error} If not implemented in a subclass
+     * @returns {string} Encoded address
+     */
     static encode(publicKey, options) {
         throw new Error('Address.encode() not implemented');
     }
+    /**
+     * Decodes a blockchain address into its underlying public key(s) or data.
+     * Must be overridden by subclasses.
+     *
+     * @param address Address string to decode
+     * @param options Optional decoding parameters
+     * @throws {Error} If not implemented in a subclass
+     * @returns {string | [string, string]} Decoded public key(s) or data
+     */
     static decode(address, options) {
         throw new Error('Address.decode() not implemented');
     }
@@ -79370,12 +82210,30 @@ function decodeMonero(data) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Bitcoin P2PKH (Pay-to-PubKey-Hash) address.
+ * Provides methods for encoding public keys to P2PKH addresses and decoding P2PKH addresses back to the public key hash.
+ */
 class P2PKHAddress extends Address {
     static publicKeyAddressPrefix = Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
     static alphabet = Bitcoin.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2PKH").
+     */
     static getName() {
         return 'P2PKH';
     }
+    /**
+     * Encodes a public key into a Bitcoin P2PKH address.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options:
+     *   - publicKeyAddressPrefix: prefix byte for the address
+     *   - publicKeyType: whether to use compressed or uncompressed public key
+     *   - alphabet: Base58 alphabet
+     * @returns {string} Base58-encoded P2PKH address.
+     */
     static encode(publicKey, options = {
         publicKeyAddressPrefix: this.publicKeyAddressPrefix,
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
@@ -79391,6 +82249,16 @@ class P2PKHAddress extends Address {
         const alphabet = options.alphabet ?? this.alphabet;
         return ensureString(checkEncode(payload, alphabet));
     }
+    /**
+     * Decodes a Bitcoin P2PKH address into its public key hash.
+     *
+     * @param {string} address - The P2PKH address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options:
+     *   - publicKeyAddressPrefix: expected prefix byte
+     *   - alphabet: Base58 alphabet
+     * @returns {string} The public key hash extracted from the address.
+     * @throws {AddressError} If the address has invalid length or prefix.
+     */
     static decode(address, options = {
         publicKeyAddressPrefix: this.publicKeyAddressPrefix,
         alphabet: this.alphabet
@@ -79413,12 +82281,31 @@ class P2PKHAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Bitcoin P2SH (Pay-to-Script-Hash) address.
+ * Provides methods for encoding public keys to P2SH addresses and decoding P2SH addresses back to the script hash.
+ */
 class P2SHAddress extends Address {
     static scriptAddressPrefix = Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX;
     static alphabet = Bitcoin.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2SH").
+     */
     static getName() {
         return 'P2SH';
     }
+    /**
+     * Encodes a public key into a Bitcoin P2SH address.
+     * The method generates a standard P2PKH redeem script, computes its hash, and encodes it with the script address prefix.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options:
+     *   - scriptAddressPrefix: prefix byte for the address
+     *   - publicKeyType: whether to use compressed or uncompressed public key
+     *   - alphabet: Base58 alphabet
+     * @returns {string} Base58-encoded P2SH address.
+     */
     static encode(publicKey, options = {
         scriptAddressPrefix: this.scriptAddressPrefix,
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
@@ -79437,6 +82324,16 @@ class P2SHAddress extends Address {
         const alphabet = options.alphabet ?? this.alphabet;
         return ensureString(checkEncode(payload, alphabet));
     }
+    /**
+     * Decodes a Bitcoin P2SH address into its script hash.
+     *
+     * @param {string} address - The P2SH address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options:
+     *   - scriptAddressPrefix: expected prefix byte
+     *   - alphabet: Base58 alphabet
+     * @returns {string} The script hash extracted from the address.
+     * @throws {AddressError} If the address has invalid length or prefix.
+     */
     static decode(address, options = {
         scriptAddressPrefix: this.scriptAddressPrefix,
         alphabet: this.alphabet
@@ -79558,22 +82455,47 @@ function segwitDecode(hrp, addr) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Bitcoin P2TR (Pay-to-Taproot) address.
+ * Implements Taproot address generation, tweaking, encoding, and decoding according to BIP-341.
+ */
 class P2TRAddress extends Address {
     static hrp = Bitcoin.NETWORKS.MAINNET.HRP;
     static fieldSize = BigInt(Bitcoin.PARAMS.FIELD_SIZE);
     static tapTweakTagHash = getBytes(Bitcoin.PARAMS.TAP_TWEAK_SHA256);
     static witnessVersion = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2TR").
+     */
     static getName() {
         return 'P2TR';
     }
+    /**
+     * Computes a tagged SHA256 hash.
+     * @param {string | Uint8Array} tag - Tag as string or byte array.
+     * @param {Uint8Array} data - Data to hash.
+     * @returns {Uint8Array} Resulting tagged hash.
+     */
     static taggedHash(tag, data) {
         const tagHash = typeof tag === 'string' ? sha256(tag) : tag;
         return sha256(new Uint8Array([...tagHash, ...tagHash, ...data]));
     }
+    /**
+     * Computes the Taproot tweak for a given public key.
+     * @param {PublicKey} pubKey - Public key to tweak.
+     * @returns {Uint8Array} Tweaked public key bytes.
+     */
     static hashTapTweak(pubKey) {
         const x = BigInt(pubKey.getPoint().getX());
         return this.taggedHash(this.tapTweakTagHash, integerToBytes(x));
     }
+    /**
+     * Lifts an X-coordinate to a secp256k1 point on the curve.
+     * @param {PublicKey} pubKey - Public key whose X-coordinate to lift.
+     * @returns {SLIP10Secp256k1Point} Lifted point.
+     * @throws {Error} If the point cannot be computed.
+     */
     static liftX(pubKey) {
         const p = this.fieldSize;
         const x = BigInt(pubKey.getPoint().getX());
@@ -79588,12 +82510,23 @@ class P2TRAddress extends Address {
         const evenY = y % BigInt(2) === BigInt(0) ? y : p - y;
         return SLIP10Secp256k1Point.fromCoordinates(x, evenY);
     }
+    /**
+     * Tweaks a secp256k1 public key for Taproot addresses.
+     * @param {PublicKey} pubKey - Public key to tweak.
+     * @returns {Uint8Array} Tweaked X-coordinate of the public key.
+     */
     static tweakPublicKey(pubKey) {
         const tweak = BigInt(bytesToInteger(this.hashTapTweak(pubKey)));
         const lifted = this.liftX(pubKey);
         const tweaked = lifted.add(SLIP10Secp256k1ECC.GENERATOR.multiply(tweak));
         return integerToBytes(BigInt(tweaked.getX()));
     }
+    /**
+     * Encodes a public key into a P2TR Bech32 address.
+     * @param {string | Uint8Array | PublicKey} publicKey - Public key to encode.
+     * @param {AddressOptionsInterface} options - Optional HRP and witness version.
+     * @returns {string} Bech32 encoded P2TR address.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp,
         witnessVersion: this.witnessVersion
@@ -79601,6 +82534,13 @@ class P2TRAddress extends Address {
         const pubKey = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
         return segwitEncode(options.hrp ?? this.hrp, options.witnessVersion ?? this.witnessVersion, this.tweakPublicKey(pubKey));
     }
+    /**
+     * Decodes a P2TR Bech32 address into its tweaked public key bytes.
+     * @param {string} address - Bech32 encoded P2TR address.
+     * @param {AddressOptionsInterface} options - Optional HRP.
+     * @returns {string} Hex string of the tweaked public key.
+     * @throws {Error} If the address is invalid or length/witness version mismatch occurs.
+     */
     static decode(address, options = { hrp: this.hrp }) {
         const [witnessVersion, data] = segwitDecode(options.hrp ?? this.hrp, address);
         const expectedLength = SLIP10Secp256k1PublicKey.getCompressedLength() - 1;
@@ -79612,6 +82552,10 @@ class P2TRAddress extends Address {
         }
         return bytesToString(data);
     }
+    /**
+    * Computes modular exponentiation (base^exponent mod modulus).
+    * @private
+    */
     static modPow(base, exponent, modulus) {
         if (modulus === BigInt(1))
             return BigInt(0);
@@ -79626,6 +82570,10 @@ class P2TRAddress extends Address {
         }
         return result;
     }
+    /**
+     * Computes modular square root using exponentiation method.
+     * @private
+     */
     static modularSqrt(a, p) {
         const exponent = (p + BigInt(1)) / BigInt(4);
         return this.modPow(a, exponent, p);
@@ -79633,12 +82581,28 @@ class P2TRAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a P2WPKH (Pay-to-Witness-Public-Key-Hash) Bitcoin address.
+ * Implements native SegWit address encoding and decoding.
+ */
 class P2WPKHAddress extends Address {
     static hrp = Bitcoin.NETWORKS.MAINNET.HRP;
     static witnessVersion = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2WPKH").
+     */
     static getName() {
         return 'P2WPKH';
     }
+    /**
+     * Encodes a public key into a native SegWit P2WPKH address.
+     * The public key is hashed (RIPEMD160(SHA256(pubKey))) and then encoded in Bech32 format.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - Public key to encode.
+     * @param {AddressOptionsInterface} options - Optional parameters including HRP, public key type, and witness version.
+     * @returns {string} Bech32 encoded P2WPKH address.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp,
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
@@ -79652,6 +82616,14 @@ class P2WPKHAddress extends Address {
         const witnessVersion = options.witnessVersion ?? this.witnessVersion;
         return ensureString(segwitEncode(hrp, witnessVersion, pubKeyHash));
     }
+    /**
+     * Decodes a native SegWit P2WPKH address back into the public key hash.
+     *
+     * @param {string} address - Bech32 encoded P2WPKH address.
+     * @param {AddressOptionsInterface} options - Optional HRP for decoding.
+     * @returns {string} Public key hash as a string.
+     * @throws {AddressError} If the address fails to decode.
+     */
     static decode(address, options = { hrp: this.hrp }) {
         const hrp = options.hrp ?? this.hrp;
         const [witnessVersion, decoded] = segwitDecode(hrp, address);
@@ -79663,10 +82635,27 @@ class P2WPKHAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a P2WPKH-in-P2SH (Pay-to-Witness-Public-Key-Hash nested in P2SH) Bitcoin address.
+ * Inherits from P2SHAddress and overrides the encoding method to implement P2WPKH redemption.
+ */
 class P2WPKHInP2SHAddress extends P2SHAddress {
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2WPKH-In-P2SH").
+     */
     static getName() {
         return 'P2WPKH-In-P2SH';
     }
+    /**
+     * Encodes a public key into a P2WPKH-in-P2SH address.
+     * This involves hashing the public key (RIPEMD160(SHA256(pubKey))),
+     * building the redeem script for P2WPKH, and then hashing it to get the P2SH address.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - Public key to encode.
+     * @param {AddressOptionsInterface} options - Optional parameters including script prefix, public key type, and alphabet.
+     * @returns {string} Base58 encoded P2WPKH-in-P2SH address.
+     */
     static encode(publicKey, options = {
         scriptAddressPrefix: this.scriptAddressPrefix,
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
@@ -79686,11 +82675,28 @@ class P2WPKHInP2SHAddress extends P2SHAddress {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a P2WSH (Pay-to-Witness-Script-Hash) Bitcoin address.
+ * Extends the P2WPKHAddress class and implements SegWit P2WSH encoding using compressed/uncompressed public keys.
+ */
 class P2WSHAddress extends P2WPKHAddress {
     static witnessVersion = Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WSH;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2WSH").
+     */
     static getName() {
         return 'P2WSH';
     }
+    /**
+     * Encodes a public key into a P2WSH SegWit Bitcoin address.
+     * The address is constructed by creating a 1-of-1 witness script from the public key,
+     * computing its SHA256 hash, and encoding it with the Bech32 SegWit format.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional parameters including HRP, public key type, and witness version.
+     * @returns {string} Bech32-encoded P2WSH SegWit address.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp,
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
@@ -79708,10 +82714,26 @@ class P2WSHAddress extends P2WPKHAddress {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a P2WSH-in-P2SH (Pay-to-Witness-Script-Hash nested in Pay-to-Script-Hash) Bitcoin address.
+ * Implements encoding of a compressed or uncompressed public key into a P2WSH-in-P2SH address.
+ */
 class P2WSHInP2SHAddress extends P2SHAddress {
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2WSH-In-P2SH").
+     */
     static getName() {
         return 'P2WSH-In-P2SH';
     }
+    /**
+     * Encodes a public key into a P2WSH-in-P2SH Bitcoin address.
+     * Constructs the redeem script using a SegWit witness script hash nested in a P2SH structure.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional parameters including P2SH prefix, public key type, and alphabet.
+     * @returns {string} Base58Check encoded P2WSH-in-P2SH address.
+     */
     static encode(publicKey, options = {
         scriptAddressPrefix: this.scriptAddressPrefix,
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED,
@@ -79732,11 +82754,28 @@ class P2WSHInP2SHAddress extends P2SHAddress {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Ethereum blockchain addresses.
+ * Provides encoding and decoding of public keys into Ethereum addresses.
+ * Supports optional EIP-55 checksum encoding.
+ * Extends the abstract Address class.
+ */
 class EthereumAddress extends Address {
     static addressPrefix = Ethereum.PARAMS.ADDRESS_PREFIX;
+    /**
+    * Returns the name of the address implementation.
+    * @returns {string} 'Ethereum'
+    */
     static getName() {
         return 'Ethereum';
     }
+    /**
+     * Applies EIP-55 checksum encoding to an Ethereum address.
+     * Converts specific characters to uppercase based on the Keccak-256 hash of the address.
+     *
+     * @param address Address string without prefix
+     * @returns {string} Checksummed address string
+     */
     static checksumEncode(address) {
         let output = '';
         const addressHash = bytesToString(keccak256(new TextEncoder().encode(address.toLowerCase())));
@@ -79747,6 +82786,16 @@ class EthereumAddress extends Address {
         }
         return output;
     }
+    /**
+     * Encodes a public key into an Ethereum address.
+     * The address is generated from the last 20 bytes of the Keccak-256 hash of the uncompressed public key.
+     * Can optionally skip EIP-55 checksum encoding.
+     *
+     * @param publicKey Public key to encode (Uint8Array, string, or PublicKey)
+     * @param options Address options including skipChecksumEncode
+     * @throws {AddressError} If public key is invalid
+     * @returns {string} Encoded Ethereum address with prefix
+     */
     static encode(publicKey, options = {
         skipChecksumEncode: false
     }) {
@@ -79754,6 +82803,15 @@ class EthereumAddress extends Address {
         const pubKeyHash = bytesToString(keccak256(pk.getRawUncompressed().slice(1))).slice(-40);
         return this.addressPrefix + (options.skipChecksumEncode ? pubKeyHash : this.checksumEncode(pubKeyHash));
     }
+    /**
+     * Decodes an Ethereum address back to its raw lowercase hexadecimal form (without prefix).
+     * Validates prefix, length, and optionally EIP-55 checksum encoding.
+     *
+     * @param address Ethereum address string to decode
+     * @param options Address options including skipChecksumEncode
+     * @throws {AddressError} If prefix, length, or checksum encoding is invalid
+     * @returns {string} Decoded address string in lowercase (without prefix)
+     */
     static decode(address, options = {
         skipChecksumEncode: false
     }) {
@@ -79894,11 +82952,29 @@ function bech32Decode(expectedHrp, addr) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Cosmos blockchain addresses.
+ * Provides encoding and decoding of public keys using Bech32 format.
+ * Extends the abstract Address class.
+ */
 class CosmosAddress extends Address {
     static hrp = Cosmos.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Cosmos'
+     */
     static getName() {
         return 'Cosmos';
     }
+    /**
+     * Encodes a public key into a Cosmos address.
+     * The public key is first hashed using SHA256, then RIPEMD160, and finally encoded in Bech32 format.
+     *
+     * @param publicKey Public key to encode (Uint8Array, string, or PublicKey object)
+     * @param options Address options including HRP prefix
+     * @throws {AddressError} If Bech32 encoding fails
+     * @returns {string} Encoded Cosmos address
+     */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -79911,6 +82987,15 @@ class CosmosAddress extends Address {
         }
         return encoded;
     }
+    /**
+     * Decodes a Cosmos address into its raw public key bytes.
+     * Validates that the HRP prefix matches the expected network prefix.
+     *
+     * @param address Cosmos address to decode
+     * @param options Address options including HRP prefix
+     * @throws {AddressError} If HRP prefix is invalid or decoding fails
+     * @returns {string} Decoded raw public key bytes as a string
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {
@@ -79926,20 +83011,46 @@ class CosmosAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a XinFin blockchain address.
+ * Inherits from EthereumAddress since XinFin uses Ethereum-compatible addresses (hexadecimal with "0x" prefix).
+ * Provides XinFin-specific address prefix for encoding and decoding.
+ */
 class XinFinAddress extends EthereumAddress {
     static addressPrefix = XinFin.PARAMS.ADDRESS_PREFIX;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} The string "XinFin".
+     */
     static getName() {
         return 'XinFin';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Tron blockchain address.
+ * Provides methods for encoding a public key to a Tron address and decoding a Tron address to its raw hash.
+ * Tron addresses are Base58Check encoded with a network-specific prefix.
+ */
 class TronAddress extends Address {
     static publicKeyAddressPrefix = Tron.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX;
     static alphabet = Tron.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} The string "Tron".
+     */
     static getName() {
         return 'Tron';
     }
+    /**
+     * Encodes a public key into a Tron address.
+     * Uses Keccak-256 on the uncompressed public key (without first byte) and takes the last 20 bytes.
+     * Prepends the network prefix and encodes the result in Base58Check format.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options including address prefix and alphabet.
+     * @returns {string} The encoded Tron address as a Base58Check string.
+     */
     static encode(publicKey, options = {
         publicKeyAddressPrefix: this.publicKeyAddressPrefix,
         alphabet: this.alphabet
@@ -79951,6 +83062,14 @@ class TronAddress extends Address {
         const payload = concatBytes(prefixBytes, hexToBytes(addressHash));
         return ensureString(checkEncode(payload, alphabet));
     }
+    /**
+     * Decodes a Tron address into its raw public key hash.
+     * Validates the address prefix and length before returning the hash.
+     * @param {string} address - The Tron address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options including address prefix and alphabet.
+     * @returns {string} The raw public key hash as a hexadecimal string.
+     * @throws {AddressError} If the address has an invalid length or prefix.
+     */
     static decode(address, options = {
         publicKeyAddressPrefix: this.publicKeyAddressPrefix,
         alphabet: this.alphabet
@@ -79976,8 +83095,17 @@ class TronAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Ripple (XRP) address.
+ * Extends P2PKHAddress since Ripple addresses are derived from a public key hash
+ * and use the Base58Check encoding with a specific alphabet.
+ */
 class RippleAddress extends P2PKHAddress {
     static alphabet = Ripple.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Ripple").
+     */
     static getName() {
         return 'Ripple';
     }
@@ -80340,6 +83468,12 @@ function decode(data, customAlphabet) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Filecoin blockchain addresses.
+ * Provides encoding and decoding of public keys into Filecoin addresses.
+ * Supports SECP256K1 and BLS address types and computes checksums using Blake2b.
+ * Extends the abstract Address class.
+ */
 class FilecoinAddress extends Address {
     static alphabet = Filecoin.PARAMS.ALPHABET;
     static addressPrefix = Filecoin.PARAMS.ADDRESS_PREFIX;
@@ -80348,12 +83482,33 @@ class FilecoinAddress extends Address {
         secp256k1: Filecoin.PARAMS.ADDRESS_TYPES.SECP256K1,
         bls: Filecoin.PARAMS.ADDRESS_TYPES.BLS
     };
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Filecoin'
+     */
     static getName() {
         return 'Filecoin';
     }
+    /**
+     * Computes the checksum for a Filecoin address.
+     * Uses Blake2b-32 on the concatenation of address type and public key hash.
+     *
+     * @param pubKeyHash Public key hash bytes (20-byte Blake2b-160 hash)
+     * @param addressType Numeric address type
+     * @returns {Uint8Array} Checksum bytes (4 bytes)
+     */
     static computeChecksum(pubKeyHash, addressType) {
         return blake2b32(concatBytes(integerToBytes(addressType), pubKeyHash));
     }
+    /**
+     * Encodes a public key into a Filecoin address.
+     * Combines the public key hash, address type, and checksum into a base32 string with prefix.
+     *
+     * @param publicKey Public key to encode (Uint8Array, string, or PublicKey)
+     * @param options Address options including addressPrefix and addressType
+     * @throws {AddressError} If public key or address type is invalid
+     * @returns {string} Encoded Filecoin address
+     */
     static encode(publicKey, options = {
         addressPrefix: this.addressPrefix,
         addressType: this.addressType
@@ -80372,6 +83527,15 @@ class FilecoinAddress extends Address {
         const base32Encoded = encodeNoPadding(bytesToString(concatBytes(pubKeyHash, checksum)), FilecoinAddress.alphabet);
         return FilecoinAddress.addressPrefix + String.fromCharCode(addressType + '0'.charCodeAt(0)) + base32Encoded;
     }
+    /**
+     * Decodes a Filecoin address back to its public key hash.
+     * Validates prefix, address type, length, and checksum.
+     *
+     * @param address Filecoin address string to decode
+     * @param options Address options including addressPrefix and addressType
+     * @throws {AddressError} If prefix, address type, length, or checksum is invalid
+     * @returns {string} Decoded public key hash (20-byte hex string)
+     */
     static decode(address, options = {
         addressPrefix: this.addressPrefix,
         addressType: this.addressType
@@ -80418,6 +83582,10 @@ class FilecoinAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Avalanche blockchain addresses.
+ * Extends the abstract Address class and provides Avalanche-specific encoding and decoding.
+ */
 class AvalancheAddress extends Address {
     static hrp = Avalanche.NETWORKS.MAINNET.HRP;
     static addressType = Avalanche.DEFAULT_ADDRESS_TYPE;
@@ -80425,9 +83593,22 @@ class AvalancheAddress extends Address {
         'p-chain': Avalanche.PARAMS.ADDRESS_TYPES.P_CHAIN,
         'x-chain': Avalanche.PARAMS.ADDRESS_TYPES.X_CHAIN
     };
+    /**
+     * Returns the name of the address implementation.
+     *
+     * @returns {string} 'Avalanche'
+     */
     static getName() {
         return 'Avalanche';
     }
+    /**
+     * Encodes a public key into an Avalanche address.
+     *
+     * @param publicKey The public key to encode (Uint8Array, string, or PublicKey object)
+     * @param options Optional parameters including hrp and addressType
+     * @throws {AddressError} If the addressType is invalid
+     * @returns {string} Encoded Avalanche address
+     */
     static encode(publicKey, options = {
         hrp: this.hrp, addressType: this.addressType
     }) {
@@ -80443,6 +83624,14 @@ class AvalancheAddress extends Address {
         });
         return addressType + base;
     }
+    /**
+     * Decodes an Avalanche address back into its raw public key.
+     *
+     * @param address The Avalanche address string to decode
+     * @param options Optional parameters including addressType and hrp
+     * @throws {AddressError} If the prefix or addressType is invalid
+     * @returns {string} Decoded raw public key string
+     */
     static decode(address, options = {
         addressType: this.addressType
     }) {
@@ -80465,15 +83654,40 @@ class AvalancheAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing EOS blockchain addresses.
+ * Provides encoding and decoding of public keys into EOS addresses using Base58 with a checksum.
+ * Extends the abstract Address class.
+ */
 class EOSAddress extends Address {
     static addressPrefix = EOS$1.PARAMS.ADDRESS_PREFIX;
     static checksumLength = EOS$1.PARAMS.CHECKSUM_LENGTH;
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'EOS'
+     */
     static getName() {
         return 'EOS';
     }
+    /**
+     * Computes the EOS address checksum for a given public key.
+     * Uses RIPEMD160 hash and takes the first `checksumLength` bytes.
+     *
+     * @param pubKeyBytes Raw public key bytes
+     * @returns {Uint8Array} Computed checksum
+     */
     static computeChecksum(pubKeyBytes) {
         return ripemd160(pubKeyBytes).slice(0, this.checksumLength);
     }
+    /**
+     * Encodes a public key into an EOS address.
+     * Appends a checksum to the public key bytes and encodes the result in Base58 with a prefix.
+     *
+     * @param publicKey Public key to encode (Uint8Array, string, or PublicKey)
+     * @param options Address options including the prefix
+     * @throws {AddressError} If encoding fails
+     * @returns {string} Encoded EOS address
+     */
     static encode(publicKey, options = {
         addressPrefix: this.addressPrefix
     }) {
@@ -80483,6 +83697,15 @@ class EOSAddress extends Address {
         const prefix = options.addressPrefix ?? this.addressPrefix;
         return prefix + ensureString(encode$1(concatBytes(raw, checksum)));
     }
+    /**
+     * Decodes an EOS address into its raw public key bytes.
+     * Validates the prefix, length, checksum, and public key bytes.
+     *
+     * @param address EOS address to decode
+     * @param options Address options including the prefix
+     * @throws {AddressError} If any validation (prefix, length, checksum, public key) fails
+     * @returns {string} Decoded raw public key bytes as a string
+     */
     static decode(address, options = {
         addressPrefix: this.addressPrefix
     }) {
@@ -80518,6 +83741,12 @@ class EOSAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Ergo blockchain addresses.
+ * Provides encoding and decoding of public keys into Ergo addresses using Base58 with a checksum.
+ * Supports different address types (p2pkh, p2sh) and networks (mainnet, testnet).
+ * Extends the abstract Address class.
+ */
 class ErgoAddress extends Address {
     static checksumLength = Ergo.PARAMS.CHECKSUM_LENGTH;
     static addressType = Ergo.DEFAULT_ADDRESS_TYPE;
@@ -80530,12 +83759,34 @@ class ErgoAddress extends Address {
         'mainnet': Ergo.NETWORKS.MAINNET.TYPE,
         'testnet': Ergo.NETWORKS.TESTNET.TYPE
     };
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Ergo'
+     */
     static getName() {
         return 'Ergo';
     }
+    /**
+     * Computes the checksum for Ergo address encoding.
+     * Uses Blake2b256 hash and takes the first `checksumLength` bytes.
+     *
+     * @param data Bytes to compute checksum from
+     * @returns {Uint8Array} Computed checksum
+     */
     static computeChecksum(data) {
         return blake2b256(data).slice(0, this.checksumLength);
     }
+    /**
+     * Encodes a public key into an Ergo address.
+     * Combines network type, address type, and compressed public key bytes with a checksum,
+     * then encodes the result in Base58.
+     *
+     * @param publicKey Public key to encode (Uint8Array, string, or PublicKey)
+     * @param options Address options including addressType and networkType
+     * @throws {NetworkError} If the network type is invalid
+     * @throws {AddressError} If the address type is invalid
+     * @returns {string} Encoded Ergo address
+     */
     static encode(publicKey, options = {
         addressType: this.addressType,
         networkType: this.networkType
@@ -80561,6 +83812,16 @@ class ErgoAddress extends Address {
         const checksum = this.computeChecksum(addressPayload);
         return ensureString(encode$1(concatBytes(addressPayload, checksum)));
     }
+    /**
+     * Decodes an Ergo address back to the raw public key bytes.
+     * Validates prefix, length, checksum, and public key bytes.
+     *
+     * @param address Ergo address to decode
+     * @param options Address options including addressType and networkType
+     * @throws {NetworkError} If the network type is invalid
+     * @throws {AddressError} If the address type, prefix, length, checksum, or public key is invalid
+     * @returns {string} Decoded raw public key bytes as a string
+     */
     static decode(address, options = {
         addressType: this.addressType,
         networkType: this.networkType
@@ -80613,18 +83874,37 @@ class ErgoAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Icon blockchain addresses.
+ * Handles encoding and decoding of addresses using SHA3-256 hashing of the public key.
+ */
 class IconAddress extends Address {
     static addressPrefix = Icon.PARAMS.ADDRESS_PREFIX;
     static keyHashLength = Icon.PARAMS.KEY_HASH_LENGTH;
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Icon'
+     */
     static getName() {
         return 'Icon';
     }
+    /**
+     * Encodes a public key into an Icon address.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @returns {string} The encoded Icon address.
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Secp256k1PublicKey);
         const raw = pk.getRawUncompressed().slice(1); // Remove prefix byte (0x04)
         const hash = sha3_256(raw).slice(-this.keyHashLength);
         return this.addressPrefix + bytesToString(hash);
     }
+    /**
+     * Decodes an Icon address back into the key hash.
+     * @param {string} address - The Icon address to decode.
+     * @returns {string} The decoded key hash.
+     * @throws {AddressError} If the address prefix or length is invalid.
+     */
     static decode(address) {
         const prefix = this.addressPrefix;
         if (!address.startsWith(prefix)) {
@@ -80644,11 +83924,29 @@ class IconAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing an OKT-Chain blockchain address.
+ * Uses Ethereum-style addresses as the base and encodes them in Bech32 format for OKT-Chain.
+ */
 class OKTChainAddress extends Address {
     static hrp = OKTChain.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("OKT-Chain").
+     */
     static getName() {
         return 'OKT-Chain';
     }
+    /**
+     * Encodes a given public key into an OKTChain Bech32 address.
+     * The process involves Ethereum-style address derivation, stripping the "0x" prefix,
+     * and then Bech32 encoding using the specified HRP.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options including HRP.
+     * @returns {string} Bech32-encoded OKTChain address.
+     * @throws {AddressError} If Bech32 encoding fails.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -80664,6 +83962,14 @@ class OKTChainAddress extends Address {
         }
         return encoded;
     }
+    /**
+     * Decodes a Bech32-encoded OKTChain address back into an Ethereum-style address string.
+     *
+     * @param {string} address - The Bech32 OKTChain address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options including HRP.
+     * @returns {string} Decoded Ethereum-style address (hex string with "0x" prefix).
+     * @throws {AddressError} If Bech32 decoding fails.
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {
@@ -80680,19 +83986,43 @@ class OKTChainAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Harmony blockchain addresses.
+ * Inherits encoding/decoding logic from OKTChainAddress.
+ * Supports the Harmony mainnet HRP (human-readable part) for Bech32 addresses.
+ */
 class HarmonyAddress extends OKTChainAddress {
     static hrp = Harmony.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Harmony'
+     */
     static getName() {
         return 'Harmony';
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Zilliqa blockchain address.
+ * Uses Bech32 encoding for addresses and derives addresses from the compressed public key.
+ */
 class ZilliqaAddress extends Address {
     static hrp = Zilliqa.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} The string "Zilliqa".
+     */
     static getName() {
         return 'Zilliqa';
     }
+    /**
+     * Encodes a public key into a Bech32 Zilliqa address.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} [options] - Optional encoding parameters, such as HRP.
+     * @returns {string} The Bech32-encoded Zilliqa address.
+     * @throws {AddressError} If encoding fails.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -80705,6 +84035,13 @@ class ZilliqaAddress extends Address {
         }
         return encoded;
     }
+    /**
+     * Decodes a Bech32 Zilliqa address back into its public key hash.
+     * @param {string} address - The Bech32-encoded Zilliqa address to decode.
+     * @param {AddressOptionsInterface} [options] - Optional decoding parameters, such as HRP.
+     * @returns {string} The public key hash in byte string format.
+     * @throws {AddressError} If decoding fails or the address length is invalid.
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {
@@ -80723,11 +84060,30 @@ class ZilliqaAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing an Injective blockchain address.
+ * Inherits from the base Address class.
+ * Uses Bech32 encoding with Ethereum-style public key hashing.
+ */
 class InjectiveAddress extends Address {
     static hrp = Injective.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type.
+     */
     static getName() {
         return 'Injective';
     }
+    /**
+    * Encodes a public key into a Bech32 Injective address.
+    * Uses Ethereum-style encoding of the public key, then converts to Bech32.
+    *
+    * @param {Uint8Array | string | PublicKey} publicKey - Public key to encode.
+    * @param {AddressOptionsInterface} [options] - Optional parameters.
+    * @param {string} [options.hrp=this.hrp] - Human-readable prefix for Bech32.
+    * @returns {string} Bech32-encoded Injective address.
+    * @throws {AddressError} If encoding fails.
+    */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -80743,6 +84099,15 @@ class InjectiveAddress extends Address {
         }
         return encoded;
     }
+    /**
+     * Decodes a Bech32 Injective address back into its raw public key bytes.
+     *
+     * @param {string} address - Bech32-encoded Injective address to decode.
+     * @param {AddressOptionsInterface} [options] - Optional parameters.
+     * @param {string} [options.hrp=this.hrp] - Expected human-readable prefix for Bech32.
+     * @returns {string} Raw public key bytes as a string.
+     * @throws {AddressError} If decoding fails, the HRP does not match, or length is invalid.
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {
@@ -80761,6 +84126,11 @@ class InjectiveAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Cardano blockchain addresses.
+ * Supports Byron (Legacy & Icarus) and Shelley (Payment & Staking/Reward) address formats.
+ * Extends the abstract Address class and provides Cardano-specific encoding and decoding logic.
+ */
 class CardanoAddress extends Address {
     static addressTypes = {
         'public-key': Cardano.PARAMS.PUBLIC_KEY_ADDRESS,
@@ -80785,9 +84155,22 @@ class CardanoAddress extends Address {
     static chacha20Poly1305AssociatedData = new Uint8Array();
     static chacha20Poly1305Nonce = getBytes('7365726f6b656c6c666f7265');
     static payloadTag = 24;
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Cardano'
+     */
     static getName() {
         return 'Cardano';
     }
+    /**
+     * Encodes a public key into a Cardano address.
+     * Supports different types: Byron Legacy, Byron Icarus, Shelley Payment, Shelley Staking/Reward.
+     *
+     * @param publicKey Public key to encode
+     * @param options Address options including encodeType, path, chainCode, network, and staking public key
+     * @throws {AddressError} If encode type is invalid
+     * @returns {string} Encoded Cardano address
+     */
     static encode(publicKey, options = {
         encodeType: Cardano.ADDRESS_TYPES.PAYMENT
     }) {
@@ -80807,6 +84190,15 @@ class CardanoAddress extends Address {
         }
         throw new AddressError('Invalid encode type');
     }
+    /**
+     * Decodes a Cardano address into its raw public key.
+     * Supports Byron and Shelley address types.
+     *
+     * @param address Cardano address to decode
+     * @param options Address options including decodeType, network, or addressType
+     * @throws {AddressError} If decode type is invalid
+     * @returns {string} Decoded raw public key
+     */
     static decode(address, options = {
         decodeType: Cardano.ADDRESS_TYPES.PAYMENT
     }) {
@@ -80824,6 +84216,16 @@ class CardanoAddress extends Address {
         }
         throw new AddressError('Invalid decode type');
     }
+    /**
+     * Encodes a Byron address (generic helper for Icarus & Legacy).
+     *
+     * @param publicKey Public key object
+     * @param chainCode Chain code for HD derivation
+     * @param addressAttributes Extra address attributes (Map)
+     * @param addressType Address type ('public-key' or 'redemption')
+     * @throws {AddressError} If address type is invalid
+     * @returns {string} Encoded Byron address (Base58)
+     */
     static encodeByron(publicKey, chainCode, addressAttributes, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         if (!(addressType in this.addressTypes)) {
             throw new AddressError('Invalid address type');
@@ -80844,10 +84246,28 @@ class CardanoAddress extends Address {
         ]);
         return ensureString(encode$1(full));
     }
+    /**
+     * Encodes a Byron Icarus address.
+     * @param publicKey Public key
+     * @param chainCode Chain code
+     * @param addressType Address type
+     * @returns {string} Encoded Byron Icarus address
+     */
     static encodeByronIcarus(publicKey, chainCode, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
         return this.encodeByron(pk, getBytes(chainCode), {}, addressType);
     }
+    /**
+     * Encodes a Byron Legacy address using HD path encryption.
+     *
+     * @param publicKey Public key
+     * @param path HD derivation path
+     * @param pathKey HD path key
+     * @param chainCode Chain code
+     * @param addressType Address type
+     * @throws {BaseError} If HD path key length is invalid
+     * @returns {string} Encoded Byron Legacy address
+     */
     static encodeByronLegacy(publicKey, path, pathKey, chainCode, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         const pathK = getBytes(pathKey);
         if (pathK.length !== 32) {
@@ -80861,6 +84281,14 @@ class CardanoAddress extends Address {
         attributes.set(1, Q(concatBytes(cipherText, tag)));
         return this.encodeByron(pk, getBytes(chainCode), attributes, addressType);
     }
+    /**
+     * Decodes a Byron address (generic for Icarus & Legacy).
+     *
+     * @param address Address string to decode
+     * @param addressType Address type
+     * @throws {AddressError} If decoding fails or CRC/payload invalid
+     * @returns {string} Decoded raw public key
+     */
     static decodeByron(address, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         const decoded = decode$1(address);
         const outer = l(decoded);
@@ -80893,12 +84321,31 @@ class CardanoAddress extends Address {
         }
         return bytesToString(concatBytes(rootHash, extra));
     }
+    /**
+     * Decode Byron Icarus address.
+     * @param address Address string
+     * @param addressType Address type
+     * @returns {string} Decoded raw public key
+     */
     static decodeByronIcarus(address, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         return CardanoAddress.decodeByron(address, addressType);
     }
+    /**
+     * Decode Byron Legacy address.
+     * @param address Address string
+     * @param addressType Address type
+     * @returns {string} Decoded raw public key
+     */
     static decodeByronLegacy(address, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         return CardanoAddress.decodeByron(address, addressType);
     }
+    /**
+     * Encode Shelley payment address.
+     * @param publicKey Payment public key
+     * @param stakingPublicKey Staking public key
+     * @param network Network ('mainnet' or 'testnet')
+     * @returns {string} Encoded Shelley payment address
+     */
     static encodeShelley(publicKey, stakingPublicKey, network) {
         const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
         const spk = validateAndGetPublicKey(stakingPublicKey, KholawEd25519PublicKey);
@@ -80907,6 +84354,13 @@ class CardanoAddress extends Address {
         const hash2 = blake2b224(spk.getRawCompressed().slice(1));
         return bech32Encode(this.paymentAddressHrp[network], concatBytes(prefix, hash1, hash2));
     }
+    /**
+     * Decode Shelley payment address.
+     * @param address Address string
+     * @param network Network ('mainnet' or 'testnet')
+     * @throws {AddressError} If address length or prefix invalid
+     * @returns {string} Decoded raw public key
+     */
     static decodeShelley(address, network) {
         const [hrp, data] = bech32Decode(this.paymentAddressHrp[network], address);
         if (!data || data.length !== 57) {
@@ -80918,12 +84372,25 @@ class CardanoAddress extends Address {
         }
         return bytesToString(data.slice(1));
     }
+    /**
+     * Encode Shelley staking/reward address.
+     * @param publicKey Staking public key
+     * @param network Network ('mainnet' or 'testnet')
+     * @returns {string} Encoded staking/reward address
+     */
     static encodeShelleyStaking(publicKey, network) {
         const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
         const prefix = integerToBytes((this.prefixTypes['reward'] << 4) + this.networkTypes[network]);
         const hash = blake2b224(pk.getRawCompressed().slice(1));
         return bech32Encode(this.rewardAddressHrp[network], concatBytes(prefix, hash));
     }
+    /**
+     * Decode Shelley staking/reward address.
+     * @param address Address string
+     * @param network Network ('mainnet' or 'testnet')
+     * @throws {AddressError} If address length or prefix invalid
+     * @returns {string} Decoded raw public key
+     */
     static decodeShelleyStaking(address, network) {
         const [hrp, data] = bech32Decode(this.rewardAddressHrp[network], address);
         if (!data || data.length !== 29) {
@@ -80938,6 +84405,10 @@ class CardanoAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Monero blockchain address.
+ * Supports standard, integrated, and sub-address types across mainnet, stagenet, and testnet.
+ */
 class MoneroAddress extends Address {
     static checksumLength = Monero.PARAMS.CHECKSUM_LENGTH;
     static paymentIDLength = Monero.PARAMS.PAYMENT_ID_LENGTH;
@@ -80966,12 +84437,35 @@ class MoneroAddress extends Address {
             }
         }
     };
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type.
+     */
     static getName() {
         return 'Monero';
     }
+    /**
+     * Computes a Monero address checksum using Keccak256.
+     * @param {Uint8Array} data - Data to hash for checksum.
+     * @returns {Uint8Array} Checksum bytes.
+     */
     static computeChecksum(data) {
         return keccak256(data).subarray(0, this.checksumLength);
     }
+    /**
+     * Encodes Monero spend and view public keys into a Monero address.
+     * Supports optional payment ID for integrated addresses.
+     *
+     * @param {object} publicKeys - Spend and view public keys.
+     * @param {Uint8Array | string | PublicKey} publicKeys.spendPublicKey - Spend public key.
+     * @param {Uint8Array | string | PublicKey} publicKeys.viewPublicKey - View public key.
+     * @param {AddressOptionsInterface} [options] - Optional parameters.
+     * @param {string} [options.network=this.network] - Network type (mainnet, stagenet, testnet).
+     * @param {string} [options.addressType=this.addressType] - Address type (standard, integrated, sub-address).
+     * @param {Uint8Array | string} [options.paymentID] - Optional payment ID for integrated addresses.
+     * @returns {string} Monero address.
+     * @throws {BaseError|AddressError} If keys, payment ID, or network/version are invalid.
+     */
     static encode(publicKeys, options = {
         network: this.network, addressType: this.addressType
     }) {
@@ -80993,6 +84487,18 @@ class MoneroAddress extends Address {
         const checksum = this.computeChecksum(getBytes(payload));
         return encodeMonero(getBytes(concatBytes(payload, checksum)));
     }
+    /**
+     * Decodes a Monero address into its spend and view public keys.
+     * Verifies checksum, network, address type, and optional payment ID.
+     *
+     * @param {string} address - Monero address to decode.
+     * @param {AddressOptionsInterface} [options] - Optional parameters.
+     * @param {string} [options.network=this.network] - Network type (mainnet, stagenet, testnet).
+     * @param {string} [options.addressType=this.addressType] - Address type (standard, integrated, sub-address).
+     * @param {Uint8Array | string} [options.paymentID] - Optional payment ID for integrated addresses.
+     * @returns {[string, string]} Tuple containing spend and view public key bytes as strings.
+     * @throws {BaseError|AddressError} If checksum, version, payload length, or keys are invalid.
+     */
     static decode(address, options = {
         network: this.network, addressType: this.addressType
     }) {
@@ -81052,17 +84558,39 @@ class MoneroAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Nano (formerly RaiBlocks) blockchain address.
+ * Supports encoding and decoding using a modified Base32 scheme and Blake2b checksums.
+ */
 class NanoAddress extends Address {
     static addressPrefix = Nano.PARAMS.ADDRESS_PREFIX;
     static alphabet = Nano.PARAMS.ALPHABET;
     static payloadPaddingDecoded = getBytes(Nano.PARAMS.PAYLOAD_PADDING_DECODED);
     static payloadPaddingEncoded = Nano.PARAMS.PAYLOAD_PADDING_ENCODED;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type.
+     */
     static getName() {
         return 'Nano';
     }
+    /**
+     * Computes the Nano checksum for a given public key.
+     * Uses Blake2b (40-bit) and reverses the byte order.
+     *
+     * @param {Uint8Array} publicKey - The public key bytes.
+     * @returns {Uint8Array} The checksum bytes.
+     */
     static computeChecksum(publicKey) {
         return bytesReverse(blake2b40(publicKey));
     }
+    /**
+     * Encodes a public key into a Nano address.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @returns {string} The encoded Nano address.
+     * @throws {AddressError} If the public key is invalid.
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519Blake2bPublicKey);
         const raw = pk.getRawCompressed().subarray(1);
@@ -81071,6 +84599,14 @@ class NanoAddress extends Address {
         const b32 = encodeNoPadding(bytesToString(payload), this.alphabet);
         return this.addressPrefix + b32.slice(this.payloadPaddingEncoded.length);
     }
+    /**
+     * Decodes a Nano address back into the public key bytes.
+     * Verifies the address prefix, Base32 decoding, and checksum.
+     *
+     * @param {string} address - The Nano address to decode.
+     * @returns {string} The public key bytes as a string.
+     * @throws {AddressError} If the address is invalid or checksum verification fails.
+     */
     static decode(address) {
         const prefix = address.slice(0, this.addressPrefix.length);
         if (prefix !== this.addressPrefix) {
@@ -81100,14 +84636,31 @@ class NanoAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a NEO blockchain address.
+ * Handles encoding and decoding of public keys according to NEO's address format.
+ */
 class NeoAddress extends Address {
     static addressPrefix = integerToBytes(Neo.PARAMS.ADDRESS_PREFIX);
     static addressSuffix = integerToBytes(Neo.PARAMS.ADDRESS_SUFFIX);
     static addressVersion = integerToBytes(Neo.PARAMS.ADDRESS_VERSION);
     static alphabet = Neo.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Neo").
+     */
     static getName() {
         return 'Neo';
     }
+    /**
+     * Encodes a given public key into a NEO address string.
+     * Applies NEO-specific prefix, suffix, and hashing (hash160) before Base58 encoding.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options including address version and alphabet.
+     * @returns {string} Encoded NEO address string.
+     * @throws {AddressError} If the public key is invalid.
+     */
     static encode(publicKey, options = {
         addressVersion: this.addressVersion, alphabet: this.alphabet
     }) {
@@ -81117,6 +84670,15 @@ class NeoAddress extends Address {
         const version = getBytes(options.addressVersion ?? this.addressVersion);
         return ensureString(checkEncode(getBytes(concatBytes(version, hashed)), options.alphabet ?? this.alphabet));
     }
+    /**
+     * Decodes a NEO address back into a public key.
+     * Verifies version and length, and extracts the original public key bytes.
+     *
+     * @param {string} address - The NEO address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options including address version and alphabet.
+     * @returns {string} The public key as a string extracted from the address.
+     * @throws {AddressError} If the address version or length is invalid.
+     */
     static decode(address, options = {
         addressVersion: this.addressVersion, alphabet: this.alphabet
     }) {
@@ -81139,20 +84701,50 @@ class NeoAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Algorand addresses.
+ * Extends the abstract Address class to provide Algorand-specific encoding and decoding.
+ */
 class AlgorandAddress extends Address {
     static checksumLength = Algorand.PARAMS.CHECKSUM_LENGTH;
+    /**
+     * Returns the name of the address implementation.
+     *
+     * @returns {string} 'Algorand'
+     */
     static getName() {
         return 'Algorand';
     }
+    /**
+     * Computes the checksum for a given public key.
+     * Algorand uses the last 4 bytes of sha512_256 hash of the public key as checksum.
+     *
+     * @param publicKey The public key bytes to compute checksum for
+     * @returns {Uint8Array} 4-byte checksum
+     */
     static computeChecksum(publicKey) {
         return sha512_256(publicKey).subarray(-4);
     }
+    /**
+     * Encodes a public key into an Algorand address.
+     *
+     * @param publicKey The public key to encode (can be Uint8Array, string, or PublicKey object)
+     * @throws {AddressError} If the public key is invalid
+     * @returns {string} Encoded Algorand address
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
         const raw = pk.getRawCompressed().subarray(1);
         const checksum = this.computeChecksum(raw);
         return encodeNoPadding(bytesToString(concatBytes(raw, checksum)));
     }
+    /**
+     * Decodes an Algorand address back into its raw public key.
+     *
+     * @param address The Algorand address string to decode
+     * @throws {AddressError} If the decoded length is invalid, checksum does not match, or public key is invalid
+     * @returns {string} Raw public key as a string
+     */
     static decode(address) {
         const decoded = getBytes(decode(address));
         const expectedLength = SLIP10Ed25519PublicKey.getCompressedLength() - 1 + this.checksumLength;
@@ -81177,11 +84769,29 @@ class AlgorandAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a MultiversX (formerly Elrond) blockchain address.
+ * Supports Bech32 encoding with configurable human-readable part (HRP) for different networks.
+ */
 class MultiversXAddress extends Address {
     static hrp = MultiversX.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type.
+     */
     static getName() {
         return 'MultiversX';
     }
+    /**
+     * Encodes a public key into a MultiversX address.
+     * Uses Bech32 encoding, omitting the first byte of the compressed public key.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} [options] - Optional parameters.
+     * @param {string} [options.hrp=this.hrp] - Human-readable part for Bech32 encoding.
+     * @returns {string} The encoded MultiversX address.
+     * @throws {AddressError} If the public key is invalid.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -81189,6 +84799,16 @@ class MultiversXAddress extends Address {
         const raw = pk.getRawCompressed().subarray(1);
         return bech32Encode(options.hrp ?? this.hrp, getBytes(raw));
     }
+    /**
+     * Decodes a MultiversX address back into the public key bytes.
+     * Verifies Bech32 decoding with the specified HRP.
+     *
+     * @param {string} address - The MultiversX address to decode.
+     * @param {AddressOptionsInterface} [options] - Optional parameters.
+     * @param {string} [options.hrp=this.hrp] - Expected human-readable part.
+     * @returns {string} The public key bytes as a string.
+     * @throws {AddressError} If the address is invalid or Bech32 decoding fails.
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {
@@ -81201,15 +84821,34 @@ class MultiversXAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Solana (SOL) address.
+ * Provides encoding and decoding methods for Solana public keys using Base58.
+ */
 class SolanaAddress extends Address {
     static alphabet = Solana.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Solana").
+     */
     static getName() {
         return 'Solana';
     }
+    /**
+     * Encodes a public key into a Solana Base58 address.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @returns {string} The Base58-encoded Solana address.
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
         return ensureString(encode$1(getBytes(pk.getRawCompressed().subarray(1))));
     }
+    /**
+     * Decodes a Solana Base58 address into the corresponding public key bytes.
+     * @param {string} address - The Base58 Solana address to decode.
+     * @returns {string} The decoded public key as a string.
+     * @throws {AddressError} If the decoded public key has an invalid length or is invalid.
+     */
     static decode(address) {
         const publicKey = decode$1(address);
         const expectedLength = SLIP10Ed25519PublicKey.getCompressedLength() - 1;
@@ -81226,6 +84865,10 @@ class SolanaAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Stellar (XLM) address.
+ * Provides encoding and decoding methods for Stellar public keys and private keys using Base32.
+ */
 class StellarAddress extends Address {
     static checksumLength = Stellar.PARAMS.CHECKSUM_LENGTH;
     static addressType = Stellar.DEFAULT_ADDRESS_TYPE;
@@ -81233,12 +84876,28 @@ class StellarAddress extends Address {
         privateKey: Stellar.PARAMS.ADDRESS_TYPES.PRIVATE_KEY,
         publicKey: Stellar.PARAMS.ADDRESS_TYPES.PUBLIC_KEY
     };
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Stellar").
+     */
     static getName() {
         return 'Stellar';
     }
+    /**
+     * Computes the checksum for a Stellar address payload.
+     * @param {Uint8Array} payload - The payload bytes to compute the checksum for.
+     * @returns {Uint8Array} The checksum bytes.
+     */
     static computeChecksum(payload) {
         return bytesReverse(xmodemCrc(payload));
     }
+    /**
+     * Encodes a public key or private key into a Stellar Base32 address.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public/private key to encode.
+     * @param {AddressOptionsInterface} options - Encoding options including address type.
+     * @returns {string} The Base32-encoded Stellar address.
+     * @throws {AddressError} If the address type is invalid.
+     */
     static encode(publicKey, options = {
         addressType: this.addressType
     }) {
@@ -81254,6 +84913,13 @@ class StellarAddress extends Address {
         const checksum = this.computeChecksum(payload);
         return encodeNoPadding(bytesToString(concatBytes(payload, checksum)));
     }
+    /**
+     * Decodes a Stellar Base32 address into the corresponding public key bytes.
+     * @param {string} address - The Base32 Stellar address to decode.
+     * @param {AddressOptionsInterface} options - Decoding options including address type.
+     * @returns {string} The decoded public key as a string.
+     * @throws {AddressError} If the decoded address has an invalid type, checksum, length, or invalid public key.
+     */
     static decode(address, options = {
         addressType: this.addressType
     }) {
@@ -81296,6 +84962,11 @@ class StellarAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Tezos blockchain address.
+ * Supports encoding and decoding of Tezos addresses using Ed25519 public keys.
+ * Addresses are encoded in Base58Check format with specific prefixes.
+ */
 class TezosAddress extends Address {
     static addressPrefix = Tezos.DEFAULT_ADDRESS_PREFIX;
     static addressPrefixes = {
@@ -81303,9 +84974,22 @@ class TezosAddress extends Address {
         tz2: Tezos.PARAMS.ADDRESS_PREFIXES.TZ2,
         tz3: Tezos.PARAMS.ADDRESS_PREFIXES.TZ3
     };
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Tezos").
+     */
     static getName() {
         return 'Tezos';
     }
+    /**
+     * Encodes a public key into a Tezos address.
+     * Uses Blake2b-160 hash of the compressed public key (excluding the first byte)
+     * and prepends the appropriate address prefix.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options (address prefix).
+     * @returns {string} The Tezos address in Base58Check format.
+     * @throws {AddressError} If the provided prefix is invalid.
+     */
     static encode(publicKey, options = {
         addressPrefix: this.addressPrefix
     }) {
@@ -81320,6 +85004,14 @@ class TezosAddress extends Address {
         const hashed = blake2b160(pk.getRawCompressed().subarray(1));
         return ensureString(checkEncode(getBytes(concatBytes(prefix, hashed))));
     }
+    /**
+     * Decodes a Tezos address into its raw public key hash.
+     * Validates the address prefix and length before returning.
+     * @param {string} address - The Tezos address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options (address prefix).
+     * @returns {string} The raw public key hash as a hexadecimal string.
+     * @throws {AddressError} If the address has an invalid prefix or length.
+     */
     static decode(address, options = {
         addressPrefix: this.addressPrefix
     }) {
@@ -81348,18 +85040,39 @@ class TezosAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a Sui blockchain address.
+ * Provides encoding and decoding functionality for Sui addresses based on Ed25519 public keys.
+ */
 class SuiAddress extends Address {
     static keyType = integerToBytes(Sui.PARAMS.KEY_TYPE);
     static addressPrefix = Sui.PARAMS.ADDRESS_PREFIX;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Sui").
+     */
     static getName() {
         return 'Sui';
     }
+    /**
+     * Encodes a public key into a Sui blockchain address.
+     * The address is derived by hashing the key type prefix and the raw public key bytes with Blake2b-256.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @returns {string} The Sui address string with the appropriate prefix.
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
         const raw = pk.getRawCompressed().subarray(1);
         const hash = blake2b256(getBytes(new Uint8Array([...this.keyType, ...raw])));
         return this.addressPrefix + bytesToString(hash);
     }
+    /**
+     * Decodes a Sui address string into its raw address body (without prefix).
+     * Performs basic validation on the address prefix and length.
+     * @param {string} address - The Sui address to decode.
+     * @returns {string} The raw address body as a hexadecimal string.
+     * @throws {AddressError} If the address has an invalid prefix or length.
+     */
     static decode(address) {
         const prefix = address.slice(0, this.addressPrefix.length);
         if (prefix !== this.addressPrefix) {
@@ -81378,12 +85091,28 @@ class SuiAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing Aptos blockchain addresses.
+ * Extends the abstract Address class to provide Aptos-specific encoding and decoding.
+ */
 class AptosAddress extends Address {
     static suffix = integerToBytes(Aptos.PARAMS.SUFFIX);
     static addressPrefix = Aptos.PARAMS.ADDRESS_PREFIX;
+    /**
+     * Returns the name of the address implementation.
+     *
+     * @returns {string} 'Aptos'
+     */
     static getName() {
         return 'Aptos';
     }
+    /**
+     * Encodes a public key into an Aptos address.
+     *
+     * @param publicKey The public key to encode (can be Uint8Array, string, or PublicKey object)
+     * @throws {AddressError} If the public key is invalid
+     * @returns {string} Encoded Aptos address
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
         const raw = pk.getRawCompressed().subarray(1);
@@ -81391,6 +85120,13 @@ class AptosAddress extends Address {
         const hash = sha3_256(payload);
         return this.addressPrefix + bytesToString(hash).replace(/^0+/, '');
     }
+    /**
+     * Decodes an Aptos address back into its raw public key hash.
+     *
+     * @param address The Aptos address string to decode
+     * @throws {AddressError} If the prefix or length of the address is invalid
+     * @returns {string} Raw public key hash as a string
+     */
     static decode(address) {
         const prefix = address.slice(0, this.addressPrefix.length);
         if (prefix !== this.addressPrefix) {
@@ -81409,14 +85145,38 @@ class AptosAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Class representing a NEAR Protocol blockchain address.
+ * Handles encoding and decoding of public keys in NEAR format.
+ */
 class NearAddress extends Address {
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Near").
+     */
     static getName() {
         return 'Near';
     }
+    /**
+     * Encodes a given public key into a NEAR address string.
+     * Strips the first two bytes of the compressed key for NEAR-specific formatting.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @returns {string} Encoded NEAR address string.
+     * @throws {AddressError} If the public key is invalid.
+     */
     static encode(publicKey) {
         const pk = validateAndGetPublicKey(publicKey, SLIP10Ed25519PublicKey);
         return bytesToString(pk.getRawCompressed()).slice(2);
     }
+    /**
+     * Decodes a NEAR address back into a public key.
+     * Verifies the length and validates the public key format.
+     *
+     * @param {string} address - The NEAR address to decode.
+     * @returns {string} The original public key as a string.
+     * @throws {AddressError} If the address length is incorrect or the public key is invalid.
+     */
     static decode(address) {
         const bytes = getBytes(address);
         const expectedLength = 32;
@@ -81431,6 +85191,10 @@ class NearAddress extends Address {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Central registry of all supported blockchain address classes.
+ * Provides utility methods to fetch names, classes, or check validity.
+ */
 class ADDRESSES {
     static dictionary = {
         [P2PKHAddress.getName()]: P2PKHAddress,
@@ -81467,18 +85231,37 @@ class ADDRESSES {
         [AptosAddress.getName()]: AptosAddress,
         [NearAddress.getName()]: NearAddress
     };
+    /**
+     * Returns an array of all supported address names.
+     * @returns {string[]} List of address names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns an array of all address classes.
+     * @returns {Array<typeof Address>} List of address classes.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Fetches the address class corresponding to the given name.
+     * @param {string} name - Name of the address.
+     * @returns {typeof Address} The corresponding address class.
+     * @throws {AddressError} If the name is not a valid address.
+     */
     static getAddressClass(name) {
         if (!this.isAddress(name)) {
             throw new AddressError('Invalid address name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks whether a given name corresponds to a supported address.
+     * @param {string} name - Name to check.
+     * @returns {boolean} True if the name is supported, false otherwise.
+     */
     static isAddress(name) {
         return name in this.dictionary;
     }
@@ -81639,6 +85422,12 @@ function isRootKey(key, encoded = true) {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP32 hierarchical deterministic (HD) wallet standard.
+ * Provides methods for key derivation, serialization, address generation, and working
+ * with extended keys (xprv/xpub) and WIF format.
+ *
+ */
 class BIP32HD extends HD {
     seed;
     rootPrivateKey;
@@ -81657,6 +85446,10 @@ class BIP32HD extends HD {
     rootIndex = 0;
     depth = 0;
     index = 0;
+    /**
+     * Create a new BIP32HD instance with optional configuration.
+     * @param options Configuration options for HD wallet
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -81678,9 +85471,19 @@ class BIP32HD extends HD {
             path: options.path, indexes: options.indexes
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'BIP32'
+     */
     static getName() {
         return 'BIP32';
     }
+    /**
+     * Initialize HD wallet from a seed.
+     * @param seed Seed as Uint8Array, string, or Seed object
+     * @returns {this} The current HD instance
+     * @throws {SeedError} If the seed is invalid
+     */
     fromSeed(seed) {
         try {
             this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
@@ -81722,7 +85525,7 @@ class BIP32HD extends HD {
         if (this.ecc.NAME === 'Kholaw-Ed25519') {
             let kl = hmacResult.slice(0, hmacHalfLength);
             const kr = hmacResult.slice(hmacHalfLength);
-            kl = tweakMasterKeyBits(kl);
+            kl = new Uint8Array(tweakMasterKeyBits(kl));
             const chainCode = hmacSha256(getHmac(this.ecc.NAME), concatBytes(integerToBytes(0x01), this.seed));
             this.rootPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(concatBytes(kl, kr));
             this.rootChainCode = getBytes(chainCode);
@@ -81742,6 +85545,14 @@ class BIP32HD extends HD {
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Initialize from extended private key (xprv).
+     * @param xprv Extended private key
+     * @param encoded Whether the key is encoded in Base58
+     * @param strict Whether to enforce root key validation
+     * @returns {this} The current HD instance
+     * @throws {XPrivateKeyError} If the key is invalid
+     */
     fromXPrivateKey(xprv, encoded = true, strict = false) {
         if (!isValidKey(xprv, encoded)) {
             throw new XPrivateKeyError('Invalid extended(x) private key');
@@ -81769,6 +85580,14 @@ class BIP32HD extends HD {
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Initialize from extended public key (xpub).
+     * @param xpub Extended public key
+     * @param encoded Whether the key is encoded in Base58
+     * @param strict Whether to enforce root key validation
+     * @returns {this} The current HD instance
+     * @throws {XPublicKeyError} If the key is invalid
+     */
     fromXPublicKey(xpub, encoded = true, strict = false) {
         if (!isValidKey(xpub, encoded)) {
             throw new XPublicKeyError('Invalid extended(x) public key');
@@ -81794,6 +85613,12 @@ class BIP32HD extends HD {
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Initialize from WIF private key.
+     * @param wif WIF string
+     * @returns {this} The current HD instance
+     * @throws {WIFError} If the WIF prefix is missing
+     */
     fromWIF(wif) {
         if (!this.wifPrefix) {
             throw new WIFError('WIF prefix is required');
@@ -81812,6 +85637,12 @@ class BIP32HD extends HD {
         this.strict = null;
         return this;
     }
+    /**
+     * Initialize from a raw private key.
+     * @param privateKey Private key as string
+     * @returns {this} The current HD instance
+     * @throws {PrivateKeyError} If the private key is invalid
+     */
     fromPrivateKey(privateKey) {
         try {
             const bytes = getBytes(privateKey);
@@ -81824,6 +85655,12 @@ class BIP32HD extends HD {
             throw new PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Initialize from a raw public key.
+     * @param publicKey Public key as string
+     * @returns {this} The current HD instance
+     * @throws {PublicKeyError} If the public key is invalid
+     */
     fromPublicKey(publicKey) {
         try {
             const bytes = getBytes(publicKey);
@@ -81835,6 +85672,11 @@ class BIP32HD extends HD {
             throw new PublicKeyError('Invalid public key data');
         }
     }
+    /**
+     * Apply a derivation path to the HD instance.
+     * @param derivation Derivation object
+     * @returns {this} The current HD instance
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, Derivation, { errorClass: DerivationError });
         for (const index of this.derivation.getIndexes()) {
@@ -81842,11 +85684,20 @@ class BIP32HD extends HD {
         }
         return this;
     }
+    /**
+     * Update derivation path after clearing previous derivation.
+     * @param derivation Derivation object
+     * @returns {this} The current HD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         this.fromDerivation(derivation);
         return this;
     }
+    /**
+     * Reset derivation to the root keys.
+     * @returns {this} The current HD instance
+     */
     cleanDerivation() {
         if (this.rootPrivateKey) {
             this.privateKey = this.rootPrivateKey;
@@ -81865,6 +85716,12 @@ class BIP32HD extends HD {
         }
         return this;
     }
+    /**
+     * Derive a child key at a specific index.
+     * @param index Child index
+     * @returns {this} The current HD instance
+     * @throws {DerivationError} If derivation fails
+     */
     drive(index) {
         const hmacHalfLength = 64 / 2; // sha512 output is 64 bytes
         if (this.ecc.NAME === 'Kholaw-Ed25519') {
@@ -81994,6 +85851,10 @@ class BIP32HD extends HD {
             return this;
         }
     }
+    /**
+     * Returns the seed as a string.
+     * @returns {string | null} Seed or null if not set
+     */
     getSeed() {
         return this.seed ? bytesToString(this.seed) : null;
     }
@@ -82112,6 +85973,13 @@ class BIP32HD extends HD {
     getStrict() {
         return this.strict ?? null;
     }
+    /**
+     * Generate a cryptocurrency address using current public key.
+     * Supports multiple address formats like P2PKH, P2SH, P2TR, P2WPKH, etc.
+     * @param options Address generation options
+     * @returns {string} Encoded address
+     * @throws {AddressError} If the address type is invalid
+     */
     getAddress(options = {
         address: Bitcoin.ADDRESSES.P2PKH,
         publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
@@ -82185,13 +86053,33 @@ class BIP32HD extends HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Hierarchical Deterministic (HD) wallet implementation for the **Algorand** blockchain.
+ *
+ * Extends the base class but uses the **KholawEd25519ECC** curve and Algorand-specific
+ * key derivation logic. Implements a variant of SLIP-0010 style derivation with additional clamping
+ * and key validation for the Ed25519 curve used by Algorand.
+ *
+ */
 class AlgorandHD extends BIP32HD {
     constructor() {
         super({ ecc: KholawEd25519ECC });
     }
+    /**
+     * Returns the human-readable name of this HD scheme.
+     *
+     * @returns {string} The name `"Algorand"`.
+     */
     static getName() {
         return 'Algorand';
     }
+    /**
+     * Initializes this HD wallet instance from a given seed.
+     *
+     * @param {string | Uint8Array | Seed} seed - The input seed (hex string, byte array, or Seed instance).
+     * @throws {SeedError} If the seed length is less than 16 bytes.
+     * @returns {this} The initialized AlgorandHD instance.
+     */
     fromSeed(seed) {
         const rawSeed = getBytes(seed.getSeed?.() ?? seed);
         if (rawSeed.length < 16) {
@@ -82211,7 +86099,7 @@ class AlgorandHD extends BIP32HD {
             kL = new Uint8Array(updated.slice(0, 32));
             kR = updated.slice(32, 64);
         }
-        kL = clampKL(kL);
+        kL = new Uint8Array(clampKL(kL));
         const chainCode = sha256(Uint8Array.from([0x01, ...rawSeed]));
         this.seed = rawSeed;
         this.rootPrivateKey = this.ecc.PRIVATE_KEY.fromBytes(new Uint8Array([...kL, ...kR]));
@@ -82224,6 +86112,15 @@ class AlgorandHD extends BIP32HD {
         this.strict = true;
         return this;
     }
+    /**
+     * Derives a child key at the given index according to Algorand's modified SLIP-0010 algorithm.
+     *
+     * Supports both hardened and non-hardened derivation.
+     *
+     * @param {number} index - The index of the child key to derive.
+     * @throws {DerivationError} If the chain code or required keys are not set or derivation fails.
+     * @returns {this} The derived child HD instance.
+     */
     drive(index) {
         const G = 9;
         const indexBytes = integerToBytes(index, 4, 'little');
@@ -82287,20 +86184,56 @@ class AlgorandHD extends BIP32HD {
         this.fingerprint = getBytes(this.getFingerprint());
         return this;
     }
+    /**
+     * Returns the root extended private key (xprv) encoded using Algorand's version bytes.
+     *
+     * @param {number | Uint8Array} [version=Algorand.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH]
+     *   The version prefix to use for encoding.
+     * @param {boolean} [encoded=true] Whether to return the base58-encoded key string.
+     * @returns {string | null} The root xprv or `null` if unavailable.
+     */
     getRootXPrivateKey(version = Algorand.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
         return super.getRootXPrivateKey(version, encoded);
     }
+    /**
+     * Returns the current extended private key (xprv) of the HD node.
+     *
+     * @param {number | Uint8Array} [version=Algorand.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH]
+     *   The version prefix to use for encoding.
+     * @param {boolean} [encoded=true] Whether to return the base58-encoded key string.
+     * @returns {string | null} The xprv string or `null` if not set.
+     */
     getXPrivateKey(version = Algorand.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
         return super.getXPrivateKey(version, encoded);
     }
+    /**
+     * Derives and returns the Algorand address associated with the current public key.
+     *
+     * @returns {string} The encoded Algorand address.
+     */
     getAddress() {
         return AlgorandAddress.encode(this.publicKey);
     }
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP44 hierarchical deterministic (HD) wallet standard.
+ * Extends BIP32HD to provide multi-account, multi-coin, and change/address-level derivations.
+ * Provides methods to derive keys and generate P2PKH addresses according to BIP44.
+ *
+ */
 class BIP44HD extends BIP32HD {
     coinType;
+    /**
+     * Create a new BIP44HD instance with optional configuration.
+     * @param options Configuration options for HD wallet
+     * @param options.publicKeyType Type of public key (compressed/uncompressed)
+     * @param options.coinType Coin type index (default: Bitcoin.COIN_TYPE)
+     * @param options.account Account index (default: 0)
+     * @param options.change Change chain (0: external, 1: internal, default: external)
+     * @param options.address Address index (default: 0)
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -82313,33 +86246,63 @@ class BIP44HD extends BIP32HD {
             address: options.address ?? 0
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'BIP44'
+     */
     static getName() {
         return 'BIP44';
     }
+    /**
+     * Set derivation to a specific coin type.
+     * @param coinType Coin type index
+     * @returns {this} Current BIP44HD instance
+     */
     fromCoinType(coinType) {
         this.cleanDerivation();
         this.derivation.fromCoinType(coinType);
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Set derivation to a specific account or account range.
+     * @param account Single account index or a tuple [start, end]
+     * @returns {this} Current BIP44HD instance
+     */
     fromAccount(account) {
         this.cleanDerivation();
         this.derivation.fromAccount(account);
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Set derivation to a specific change chain.
+     * @param change Change index or string (0: external, 1: internal)
+     * @returns {this} Current BIP44HD instance
+     */
     fromChange(change) {
         this.cleanDerivation();
         this.derivation.fromChange(change);
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Set derivation to a specific address index or range.
+     * @param address Single address index or a tuple [start, end]
+     * @returns {this} Current BIP44HD instance
+     */
     fromAddress(address) {
         this.cleanDerivation();
         this.derivation.fromAddress(address);
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Apply a full BIP44 derivation path to the HD instance.
+     * @param derivation BIP44Derivation instance
+     * @returns {this} Current BIP44HD instance
+     * @throws {DerivationError} If the derivation type is invalid
+     */
     fromDerivation(derivation) {
         this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP44Derivation, { errorClass: DerivationError });
@@ -82348,6 +86311,12 @@ class BIP44HD extends BIP32HD {
         }
         return this;
     }
+    /**
+     * Generate a P2PKH cryptocurrency address from the current public key.
+     * @param options Address generation options
+     * @param options.publicKeyAddressPrefix Prefix for the public key address (default: Bitcoin mainnet)
+     * @returns {string} Encoded P2PKH address
+     */
     getAddress(options = {
         publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
     }) {
@@ -82359,7 +86328,22 @@ class BIP44HD extends BIP32HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP49 hierarchical deterministic (HD) wallet standard.
+ * Extends BIP44HD to support P2WPKH-in-P2SH addresses (SegWit wrapped in P2SH).
+ * Provides methods to derive keys, generate extended keys, and encode addresses according to BIP49.
+ *
+ */
 class BIP49HD extends BIP44HD {
+    /**
+     * Create a new BIP49HD instance with optional configuration.
+     * @param options Configuration options for HD wallet
+     * @param options.publicKeyType Type of public key (compressed/uncompressed)
+     * @param options.coinType Coin type index (default: Bitcoin.COIN_TYPE)
+     * @param options.account Account index (default: 0)
+     * @param options.change Change chain (0: external, 1: internal, default: external)
+     * @param options.address Address index (default: 0)
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -82372,9 +86356,19 @@ class BIP49HD extends BIP44HD {
             address: options.address ?? 0
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'BIP49'
+     */
     static getName() {
         return 'BIP49';
     }
+    /**
+     * Apply a full BIP49 derivation path to the HD instance.
+     * @param derivation BIP49Derivation instance
+     * @returns {this} Current BIP49HD instance
+     * @throws {DerivationError} If the derivation type is invalid
+     */
     fromDerivation(derivation) {
         this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP49Derivation, { errorClass: DerivationError });
@@ -82383,26 +86377,56 @@ class BIP49HD extends BIP44HD {
         }
         return this;
     }
+    /**
+     * Get the root extended private key (xprv) for BIP49 with optional version and encoding.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH-in-P2SH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized root extended private key or null if unavailable
+     */
     getRootXPrivateKey(version = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true) {
         if (!this.getRootPrivateKey() || !this.getRootChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.rootDepth, new Uint8Array(4), this.rootIndex, this.getRootChainCode(), '00' + this.getRootPrivateKey(), encoded);
     }
+    /**
+     * Get the root extended public key (xpub) for BIP49 with optional version and encoding.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH-in-P2SH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized root extended public key or null if unavailable
+     */
     getRootXPublicKey(version = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true) {
         if (!this.getRootChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.rootDepth, new Uint8Array(4), this.rootIndex, this.getRootChainCode(), this.getRootPublicKey(PUBLIC_KEY_TYPES.COMPRESSED), encoded);
     }
+    /**
+     * Get the extended private key (xprv) for the current derivation path.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH-in-P2SH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized extended private key or null if unavailable
+     */
     getXPrivateKey(version = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true) {
         if (!this.getPrivateKey() || !this.getChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.depth, this.getParentFingerprint(), this.index, this.getChainCode(), '00' + this.getPrivateKey(), encoded);
     }
+    /**
+     * Get the extended public key (xpub) for the current derivation path.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH-in-P2SH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized extended public key or null if unavailable
+     */
     getXPublicKey(version = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH_IN_P2SH, encoded = true) {
         if (!this.getChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.depth, this.getParentFingerprint(), this.index, this.getChainCode(), this.getPublicKey(PUBLIC_KEY_TYPES.COMPRESSED), encoded);
     }
+    /**
+     * Generate a P2WPKH-in-P2SH address from the current public key.
+     * @param options Address generation options
+     * @param options.scriptAddressPrefix Prefix for the P2SH script address (default: Bitcoin mainnet)
+     * @returns {string} Encoded P2WPKH-in-P2SH address
+     */
     getAddress(options = {
         scriptAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX
     }) {
@@ -82414,7 +86438,22 @@ class BIP49HD extends BIP44HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP84 hierarchical deterministic (HD) wallet standard.
+ * Extends BIP44HD to support native SegWit P2WPKH addresses.
+ * Provides methods to derive keys, generate extended keys, and encode addresses according to BIP84.
+ *
+ */
 class BIP84HD extends BIP44HD {
+    /**
+     * Create a new BIP84HD instance with optional configuration.
+     * @param options Configuration options for HD wallet
+     * @param options.publicKeyType Type of public key (compressed/uncompressed)
+     * @param options.coinType Coin type index (default: Bitcoin.COIN_TYPE)
+     * @param options.account Account index (default: 0)
+     * @param options.change Change chain (0: external, 1: internal, default: external)
+     * @param options.address Address index (default: 0)
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -82427,9 +86466,19 @@ class BIP84HD extends BIP44HD {
             address: options.address ?? 0
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'BIP84'
+     */
     static getName() {
         return 'BIP84';
     }
+    /**
+     * Apply a full BIP84 derivation path to the HD instance.
+     * @param derivation BIP84Derivation instance
+     * @returns {this} Current BIP84HD instance
+     * @throws {DerivationError} If the derivation type is invalid
+     */
     fromDerivation(derivation) {
         this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP84Derivation, { errorClass: DerivationError });
@@ -82438,26 +86487,57 @@ class BIP84HD extends BIP44HD {
         }
         return this;
     }
+    /**
+     * Get the root extended private key (xprv) for BIP84 with optional version and encoding.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized root extended private key or null if unavailable
+     */
     getRootXPrivateKey(version = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH, encoded = true) {
         if (!this.getRootPrivateKey() || !this.getRootChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.rootDepth, new Uint8Array(4), this.rootIndex, this.getRootChainCode(), '00' + this.getRootPrivateKey(), encoded);
     }
+    /**
+     * Get the root extended public key (xpub) for BIP84 with optional version and encoding.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized root extended public key or null if unavailable
+     */
     getRootXPublicKey(version = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH, encoded = true) {
         if (!this.getRootChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.rootDepth, new Uint8Array(4), this.rootIndex, this.getRootChainCode(), this.getRootPublicKey(PUBLIC_KEY_TYPES.COMPRESSED), encoded);
     }
+    /**
+     * Get the extended private key (xprv) for the current derivation path.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized extended private key or null if unavailable
+     */
     getXPrivateKey(version = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2WPKH, encoded = true) {
         if (!this.getPrivateKey() || !this.getChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.depth, this.getParentFingerprint(), this.index, this.getChainCode(), '00' + this.getPrivateKey(), encoded);
     }
+    /**
+     * Get the extended public key (xpub) for the current derivation path.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2WPKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized extended public key or null if unavailable
+     */
     getXPublicKey(version = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2WPKH, encoded = true) {
         if (!this.getChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.depth, this.getParentFingerprint(), this.index, this.getChainCode(), this.getPublicKey(PUBLIC_KEY_TYPES.COMPRESSED), encoded);
     }
+    /**
+     * Generate a native SegWit P2WPKH address from the current public key.
+     * @param options Address generation options
+     * @param options.hrp Human-readable part of Bech32 address (default: Bitcoin mainnet HRP)
+     * @param options.witnessVersion Witness version for SegWit (default: P2WPKH)
+     * @returns {string} Encoded P2WPKH address
+     */
     getAddress(options = {
         hrp: Bitcoin.NETWORKS.MAINNET.HRP,
         witnessVersion: Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2WPKH
@@ -82471,11 +86551,19 @@ class BIP84HD extends BIP44HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements BIP141 hierarchical deterministic wallet functionality.
+ */
 class BIP141HD extends BIP32HD {
     address;
     xprivateKeyVersion;
     xpublicKeyVersion;
     semantic;
+    /**
+     * Creates a new BIP141HD instance with semantic validation.
+     * @param {HDOptionsInterface} [options={publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED}] - The HD wallet configuration options.
+     * @throws {SemanticError} If semantic type is missing.
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -82485,12 +86573,27 @@ class BIP141HD extends BIP32HD {
         }
         this.fromSemantic(options.semantic, options);
     }
+    /**
+     * Returns the BIP standard name.
+     * @returns {string} The name "BIP141".
+     */
     static getName() {
         return 'BIP141';
     }
+    /**
+     * Retrieves the semantic type of the HD wallet.
+     * @returns {string} The semantic type.
+     */
     getSemantic() {
         return this.semantic;
     }
+    /**
+     * Initializes the HD wallet based on semantic type.
+     * @param {string} semantic - The semantic standard type (e.g., P2WPKH, P2WSH).
+     * @param {BIP141HDSemanticOptionsInterface} [options={}] - Optional BIP141-specific configuration.
+     * @returns {this} The initialized BIP141HD instance.
+     * @throws {SemanticError} If the semantic type is invalid.
+     */
     fromSemantic(semantic, options = {}) {
         if (!SEMANTICS.getTypes().includes(semantic)) {
             throw new SemanticError(`Invalid semantic type`, {
@@ -82520,18 +86623,48 @@ class BIP141HD extends BIP32HD {
         }
         return this;
     }
+    /**
+     * Returns the root extended private key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The root extended private key or null.
+     */
     getRootXPrivateKey(version, encoded = true) {
         return super.getRootXPrivateKey(version ?? this.xprivateKeyVersion, encoded);
     }
+    /**
+     * Returns the root extended public key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The root extended public key or null.
+     */
     getRootXPublicKey(version, encoded = true) {
         return super.getRootXPublicKey(version ?? this.xpublicKeyVersion, encoded);
     }
+    /**
+     * Returns the derived extended private key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The derived extended private key or null.
+     */
     getXPrivateKey(version, encoded = true) {
         return super.getXPrivateKey(version ?? this.xprivateKeyVersion, encoded);
     }
+    /**
+     * Returns the derived extended public key.
+     * @param {number | Uint8Array} [version] - The key version or prefix.
+     * @param {boolean} [encoded=true] - Whether to return the encoded key string.
+     * @returns {string | null} The derived extended public key or null.
+     */
     getXPublicKey(version, encoded = true) {
         return super.getXPublicKey(version ?? this.xpublicKeyVersion, encoded);
     }
+    /**
+     * Encodes and returns the wallet address based on the selected semantic type.
+     * @param {HDAddressOptionsInterface} [options] - Address generation options such as prefix, HRP, and witness version.
+     * @returns {string} The encoded Bitcoin SegWit address.
+     * @throws {AddressError} If the address type is invalid.
+     */
     getAddress(options = {
         address: this.address,
         scriptAddressPrefix: Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX,
@@ -82581,7 +86714,22 @@ class BIP141HD extends BIP32HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements the BIP86 hierarchical deterministic (HD) wallet standard.
+ * Extends BIP44HD to support Taproot (P2TR) addresses.
+ * Provides methods for key derivation, extended key generation, and Taproot address encoding.
+ *
+ */
 class BIP86HD extends BIP44HD {
+    /**
+     * Create a new BIP86HD instance with optional configuration.
+     * @param options Configuration options for HD wallet
+     * @param options.publicKeyType Type of public key (compressed/uncompressed)
+     * @param options.coinType Coin type index (default: Bitcoin.COIN_TYPE)
+     * @param options.account Account index (default: 0)
+     * @param options.change Change chain (0: external, 1: internal, default: external)
+     * @param options.address Address index (default: 0)
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -82594,9 +86742,19 @@ class BIP86HD extends BIP44HD {
             address: options.address ?? 0
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'BIP86'
+     */
     static getName() {
         return 'BIP86';
     }
+    /**
+     * Apply a full BIP86 derivation path to the HD instance.
+     * @param derivation BIP86Derivation instance
+     * @returns {this} Current BIP86HD instance
+     * @throws {DerivationError} If the derivation type is invalid
+     */
     fromDerivation(derivation) {
         this.cleanDerivation();
         this.derivation = ensureTypeMatch(derivation, BIP86Derivation, { errorClass: DerivationError });
@@ -82605,26 +86763,57 @@ class BIP86HD extends BIP44HD {
         }
         return this;
     }
+    /**
+     * Get the root extended private key (xprv) for BIP86 with optional version and encoding.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2TR)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized root extended private key or null if unavailable
+     */
     getRootXPrivateKey(version = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2TR, encoded = true) {
         if (!this.getRootPrivateKey() || !this.getRootChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.rootDepth, new Uint8Array(4), this.rootIndex, this.getRootChainCode(), '00' + this.getRootPrivateKey(), encoded);
     }
+    /**
+     * Get the root extended public key (xpub) for BIP86 with optional version and encoding.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2TR)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized root extended public key or null if unavailable
+     */
     getRootXPublicKey(version = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2TR, encoded = true) {
         if (!this.getRootChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.rootDepth, new Uint8Array(4), this.rootIndex, this.getRootChainCode(), this.getRootPublicKey(PUBLIC_KEY_TYPES.COMPRESSED), encoded);
     }
+    /**
+     * Get the extended private key (xprv) for the current derivation path.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2TR)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized extended private key or null if unavailable
+     */
     getXPrivateKey(version = Bitcoin.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2TR, encoded = true) {
         if (!this.getPrivateKey() || !this.getChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.depth, this.getParentFingerprint(), this.index, this.getChainCode(), '00' + this.getPrivateKey(), encoded);
     }
+    /**
+     * Get the extended public key (xpub) for the current derivation path.
+     * @param version Version bytes or number (default: Bitcoin mainnet P2TR)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string | null} Serialized extended public key or null if unavailable
+     */
     getXPublicKey(version = Bitcoin.NETWORKS.MAINNET.XPUBLIC_KEY_VERSIONS.P2TR, encoded = true) {
         if (!this.getChainCode())
             return null;
         return serialize(typeof version === 'number' ? integerToBytes(version) : version, this.depth, this.getParentFingerprint(), this.index, this.getChainCode(), this.getPublicKey(PUBLIC_KEY_TYPES.COMPRESSED), encoded);
     }
+    /**
+     * Generate a Taproot (P2TR) address from the current public key.
+     * @param options Address generation options
+     * @param options.hrp Human-readable part of Bech32 address (default: Bitcoin mainnet HRP)
+     * @param options.witnessVersion Witness version for Taproot (default: P2TR)
+     * @returns {string} Encoded P2TR address
+     */
     getAddress(options = {
         hrp: Bitcoin.NETWORKS.MAINNET.HRP,
         witnessVersion: Bitcoin.NETWORKS.MAINNET.WITNESS_VERSIONS.P2TR
@@ -82638,8 +86827,21 @@ class BIP86HD extends BIP44HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements hierarchical deterministic (HD) wallet logic for Cardano.
+ * Supports multiple Cardano derivation types including Byron Legacy, Icarus, Shelley, and Ledger.
+ * Provides methods to derive keys, addresses, and extended keys according to Cardano standards.
+ *
+ */
 class CardanoHD extends BIP32HD {
     cardanoType;
+    /**
+     * Creates a new CardanoHD instance.
+     * @param options Configuration options for Cardano HD wallet
+     * @param options.publicKeyType Type of public key (default: compressed)
+     * @param options.cardanoType Cardano derivation type (required)
+     * @throws {BaseError} If an invalid Cardano type is provided
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -82652,9 +86854,22 @@ class CardanoHD extends BIP32HD {
         }
         this.cardanoType = options.cardanoType;
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Cardano'
+     */
     static getName() {
         return 'Cardano';
     }
+    /**
+     * Initializes the HD wallet from a seed.
+     * Handles different derivation types and Cardano-specific tweaks.
+     *
+     * @param seed Seed value as string or Seed instance
+     * @param passphrase Optional passphrase for certain derivation types
+     * @returns {this} Current CardanoHD instance
+     * @throws {SeedError|BaseError} If seed data or length is invalid
+     */
     fromSeed(seed, passphrase) {
         try {
             this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
@@ -82728,6 +86943,12 @@ class CardanoHD extends BIP32HD {
         this.strict = true;
         return this;
     }
+    /**
+     * Sets the HD wallet from a private key (only supported for Shelley types).
+     * @param privateKey Private key as string
+     * @returns {this} Current CardanoHD instance
+     * @throws {BaseError|PrivateKeyError} If private key is unsupported or invalid
+     */
     fromPrivateKey(privateKey) {
         if ([Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER].includes(this.cardanoType)) {
             throw new BaseError(`From private key not supported for ${this.cardanoType}`);
@@ -82742,6 +86963,12 @@ class CardanoHD extends BIP32HD {
             throw new PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Sets the HD wallet from a public key (only supported for Shelley types).
+     * @param publicKey Public key as string
+     * @returns {this} Current CardanoHD instance
+     * @throws {BaseError|PublicKeyError} If public key is unsupported or invalid
+     */
     fromPublicKey(publicKey) {
         if ([Cardano.TYPES.BYRON_ICARUS, Cardano.TYPES.BYRON_LEGACY, Cardano.TYPES.BYRON_LEDGER].includes(this.cardanoType)) {
             throw new BaseError(`From public key not supported for ${this.cardanoType}`);
@@ -82755,6 +86982,14 @@ class CardanoHD extends BIP32HD {
             throw new PublicKeyError('Invalid public key data');
         }
     }
+    /**
+     * Derives a child key at the given index according to Cardano derivation rules.
+     * Supports hardened and non-hardened derivation.
+     *
+     * @param index Child index to derive
+     * @returns {this} Current CardanoHD instance with updated keys
+     * @throws {BaseError|DerivationError} If derivation fails
+     */
     drive(index) {
         const digestHalf = 32; // sha512().digest_size / 2
         const isLegacy = this.cardanoType === Cardano.TYPES.BYRON_LEGACY;
@@ -82823,18 +87058,49 @@ class CardanoHD extends BIP32HD {
         this.fingerprint = getBytes(this.getFingerprint());
         return this;
     }
+    /**
+     * Returns the root extended private key (xprv) for the current derivation.
+     * Delegates to BIP32HD serialization logic.
+     *
+     * @param version Optional version bytes or number (default: Cardano mainnet P2PKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string|null} Serialized root extended private key
+     */
     getRootXPrivateKey(version = Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
         return super.getRootXPrivateKey(version, encoded);
     }
+    /**
+     * Returns the extended private key (xprv) for the current path.
+     * Delegates to BIP32HD serialization logic.
+     *
+     * @param version Optional version bytes or number (default: Cardano mainnet P2PKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string|null} Serialized extended private key
+     */
     getXPrivateKey(version = Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
         return super.getXPrivateKey(version, encoded);
     }
+    /**
+     * Computes the Byron Legacy path key used for address generation.
+     * @returns {string|null} Computed path key or null for non-Legacy types
+     */
     getPathKey() {
         if (this.cardanoType === Cardano.TYPES.BYRON_LEGACY) {
             return bytesToString(pbkdf2HmacSha512(concatBytes(this.rootPublicKey.getRawCompressed().slice(1), this.rootChainCode), 'address-hashing', 500, 32));
         }
         return null;
     }
+    /**
+     * Generates a Cardano address for the current public key and derivation path.
+     * Handles Byron Legacy, Icarus, Ledger, and Shelley address types.
+     *
+     * @param options Address generation options
+     * @param options.network Network string ('mainnet' or 'testnet', default: 'mainnet')
+     * @param options.addressType Type of address (Payment, Staking, Reward, Public Key)
+     * @param options.stakingPublicKey Required for Shelley Payment addresses
+     * @returns {string} Encoded Cardano address
+     * @throws {BaseError|AddressError} If address type is invalid or staking key is missing
+     */
     getAddress(options = {
         network: 'mainnet'
     }) {
@@ -82871,6 +87137,12 @@ class CardanoHD extends BIP32HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements Electrum V1 hierarchical deterministic (HD) wallet.
+ * Provides methods to derive private/public keys, WIF, and P2PKH addresses
+ * according to Electrum V1 derivation rules.
+ *
+ */
 class ElectrumV1HD extends HD {
     seed;
     masterPrivateKey;
@@ -82880,6 +87152,15 @@ class ElectrumV1HD extends HD {
     publicKeyType;
     wifType;
     wifPrefix;
+    /**
+     * Constructs a new ElectrumV1HD instance.
+     * @param options Configuration options
+     * @param options.publicKeyType Type of public key ('compressed' or 'uncompressed')
+     * @param options.wifPrefix Optional WIF prefix for Bitcoin network
+     * @param options.change Optional derivation change index
+     * @param options.address Optional derivation address index
+     * @throws {BaseError} If public key type is invalid
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED
     }) {
@@ -82901,9 +87182,19 @@ class ElectrumV1HD extends HD {
             change: options.change, address: options.address
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Electrum-V1'
+     */
     static getName() {
         return 'Electrum-V1';
     }
+    /**
+     * Initializes the wallet from a seed.
+     * @param seed Seed as Uint8Array, string, or Seed instance
+     * @returns {this} Current ElectrumV1HD instance
+     * @throws {SeedError} If seed is invalid
+     */
     fromSeed(seed) {
         try {
             this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
@@ -82913,6 +87204,12 @@ class ElectrumV1HD extends HD {
             throw new SeedError('Invalid seed data');
         }
     }
+    /**
+     * Initializes the wallet from a raw private key.
+     * @param key Private key as Uint8Array or string
+     * @returns {this} Current ElectrumV1HD instance
+     * @throws {PrivateKeyError} If private key is invalid
+     */
     fromPrivateKey(key) {
         try {
             this.masterPrivateKey = SLIP10Secp256k1PrivateKey.fromBytes(getBytes(key));
@@ -82924,11 +87221,23 @@ class ElectrumV1HD extends HD {
             throw new PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Initializes the wallet from a WIF string.
+     * @param wif Wallet Import Format string
+     * @returns {this} Current ElectrumV1HD instance
+     * @throws {WIFError} If WIF prefix is missing or WIF is invalid
+     */
     fromWIF(wif) {
         if (this.wifPrefix == null)
             throw new WIFError('WIF prefix is required');
         return this.fromPrivateKey(wifToPrivateKey(wif, this.wifPrefix));
     }
+    /**
+     * Initializes the wallet from a public key.
+     * @param key Public key as Uint8Array or string
+     * @returns {this} Current ElectrumV1HD instance
+     * @throws {PublicKeyError} If public key is invalid
+     */
     fromPublicKey(key) {
         try {
             this.masterPublicKey = SLIP10Secp256k1PublicKey.fromBytes(getBytes(key));
@@ -82939,20 +87248,41 @@ class ElectrumV1HD extends HD {
             throw new PublicKeyError('Invalid public key error');
         }
     }
+    /**
+     * Sets the derivation path.
+     * @param derivation ElectrumDerivation instance
+     * @returns {this} Current ElectrumV1HD instance
+     * @throws {DerivationError} If derivation is invalid
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, ElectrumDerivation, { errorClass: DerivationError });
         this.drive(derivation.getChange(), derivation.getAddress());
         return this;
     }
+    /**
+     * Updates derivation path by cleaning previous derivation state.
+     * @param derivation ElectrumDerivation instance
+     * @returns {this} Current ElectrumV1HD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
+    /**
+     * Resets derivation path to initial state.
+     * @returns {this} Current ElectrumV1HD instance
+     */
     cleanDerivation() {
         this.derivation.clean();
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Derives child private/public key for the specified change and address index.
+     * @param changeIndex Change index
+     * @param addressIndex Address index
+     * @returns {this} Current ElectrumV1HD instance
+     */
     drive(changeIndex, addressIndex) {
         const sequence = doubleSha256(concatBytes(new TextEncoder().encode(`${addressIndex}:${changeIndex}:`), this.masterPublicKey.getRawUncompressed().slice(1)));
         if (this.masterPrivateKey) {
@@ -82965,18 +87295,37 @@ class ElectrumV1HD extends HD {
         }
         return this;
     }
+    /**
+     * Returns raw seed as string.
+     * @returns {string|null} Seed or null if not set
+     */
     getSeed() {
         return this.seed ? bytesToString(this.seed) : null;
     }
+    /**
+     * Returns master private key as string.
+     * @returns {string|null} Master private key
+     */
     getMasterPrivateKey() {
         return this.masterPrivateKey ? bytesToString(this.masterPrivateKey.getRaw()) : null;
     }
+    /**
+     * Returns master private key in WIF format.
+     * @param wifType Optional WIF type override
+     * @returns {string|null} WIF string
+     */
     getMasterWIF(wifType) {
         if (!this.masterPrivateKey || this.wifPrefix == null)
             return null;
         const type = wifType ?? this.wifType;
         return privateKeyToWIF(this.getMasterPrivateKey(), type, this.wifPrefix);
     }
+    /**
+     * Returns master public key as string.
+     * @param publicKeyType Optional type ('compressed' or 'uncompressed')
+     * @returns {string} Master public key string
+     * @throws {BaseError} If public key type is invalid
+     */
     getMasterPublicKey(publicKeyType = this.publicKeyType) {
         if (publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
             return bytesToString(this.masterPublicKey.getRawUncompressed());
@@ -82988,18 +87337,37 @@ class ElectrumV1HD extends HD {
             expected: Object.values(PUBLIC_KEY_TYPES), got: publicKeyType
         });
     }
+    /**
+     * Returns derived private key as string.
+     * @returns {string|null} Derived private key
+     */
     getPrivateKey() {
         return this.privateKey ? bytesToString(this.privateKey.getRaw()) : null;
     }
+    /**
+     * Returns derived private key in WIF format.
+     * @param wifType Optional WIF type override
+     * @returns {string|null} WIF string
+     */
     getWIF(wifType) {
         if (!this.privateKey || this.wifPrefix == null)
             return null;
         const type = wifType ?? this.wifType;
         return privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix);
     }
+    /**
+     * Returns the WIF type used by this instance.
+     * @returns {string} WIF type string
+     */
     getWIFType() {
         return this.wifType;
     }
+    /**
+     * Returns derived public key as string.
+     * @param publicKeyType Optional type ('compressed' or 'uncompressed')
+     * @returns {string} Public key string
+     * @throws {BaseError} If public key type is invalid
+     */
     getPublicKey(publicKeyType = this.publicKeyType) {
         if (publicKeyType === PUBLIC_KEY_TYPES.UNCOMPRESSED) {
             return bytesToString(this.publicKey.getRawUncompressed());
@@ -83011,15 +87379,33 @@ class ElectrumV1HD extends HD {
             expected: Object.values(PUBLIC_KEY_TYPES), got: publicKeyType
         });
     }
+    /**
+     * Returns public key type used by this instance.
+     * @returns {string} Public key type string
+     */
     getPublicKeyType() {
         return this.publicKeyType;
     }
+    /**
+     * Returns the derived public key in compressed format.
+     * @returns {string} Compressed public key
+     */
     getCompressed() {
         return bytesToString(this.publicKey.getRawCompressed());
     }
+    /**
+     * Returns the derived public key in uncompressed format.
+     * @returns {string} Uncompressed public key
+     */
     getUncompressed() {
         return bytesToString(this.publicKey.getRawUncompressed());
     }
+    /**
+     * Generates P2PKH address from the derived public key.
+     * @param options Address generation options
+     * @param options.publicKeyAddressPrefix Network prefix for P2PKH address
+     * @returns {string} Encoded P2PKH address
+     */
     getAddress(options = {
         publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX
     }) {
@@ -83031,12 +87417,28 @@ class ElectrumV1HD extends HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Electrum V2 hierarchical deterministic (HD) wallet.
+ * Supports standard (P2PKH) and SegWit (P2WPKH) modes.
+ * Wraps a BIP32HD instance and provides Electrum-specific derivation logic.
+ *
+ */
 class ElectrumV2HD extends HD {
     mode;
     wifType;
     publicKeyType;
     wifPrefix;
     bip32HD;
+    /**
+     * Constructs a new ElectrumV2HD instance.
+     * @param options Configuration options
+     * @param options.publicKeyType Type of public key ('compressed' or 'uncompressed')
+     * @param options.mode Wallet mode ('standard' or 'segwit')
+     * @param options.wifPrefix Optional WIF prefix
+     * @param options.change Optional derivation change index
+     * @param options.address Optional derivation address index
+     * @throws {BaseError} If mode or public key type is invalid
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED,
         mode: MODES.STANDARD
@@ -83069,28 +87471,59 @@ class ElectrumV2HD extends HD {
             ecc: Bitcoin.ECC, publicKeyType: this.publicKeyType
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Electrum-V2'
+     */
     static getName() {
         return 'Electrum-V2';
     }
+    /**
+     * Initializes wallet from a seed.
+     * @param seed Seed as Uint8Array, string, or Seed instance
+     * @returns {this} Current ElectrumV2HD instance
+     */
     fromSeed(seed) {
         this.bip32HD.fromSeed(seed);
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Sets the derivation path.
+     * @param derivation ElectrumDerivation instance
+     * @returns {this} Current ElectrumV2HD instance
+     * @throws {DerivationError} If derivation is invalid
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, ElectrumDerivation, { errorClass: DerivationError });
         this.drive(derivation.getChange(), derivation.getAddress());
         return this;
     }
+    /**
+     * Updates derivation path by cleaning previous derivation state.
+     * @param derivation ElectrumDerivation instance
+     * @returns {this} Current ElectrumV2HD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
+    /**
+     * Resets derivation path to initial state.
+     * @returns {this} Current ElectrumV2HD instance
+     */
     cleanDerivation() {
         this.derivation.clean();
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Derives child keys for given change and address indices.
+     * Uses custom Electrum V2 derivation logic.
+     * @param changeIndex Change index
+     * @param addressIndex Address index
+     * @returns {this} Current ElectrumV2HD instance
+     */
     drive(changeIndex, addressIndex) {
         const custom = new CustomDerivation();
         if (this.mode === MODES.SEGWIT) {
@@ -83101,48 +87534,112 @@ class ElectrumV2HD extends HD {
         this.bip32HD.updateDerivation(custom);
         return this;
     }
+    /**
+     * Returns the current wallet mode ('standard' or 'segwit').
+     * @returns {string} Mode string
+     */
     getMode() {
         return this.mode;
     }
+    /**
+     * Returns the raw seed as string.
+     * @returns {string|null} Seed or null if not set
+     */
     getSeed() {
         return this.bip32HD.getSeed();
     }
+    /**
+     * Returns master private key as string.
+     * @returns {string|null} Master private key
+     */
     getMasterPrivateKey() {
         return this.bip32HD.getRootPrivateKey();
     }
+    /**
+     * Returns master private key in WIF format.
+     * @param wifType Optional WIF type override
+     * @returns {string|null} WIF string
+     */
     getMasterWIF(wifType) {
         if (this.wifPrefix == null)
             return null;
         const type = wifType ?? this.wifType;
         return privateKeyToWIF(this.getMasterPrivateKey(), type, this.wifPrefix);
     }
+    /**
+     * Returns master public key as string.
+     * @param publicKeyType Optional type ('compressed' or 'uncompressed')
+     * @returns {string} Master public key
+     */
     getMasterPublicKey(publicKeyType) {
         return this.bip32HD.getRootPublicKey(publicKeyType ?? this.publicKeyType);
     }
+    /**
+     * Returns derived private key as string.
+     * @returns {string|null} Derived private key
+     */
     getPrivateKey() {
         return this.bip32HD.getPrivateKey();
     }
+    /**
+     * Returns derived private key in WIF format.
+     * @param wifType Optional WIF type override
+     * @returns {string|null} WIF string
+     */
     getWIF(wifType) {
         if (this.wifPrefix == null)
             return null;
         const type = wifType ?? this.wifType;
         return privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix);
     }
+    /**
+     * Returns the WIF type used by this instance.
+     * @returns {string} WIF type
+     */
     getWIFType() {
         return this.wifType;
     }
+    /**
+     * Returns derived public key as string.
+     * @param publicKeyType Optional type ('compressed' or 'uncompressed')
+     * @returns {string} Public key string
+     */
     getPublicKey(publicKeyType) {
         return this.bip32HD.getPublicKey(publicKeyType ?? this.publicKeyType);
     }
+    /**
+     * Returns public key type used by this instance.
+     * @returns {string} Public key type string
+     */
     getPublicKeyType() {
         return this.publicKeyType;
     }
+    /**
+     * Returns derived public key in uncompressed format.
+     * @returns {string} Uncompressed public key
+     */
     getUncompressed() {
         return this.bip32HD.getUncompressed();
     }
+    /**
+     * Returns derived public key in compressed format.
+     * @returns {string} Compressed public key
+     */
     getCompressed() {
         return this.bip32HD.getCompressed();
     }
+    /**
+     * Generates an address based on the current mode.
+     * - Standard mode → P2PKH
+     * - SegWit mode → P2WPKH
+     *
+     * @param options Address generation options
+     * @param options.publicKeyAddressPrefix Prefix for P2PKH address (standard mode)
+     * @param options.hrp Human-readable part for Bech32 address (SegWit mode)
+     * @param options.witnessVersion Witness version for SegWit address
+     * @returns {string} Encoded Bitcoin address
+     * @throws {AddressError} If mode is invalid
+     */
     getAddress(options = {
         publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
         hrp: Bitcoin.NETWORKS.MAINNET.HRP,
@@ -83168,6 +87665,12 @@ class ElectrumV2HD extends HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Implements hierarchical deterministic (HD) wallet logic for Monero.
+ * Supports primary, integrated, and subaddresses according to Monero's key derivation rules.
+ * Provides methods to initialize from seed, private key, derivation, or watch-only mode.
+ *
+ */
 class MoneroHD extends HD {
     network;
     seed;
@@ -83177,6 +87680,15 @@ class MoneroHD extends HD {
     viewPrivateKey;
     spendPublicKey;
     viewPublicKey;
+    /**
+     * Creates a new MoneroHD instance.
+     * @param options HD wallet configuration options
+     * @param options.network Monero network (mainnet/testnet/stagenet)
+     * @param options.paymentID Optional payment ID for integrated addresses
+     * @param options.minor Derivation minor index (default: 1)
+     * @param options.major Derivation major index (default: 0)
+     * @throws {NetworkError} If network is invalid
+     */
     constructor(options = {
         minor: 1, major: 0
     }) {
@@ -83195,9 +87707,20 @@ class MoneroHD extends HD {
             major: options.major ?? 0
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Monero'
+     */
     static getName() {
         return 'Monero';
     }
+    /**
+     * Initializes wallet from a seed.
+     * Automatically derives spend and view keys.
+     * @param seed Seed as Uint8Array, string, or Seed instance
+     * @returns {this} Current MoneroHD instance
+     * @throws {SeedError} If seed is invalid
+     */
     fromSeed(seed) {
         try {
             this.seed = getBytes(seed instanceof Seed ? seed.getSeed() : seed);
@@ -83209,6 +87732,12 @@ class MoneroHD extends HD {
             throw new SeedError('Invalid seed data');
         }
     }
+    /**
+     * Initializes wallet from a raw private key.
+     * @param privateKey Private key string
+     * @returns {this} Current MoneroHD instance
+     * @throws {PrivateKeyError} If private key is invalid
+     */
     fromPrivateKey(privateKey) {
         try {
             this.privateKeyRaw = getBytes(privateKey);
@@ -83218,18 +87747,39 @@ class MoneroHD extends HD {
             throw new PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Sets the derivation path.
+     * @param derivation MoneroDerivation instance
+     * @returns {this} Current MoneroHD instance
+     * @throws {DerivationError} If derivation is invalid
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, MoneroDerivation, { errorClass: DerivationError });
         return this;
     }
+    /**
+     * Updates derivation path, cleaning previous derivation state.
+     * @param derivation MoneroDerivation instance
+     * @returns {this} Current MoneroHD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
+    /**
+     * Resets derivation state to initial.
+     * @returns {this} Current MoneroHD instance
+     */
     cleanDerivation() {
         this.derivation.clean();
         return this.fromDerivation(this.derivation);
     }
+    /**
+     * Initializes HD wallet from a spend private key.
+     * Automatically derives the corresponding view key.
+     * @param spendPrivateKey Spend private key as string or Uint8Array
+     * @returns {this} Current MoneroHD instance
+     */
     fromSpendPrivateKey(spendPrivateKey) {
         const spendKey = SLIP10Ed25519MoneroPrivateKey.fromBytes(getBytes(spendPrivateKey));
         const viewKey = SLIP10Ed25519MoneroPrivateKey.fromBytes(scalarReduce(keccak256(spendKey.getRaw())));
@@ -83239,6 +87789,14 @@ class MoneroHD extends HD {
         this.viewPublicKey = viewKey.getPublicKey();
         return this;
     }
+    /**
+     * Initializes wallet in watch-only mode.
+     * Only view private key and spend public key are required.
+     * @param viewPrivateKey View private key string
+     * @param spendPublicKey Spend public key string
+     * @returns {this} Current MoneroHD instance
+     * @throws {PrivateKeyError|PublicKeyError} If keys are invalid
+     */
     fromWatchOnly(viewPrivateKey, spendPublicKey) {
         let viewKey;
         let spendKey;
@@ -83260,6 +87818,13 @@ class MoneroHD extends HD {
         this.viewPublicKey = viewKey.getPublicKey();
         return this;
     }
+    /**
+     * Derives subaddress public keys at given minor and major indices.
+     * @param minorIndex Minor index
+     * @param majorIndex Major index
+     * @returns {[PublicKey, PublicKey]} Tuple of [subaddress spend key, subaddress view key]
+     * @throws {DerivationError} If indices are invalid
+     */
     drive(minorIndex, majorIndex) {
         const max = 2 ** 32 - 1;
         if (minorIndex < 0 || minorIndex > max) {
@@ -83283,24 +87848,52 @@ class MoneroHD extends HD {
             SLIP10Ed25519MoneroPublicKey.fromPoint(subAddressViewPoint)
         ];
     }
+    /**
+     * Returns the raw seed as string.
+     * @returns {string|null} Seed string or null if not set
+     */
     getSeed() {
         return this.seed ? bytesToString(this.seed) : null;
     }
+    /**
+     * Returns the raw private key as string.
+     * @returns {string|null} Private key string or null if not set
+     */
     getPrivateKey() {
         return this.privateKeyRaw ? bytesToString(this.privateKeyRaw) : null;
     }
+    /**
+     * Returns spend private key as string.
+     * @returns {string|null} Spend private key string
+     */
     getSpendPrivateKey() {
         return this.spendPrivateKey ? bytesToString(this.spendPrivateKey.getRaw()) : null;
     }
+    /**
+     * Returns view private key as string.
+     * @returns {string} View private key string
+     */
     getViewPrivateKey() {
         return bytesToString(this.viewPrivateKey.getRaw());
     }
+    /**
+     * Returns spend public key as string.
+     * @returns {string} Spend public key string
+     */
     getSpendPublicKey() {
         return bytesToString(this.spendPublicKey.getRawCompressed());
     }
+    /**
+     * Returns view public key as string.
+     * @returns {string} View public key string
+     */
     getViewPublicKey() {
         return bytesToString(this.viewPublicKey.getRawCompressed());
     }
+    /**
+     * Generates the primary Monero address.
+     * @returns {string} Encoded primary address
+     */
     getPrimaryAddress() {
         return MoneroAddress.encode({
             spendPublicKey: this.spendPublicKey,
@@ -83310,6 +87903,11 @@ class MoneroHD extends HD {
             addressType: Monero.ADDRESS_TYPES.STANDARD
         });
     }
+    /**
+     * Generates an integrated Monero address with optional payment ID.
+     * @param paymentID Optional payment ID
+     * @returns {string|null} Encoded integrated address or null if no payment ID
+     */
     getIntegratedAddress(paymentID) {
         if (!paymentID && !this.paymentID)
             return null;
@@ -83322,6 +87920,13 @@ class MoneroHD extends HD {
             paymentID: paymentID ?? this.paymentID
         });
     }
+    /**
+     * Generates a subaddress for given minor and major indices.
+     * Defaults to current derivation indices.
+     * @param minor Minor index
+     * @param major Major index
+     * @returns {string} Encoded subaddress
+     */
     getSubAddress(minor = this.derivation.getMinor(), major = this.derivation.getMajor()) {
         if (minor === 0 && major === 0) {
             return this.getPrimaryAddress();
@@ -83335,6 +87940,17 @@ class MoneroHD extends HD {
             addressType: Monero.ADDRESS_TYPES.SUB_ADDRESS
         });
     }
+    /**
+     * Generates a Monero address of the specified type.
+     * Supports standard, integrated, and subaddress types.
+     * @param options Address generation options
+     * @param options.addressType Type of address (STANDARD, INTEGRATED, SUB_ADDRESS)
+     * @param options.paymentID Payment ID for integrated addresses
+     * @param options.minor Minor index for subaddresses
+     * @param options.major Major index for subaddresses
+     * @returns {string|null} Encoded Monero address
+     * @throws {AddressError} If address type is invalid
+     */
     getAddress(options = {
         addressType: Monero.ADDRESS_TYPES.STANDARD
     }) {
@@ -83355,6 +87971,9 @@ class MoneroHD extends HD {
 }
 
 // SPDX-License-Identifier: MIT
+/**
+ * Manages and retrieves supported HD wallet classes for multiple blockchain protocols.
+ */
 class HDS {
     static dictionary = {
         [AlgorandHD.getName()]: AlgorandHD,
@@ -83369,18 +87988,37 @@ class HDS {
         [ElectrumV2HD.getName()]: ElectrumV2HD,
         [MoneroHD.getName()]: MoneroHD
     };
+    /**
+     * Returns all registered HD wallet names.
+     * @returns {string[]} An array of HD wallet names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns all registered HD wallet classes.
+     * @returns {typeof HD[]} An array of HD wallet class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieves a specific HD wallet class by name.
+     * @param {string} name - The HD wallet name to look up.
+     * @returns {typeof HD} The corresponding HD wallet class.
+     * @throws {BaseError} If the provided name is not a valid HD class.
+     */
     static getHDClass(name) {
         if (!this.isHD(name)) {
             throw new BaseError('Invalid HD name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks whether the provided name corresponds to a valid HD wallet class.
+     * @param {string} name - The HD wallet name to validate.
+     * @returns {boolean} True if the name exists in the dictionary, otherwise false.
+     */
     static isHD(name) {
         return this.getNames().includes(name);
     }
@@ -83404,6 +88042,9 @@ var hds = /*#__PURE__*/Object.freeze({
 });
 
 // SPDX-License-Identifier: MIT
+/**
+ * HDWallet class for managing hierarchical deterministic wallets.
+ */
 class HDWallet {
     ecc;
     cryptocurrency;
@@ -83427,6 +88068,11 @@ class HDWallet {
     checksum = true;
     stakingPublicKey;
     paymentID;
+    /**
+     * Creates an HDWallet instance.
+     * @param cryptocurrency - The cryptocurrency class to use.
+     * @param options - Optional wallet settings.
+     */
     constructor(cryptocurrency, options = {}) {
         this.cryptocurrency = ensureTypeMatch(cryptocurrency, Cryptocurrency, { errorClass: CryptocurrencyError });
         this.ecc = options.ecc ?? this.cryptocurrency.ECC;
@@ -83530,6 +88176,11 @@ class HDWallet {
             network: this.network
         });
     }
+    /**
+     * Initialize wallet from entropy.
+     * @param entropy - The entropy instance.
+     * @returns The current HDWallet instance.
+     */
     fromEntropy(entropy) {
         if (!this.cryptocurrency.ENTROPIES.isEntropy(entropy.getName())) {
             throw new EntropyError(`${this.cryptocurrency.NAME} cryptocurrency doesn't support Entropy type`, {
@@ -83552,6 +88203,11 @@ class HDWallet {
             new mnemonicClass(mnemonic, { mnemonicType: this.mnemonicType }) :
             new mnemonicClass(mnemonic));
     }
+    /**
+     * Initialize wallet from a mnemonic.
+     * @param mnemonic - The mnemonic instance.
+     * @returns The current HDWallet instance.
+     */
     fromMnemonic(mnemonic) {
         if (!this.cryptocurrency.MNEMONICS.isMnemonic(mnemonic.getName())) {
             throw new EntropyError(`${this.cryptocurrency.NAME} cryptocurrency doesn't support Mnemonic type`, {
@@ -83593,6 +88249,11 @@ class HDWallet {
         const seedClass = SEEDS.getSeedClass(this.hd.getName() === 'Cardano' ? 'Cardano' : this.mnemonic.getName());
         return this.fromSeed(new seedClass(seed));
     }
+    /**
+     * Initialize wallet from a seed.
+     * @param seed - The seed instance.
+     * @returns The current HDWallet instance.
+     */
     fromSeed(seed) {
         if (!this.cryptocurrency.SEEDS.isSeed(seed.getName())) {
             throw new EntropyError(`${this.cryptocurrency.NAME} cryptocurrency doesn't support Seed type`, {
@@ -83609,6 +88270,13 @@ class HDWallet {
         this.derivation = this.hd.getDerivation();
         return this;
     }
+    /**
+     * Initialize wallet from an extended private key.
+     * @param xprivateKey - The extended private key string.
+     * @param encoded - Whether the key is encoded (default: true).
+     * @param strict - Whether to use strict mode (default: false).
+     * @returns The current HDWallet instance.
+     */
     fromXPrivateKey(xprivateKey, encoded = true, strict = false) {
         if (['Electrum-V1', 'Monero'].includes(this.hd.getName())) {
             throw new XPrivateKeyError(`Support for XPrivate-Key conversion is not implemented in ${this.hd.getName()} HD type`);
@@ -83624,6 +88292,13 @@ class HDWallet {
         this.hd.fromXPrivateKey(xprivateKey, encoded, strict);
         return this;
     }
+    /**
+     * Initialize wallet from an extended public key.
+     * @param xpublicKey - The extended public key string.
+     * @param encoded - Whether the key is encoded (default: true).
+     * @param strict - Whether to use strict mode (default: false).
+     * @returns The current HDWallet instance.
+     */
     fromXPublicKey(xpublicKey, encoded = true, strict = false) {
         if (['Electrum-V1', 'Monero'].includes(this.hd.getName())) {
             throw new XPublicKeyError(`Support for XPublic-Key conversion is not implemented in ${this.hd.getName()} HD type`);
@@ -83642,25 +88317,49 @@ class HDWallet {
         this.hd.fromXPublicKey(xpublicKey, encoded, strict);
         return this;
     }
+    /**
+     * Initialize wallet from a derivation.
+     * @param derivation - The derivation instance.
+     * @returns The current HDWallet instance.
+     */
     fromDerivation(derivation) {
         this.hd.fromDerivation(derivation);
         this.derivation = derivation;
         return this;
     }
+    /**
+     * Update the wallet's derivation.
+     * @param derivation - The derivation instance.
+     * @returns The current HDWallet instance.
+     */
     updateDerivation(derivation) {
         this.hd.updateDerivation(derivation);
         this.derivation = derivation;
         return this;
     }
+    /**
+     * Clears the derivation.
+     * @returns The current HDWallet instance.
+     */
     cleanDerivation() {
         this.hd.cleanDerivation();
         this.derivation?.clean();
         return this;
     }
+    /**
+     * Initialize wallet from a private key.
+     * @param privateKey - The private key string.
+     * @returns The current HDWallet instance.
+     */
     fromPrivateKey(privateKey) {
         this.hd.fromPrivateKey(privateKey);
         return this;
     }
+    /**
+     * Initialize wallet from a WIF key.
+     * @param wif - The WIF string.
+     * @returns The current HDWallet instance.
+     */
     fromWIF(wif) {
         if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             throw new WIFError(`WIF is not supported by ${this.hd.getName()} HD type`);
@@ -83671,6 +88370,11 @@ class HDWallet {
         this.hd.fromWIF(wif);
         return this;
     }
+    /**
+     * Initialize wallet from a public key.
+     * @param publicKey - The public key string.
+     * @returns The current HDWallet instance.
+     */
     fromPublicKey(publicKey) {
         if (this.hd.getName() === 'Monero') {
             throw new PublicKeyError(`From Public-Key is not supported by ${this.hd.getName()} HD type`);
@@ -83678,6 +88382,11 @@ class HDWallet {
         this.hd.fromPublicKey(publicKey);
         return this;
     }
+    /**
+     * Initialize wallet from Monero spend private key.
+     * @param spendPrivateKey - The spend private key string.
+     * @returns The current HDWallet instance.
+     */
     fromSpendPrivateKey(spendPrivateKey) {
         if (this.hd.getName() !== 'Monero') {
             throw new PrivateKeyError(`From Spend-Private-Key is only supported by ${this.hd.getName()} HD type`);
@@ -83685,6 +88394,12 @@ class HDWallet {
         this.hd.fromSpendPrivateKey(spendPrivateKey);
         return this;
     }
+    /**
+     * Initialize wallet from Monero watch-only keys.
+     * @param viewPrivateKey - The view private key string.
+     * @param spendPublicKey - The spend public key string.
+     * @returns The current HDWallet instance.
+     */
     fromWatchOnly(viewPrivateKey, spendPublicKey) {
         if (this.hd.getName() !== 'Monero') {
             throw new PublicKeyError(`From Watch-Only is only supported by ${this.hd.getName()} HD type`);
@@ -83692,63 +88407,141 @@ class HDWallet {
         this.hd.fromWatchOnly(viewPrivateKey, spendPublicKey);
         return this;
     }
+    /**
+     * Get the cryptocurrency name.
+     * @returns Cryptocurrency name string.
+     */
     getCryptocurrency() {
         return this.cryptocurrency.NAME;
     }
+    /**
+     * Get the cryptocurrency symbol.
+     * @returns Cryptocurrency symbol string.
+     */
     getSymbol() {
         return this.cryptocurrency.SYMBOL;
     }
+    /**
+     * Get the coin type.
+     * @returns Coin type number.
+     */
     getCoinType() {
         return this.cryptocurrency.COIN_TYPE;
     }
+    /**
+     * Get network name.
+     * @returns Network name string.
+     */
     getNetwork() {
         return this.network.NAME;
     }
+    /**
+     * Get entropy value.
+     * @returns Entropy as a string or null.
+     */
     getEntropy() {
         return this.entropy?.getEntropy() ?? null;
     }
+    /**
+     * Get entropy strength.
+     * @returns Entropy strength in bits or null.
+     */
     getStrength() {
         return this.entropy?.getStrength() ?? null;
     }
+    /**
+     * Get the mnemonic string.
+     * @returns Mnemonic string or null.
+     */
     getMnemonic() {
         return this.mnemonic?.getMnemonic() ?? null;
     }
+    /**
+     * Get mnemonic type.
+     * @returns Mnemonic type string or null.
+     */
     getMnemonicType() {
         return this.mnemonicType ?? null;
     }
+    /**
+     * Get language of mnemonic.
+     * @returns Language string or null.
+     */
     getLanguage() {
         return this.mnemonic?.getLanguage() ?? null;
     }
+    /**
+     * Get number of words in mnemonic.
+     * @returns Word count or null.
+     */
     getWords() {
         return this.mnemonic?.getWords() ?? null;
     }
+    /**
+     * Get wallet passphrase.
+     * @returns Passphrase string or null.
+     */
     getPassphrase() {
         return this.passphrase;
     }
+    /**
+     * Get wallet seed.
+     * @returns Seed string or null.
+     */
     getSeed() {
         return this.hd.getSeed();
     }
+    /**
+     * Get the ECC algorithm name.
+     * @returns ECC algorithm string.
+     */
     getECC() {
         return this.hd.ecc.NAME;
     }
+    /**
+     * Get HD type name.
+     * @returns HD type string.
+     */
     getHD() {
         return this.hd.getName();
     }
+    /**
+     * Get semantic type.
+     * @returns Semantic string or null.
+     */
     getSemantic() {
         return this.semantic ?? null;
     }
+    /**
+     * Get Cardano type.
+     * @returns Cardano type string or null.
+     */
     getCardanoType() {
         return this.hd.getName() === 'Cardano' ? (this.cardanoType ?? null) : null;
     }
+    /**
+     * Get mode (Electrum-V2 only).
+     * @returns Mode string.
+     */
     getMode() {
         if (this.hd.getName() !== 'Electrum-V2') {
             throw new Error(`Get mode is only for Electrum-V2 HD type, not ${this.hd.getName()}`);
         }
         return this.hd.getMode();
     }
+    /**
+     * Get path key.
+     * @returns Path key string or null.
+     */
     getPathKey() {
         return this.hd.getPathKey();
     }
+    /**
+     * Get the root extended private key (xprv) for the wallet.
+     * @param semantic - Optional semantic version.
+     * @param encoded - Whether to return the encoded key (default: true).
+     * @returns Root xprv string or null if unsupported.
+     */
     getRootXPrivateKey(semantic, encoded = true) {
         const currentSemantic = semantic ?? this.semantic;
         if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
@@ -83756,6 +88549,12 @@ class HDWallet {
         }
         return this.hd.getRootXPrivateKey(this.network.XPRIVATE_KEY_VERSIONS.getVersion(currentSemantic), encoded);
     }
+    /**
+     * Get the root extended public key (xpub) for the wallet.
+     * @param semantic - Optional semantic version.
+     * @param encoded - Whether to return the encoded key (default: true).
+     * @returns Root xpub string or null if unsupported.
+     */
     getRootXPublicKey(semantic, encoded = true) {
         const currentSemantic = semantic ?? this.semantic;
         if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
@@ -83763,18 +88562,39 @@ class HDWallet {
         }
         return this.hd.getRootXPublicKey(this.network.XPUBLIC_KEY_VERSIONS.getVersion(currentSemantic), encoded);
     }
+    /**
+     * Alias for getRootXPrivateKey.
+     * @param semantic - Optional semantic version.
+     * @param encoded - Whether to return the encoded key (default: true).
+     * @returns Master xprv string or null.
+     */
     getMasterXPrivateKey(semantic, encoded = true) {
         return this.getRootXPrivateKey(semantic, encoded);
     }
+    /**
+     * Alias for getRootXPublicKey.
+     * @param semantic - Optional semantic version.
+     * @param encoded - Whether to return the encoded key (default: true).
+     * @returns Master xpub string or null.
+     */
     getMasterXPublicKey(semantic, encoded = true) {
         return this.getRootXPublicKey(semantic, encoded);
     }
+    /**
+     * Get the root private key.
+     * @returns Root private key string or null.
+     */
     getRootPrivateKey() {
         if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
             return this.hd.getMasterPrivateKey();
         }
         return this.hd.getRootPrivateKey();
     }
+    /**
+     * Get the root WIF (Wallet Import Format) key.
+     * @param wifType - Optional WIF type.
+     * @returns WIF string or null if unsupported.
+     */
     getRootWIF(wifType) {
         if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             return null;
@@ -83784,21 +88604,39 @@ class HDWallet {
         }
         return this.hd.getRootWIF(wifType);
     }
+    /**
+     * Get the root chain code.
+     * @returns Root chain code string.
+     */
     getRootChainCode() {
         return this.hd.getRootChainCode();
     }
+    /**
+     * Get the root public key.
+     * @param publicKeyType - Optional public key type.
+     * @returns Root public key string.
+     */
     getRootPublicKey(publicKeyType) {
         if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
             return this.hd.getMasterPublicKey(publicKeyType);
         }
         return this.hd.getRootPublicKey(publicKeyType);
     }
+    /**
+     * Get the master private key.
+     * @returns Master private key string or null.
+     */
     getMasterPrivateKey() {
         if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
             return this.hd.getMasterPrivateKey();
         }
         return this.hd.getRootPrivateKey();
     }
+    /**
+     * Get the master WIF key.
+     * @param wifType - Optional WIF type.
+     * @returns Master WIF string or null.
+     */
     getMasterWIF(wifType) {
         if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             return null;
@@ -83808,15 +88646,30 @@ class HDWallet {
         }
         return this.hd.getRootWIF(wifType);
     }
+    /**
+     * Get the master chain code.
+     * @returns Master chain code string.
+     */
     getMasterChainCode() {
         return this.hd.getRootChainCode();
     }
+    /**
+     * Get the master public key.
+     * @param publicKeyType - Optional public key type.
+     * @returns Master public key string.
+     */
     getMasterPublicKey(publicKeyType) {
         if (['Electrum-V1', 'Electrum-V2'].includes(this.hd.getName())) {
             return this.hd.getMasterPublicKey(publicKeyType);
         }
         return this.hd.getRootPublicKey(publicKeyType);
     }
+    /**
+     * Get coin-specific extended private key.
+     * @param semantic - Optional semantic version.
+     * @param encoded - Whether to return encoded key (default: true).
+     * @returns Extended private key string or null.
+     */
     getXPrivateKey(semantic, encoded = true) {
         const currentSemantic = semantic ?? this.semantic;
         if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
@@ -83824,6 +88677,12 @@ class HDWallet {
         }
         return this.hd.getXPrivateKey(this.network.XPRIVATE_KEY_VERSIONS.getVersion(currentSemantic), encoded);
     }
+    /**
+     * Get coin-specific extended public key.
+     * @param semantic - Optional semantic version.
+     * @param encoded - Whether to return encoded key (default: true).
+     * @returns Extended public key string or null.
+     */
     getXPublicKey(semantic, encoded = true) {
         const currentSemantic = semantic ?? this.semantic;
         if (['Electrum-V1', 'Monero'].includes(this.hd.getName()) || !currentSemantic) {
@@ -83831,90 +88690,196 @@ class HDWallet {
         }
         return this.hd.getXPublicKey(this.network.XPUBLIC_KEY_VERSIONS.getVersion(currentSemantic), encoded);
     }
+    /**
+     * Get the standard private key.
+     * @returns Private key string or null.
+     */
     getPrivateKey() {
         return this.hd.getPrivateKey();
     }
+    /**
+     * Get the Monero spend private key.
+     * @throws Error if called for non-Monero HD type.
+     * @returns Monero spend private key string.
+     */
     getSpendPrivateKey() {
         if (this.hd.getName() !== 'Monero') {
             throw new Error('Get Spend-Private-Key is only supported by Monero HD type');
         }
         return this.hd.getSpendPrivateKey();
     }
+    /**
+     * Get the Monero view private key.
+     * @throws Error if called for non-Monero HD type.
+     * @returns Monero view private key string.
+     */
     getViewPrivateKey() {
         if (this.hd.getName() !== 'Monero') {
             throw new Error('Get View-Private-Key is only supported by Monero HD type');
         }
         return this.hd.getViewPrivateKey();
     }
+    /**
+     * Get the standard WIF key.
+     * @param wifType - Optional WIF type.
+     * @returns WIF string or null.
+     */
     getWIF(wifType) {
         if (['Algorand', 'Cardano', 'Monero'].includes(this.hd.getName())) {
             return null;
         }
         return this.hd.getWIF(wifType);
     }
+    /**
+     * Get the WIF type.
+     * @returns WIF type string or null.
+     */
     getWIFType() {
         return this.getWIF() ? this.hd.getWIFType() : null;
     }
+    /**
+     * Get the chain code.
+     * @returns Chain code string.
+     */
     getChainCode() {
         return this.hd.getChainCode();
     }
+    /**
+     * Get the standard public key.
+     * @param publicKeyType - Optional public key type.
+     * @returns Public key string.
+     */
     getPublicKey(publicKeyType) {
         return this.hd.getPublicKey(publicKeyType);
     }
+    /**
+     * Get the public key type.
+     * @returns Public key type string.
+     */
     getPublicKeyType() {
         return this.hd.getPublicKeyType();
     }
+    /**
+     * Get the uncompressed public key.
+     * @returns Uncompressed public key string.
+     */
     getUncompressed() {
         return this.hd.getUncompressed();
     }
+    /**
+     * Get the compressed public key.
+     * @returns Compressed public key string.
+     */
     getCompressed() {
         return this.hd.getCompressed();
     }
+    /**
+     * Get the Monero spend public key.
+     * @throws Error if called for non-Monero HD type.
+     * @returns Monero spend public key string.
+     */
     getSpendPublicKey() {
         if (this.hd.getName() !== 'Monero') {
             throw new Error('Get Spend-Public-Key is only supported by Monero HD type');
         }
         return this.hd.getSpendPublicKey();
     }
+    /**
+     * Get the Monero view public key.
+     * @throws Error if called for non-Monero HD type.
+     * @returns Monero view public key string.
+     */
     getViewPublicKey() {
         if (this.hd.getName() !== 'Monero') {
             throw new Error('Get View-Public-Key is only supported by Monero HD type');
         }
         return this.hd.getViewPublicKey();
     }
+    /**
+     * Get key hash.
+     * @returns Key hash string.
+     */
     getHash() {
         return this.hd.getHash();
     }
+    /**
+     * Get key depth.
+     * @returns Depth number.
+     */
     getDepth() {
         return this.hd.getDepth();
     }
+    /**
+     * Get key fingerprint.
+     * @returns Fingerprint string.
+     */
     getFingerprint() {
         return this.hd.getFingerprint();
     }
+    /**
+     * Get parent fingerprint.
+     * @returns Parent fingerprint string.
+     */
     getParentFingerprint() {
         return this.hd.getParentFingerprint();
     }
+    /**
+     * Get derivation path.
+     * @returns Path string.
+     */
     getPath() {
         return this.hd.getPath();
     }
+    /**
+     * Get last index in derivation path.
+     * @returns Index number.
+     */
     getIndex() {
         return this.hd.getIndex();
     }
+    /**
+     * Get all indexes in derivation path.
+     * @returns Array of index numbers.
+     */
     getIndexes() {
         return this.hd.getIndexes();
     }
+    /**
+     * Get strict derivation setting.
+     * @returns Boolean or null if unsupported.
+     */
     getStrict() {
         return ['Electrum-V1', 'Monero'].includes(this.hd.getName()) ? null : this.hd.getStrict();
     }
+    /**
+     * Get the Monero primary address.
+     * @returns Address string or null.
+     */
     getPrimaryAddress() {
         return this.hd.getName() === 'Monero' ? this.hd.getPrimaryAddress() : null;
     }
+    /**
+     * Get Monero integrated address.
+     * @param paymentID - Optional payment ID.
+     * @returns Integrated address string or null.
+     */
     getIntegratedAddress(paymentID) {
         return this.hd.getName() === 'Monero' ? this.hd.getIntegratedAddress(paymentID) : null;
     }
+    /**
+     * Get Monero subaddress.
+     * @param minor - Optional minor index.
+     * @param major - Optional major index.
+     * @returns Subaddress string or null.
+     */
     getSubAddress(minor, major) {
         return this.hd.getName() === 'Monero' ? this.hd.getSubAddress(minor, major) : null;
     }
+    /**
+     * Get wallet address.
+     * @param options - Optional address settings.
+     * @returns Address string or null.
+     */
     getAddress(options = {}) {
         const _address = options.address ?? this.address;
         const resolvedAddress = ensureTypeMatch(_address, Address, { otherTypes: ['string'] });
@@ -83984,6 +88949,11 @@ class HDWallet {
         }
         throw new AddressError(`Could not resolve address for ${hdName} HD type`);
     }
+    /**
+     * Get full dump of wallet data.
+     * @param exclude - List of keys to exclude.
+     * @returns Object containing wallet data.
+     */
     getDump(exclude = []) {
         const derivationDump = {};
         const hdName = this.hd.getName();
@@ -84184,9 +89154,9 @@ class HDWallet {
             'ecc': this.getECC(),
             'hd': this.getHD()
         };
-        if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
-            delete root['passphrase'];
-        }
+        // if (['Electrum-V1', 'Electrum-V2', 'Monero'].includes(hdName)) {
+        //   delete root['passphrase'];
+        // }
         if ([
             'Algorand', 'BIP32', 'BIP44', 'BIP49', 'BIP84', 'BIP86', 'BIP141', 'Cardano'
         ].includes(hdName)) {
@@ -84209,7 +89179,7 @@ class HDWallet {
             if (['Algorand', 'Cardano'].includes(hdName)) {
                 delete root['root-wif'];
                 delete root['public-key-type'];
-                delete root['root-type'];
+                delete root['wif-type'];
                 if (this.cardanoType !== Cardano.TYPES.BYRON_LEGACY) {
                     delete root['path-key'];
                 }
@@ -84249,6 +89219,11 @@ class HDWallet {
         }
         return excludeKeys(root, exclude);
     }
+    /**
+     * Get dumps for derivation ranges.
+     * @param exclude - List of keys to exclude.
+     * @returns Array of wallet data objects or null.
+     */
     getDumps(exclude = []) {
         if (!this.derivation)
             return null;

@@ -9,6 +9,11 @@ const public_key_1 = require("./public-key");
 Object.defineProperty(exports, "SLIP10Ed25519PublicKey", { enumerable: true, get: function () { return public_key_1.SLIP10Ed25519PublicKey; } });
 const private_key_1 = require("./private-key");
 Object.defineProperty(exports, "SLIP10Ed25519PrivateKey", { enumerable: true, get: function () { return private_key_1.SLIP10Ed25519PrivateKey; } });
+/**
+ * Implements the SLIP10-Ed25519 elliptic curve cryptography scheme.
+ * Provides point, public key, and private key definitions for Ed25519 curve operations.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Ed25519ECC extends ecc_1.EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519';
     static ORDER = BigInt('7237005577332262213973186563042994240857116359379907606001950938285454250989');

@@ -9,6 +9,10 @@ const eccs_1 = require("../eccs");
 const utils_1 = require("../utils");
 const exceptions_1 = require("../exceptions");
 const address_1 = require("./address");
+/**
+ * Class representing a Stellar (XLM) address.
+ * Provides encoding and decoding methods for Stellar public keys and private keys using Base32.
+ */
 class StellarAddress extends address_1.Address {
     static checksumLength = cryptocurrencies_1.Stellar.PARAMS.CHECKSUM_LENGTH;
     static addressType = cryptocurrencies_1.Stellar.DEFAULT_ADDRESS_TYPE;
@@ -16,12 +20,28 @@ class StellarAddress extends address_1.Address {
         privateKey: cryptocurrencies_1.Stellar.PARAMS.ADDRESS_TYPES.PRIVATE_KEY,
         publicKey: cryptocurrencies_1.Stellar.PARAMS.ADDRESS_TYPES.PUBLIC_KEY
     };
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("Stellar").
+     */
     static getName() {
         return 'Stellar';
     }
+    /**
+     * Computes the checksum for a Stellar address payload.
+     * @param {Uint8Array} payload - The payload bytes to compute the checksum for.
+     * @returns {Uint8Array} The checksum bytes.
+     */
     static computeChecksum(payload) {
         return (0, utils_1.bytesReverse)((0, crypto_1.xmodemCrc)(payload));
     }
+    /**
+     * Encodes a public key or private key into a Stellar Base32 address.
+     * @param {Uint8Array | string | PublicKey} publicKey - The public/private key to encode.
+     * @param {AddressOptionsInterface} options - Encoding options including address type.
+     * @returns {string} The Base32-encoded Stellar address.
+     * @throws {AddressError} If the address type is invalid.
+     */
     static encode(publicKey, options = {
         addressType: this.addressType
     }) {
@@ -37,6 +57,13 @@ class StellarAddress extends address_1.Address {
         const checksum = this.computeChecksum(payload);
         return (0, base32_1.encodeNoPadding)((0, utils_1.bytesToString)((0, utils_1.concatBytes)(payload, checksum)));
     }
+    /**
+     * Decodes a Stellar Base32 address into the corresponding public key bytes.
+     * @param {string} address - The Base32 Stellar address to decode.
+     * @param {AddressOptionsInterface} options - Decoding options including address type.
+     * @returns {string} The decoded public key as a string.
+     * @throws {AddressError} If the decoded address has an invalid type, checksum, length, or invalid public key.
+     */
     static decode(address, options = {
         addressType: this.addressType
     }) {

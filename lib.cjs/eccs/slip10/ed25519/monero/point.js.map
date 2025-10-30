@@ -1,1 +1,1 @@
-{"version":3,"file":"point.js","sourceRoot":"","sources":["../../../../../src/eccs/slip10/ed25519/monero/point.ts"],"names":[],"mappings":";AAAA,+BAA+B;;;AAE/B,oCAA8C;AAE9C,MAAa,wBAAyB,SAAQ,0BAAkB;IAE9D,OAAO;QACL,OAAO,uBAAuB,CAAC;IACjC,CAAC;CACF;AALD,4DAKC"}
+{"version":3,"file":"point.js","sourceRoot":"","sources":["../../../../../src/eccs/slip10/ed25519/monero/point.ts"],"names":[],"mappings":";AAAA,+BAA+B;;;AAE/B,oCAA8C;AAE9C;;;GAGG;AACH,MAAa,wBAAyB,SAAQ,0BAAkB;IAE9D;;;OAGG;IACH,OAAO;QACL,OAAO,uBAAuB,CAAC;IACjC,CAAC;CACF;AATD,4DASC"}

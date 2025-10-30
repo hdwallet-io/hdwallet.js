@@ -25,7 +25,15 @@ Object.defineProperty(exports, "MoneroDerivation", { enumerable: true, get: func
 const hdw_1 = require("./hdw");
 Object.defineProperty(exports, "HDWDerivation", { enumerable: true, get: function () { return hdw_1.HDWDerivation; } });
 const exceptions_1 = require("../exceptions");
+/**
+ * A registry for all derivation classes.
+ * Provides methods to access, validate, and retrieve derivation class definitions.
+ */
 class DERIVATIONS {
+    /**
+     * A dictionary mapping derivation names to their corresponding classes.
+     * @type {Record<string, typeof Derivation>}
+     */
     static dictionary = {
         [custom_1.CustomDerivation.getName()]: custom_1.CustomDerivation,
         [bip44_1.BIP44Derivation.getName()]: bip44_1.BIP44Derivation,
@@ -37,18 +45,37 @@ class DERIVATIONS {
         [monero_1.MoneroDerivation.getName()]: monero_1.MoneroDerivation,
         [hdw_1.HDWDerivation.getName()]: hdw_1.HDWDerivation
     };
+    /**
+     * Returns all available derivation names.
+     * @returns {string[]} List of derivation names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns all available derivation classes.
+     * @returns {typeof Derivation[]} List of derivation class constructors.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieves a derivation class by name.
+     * @param {string} name - The derivation name.
+     * @returns {typeof Derivation} The derivation class corresponding to the given name.
+     * @throws {DerivationError} If the provided name is not a valid derivation.
+     */
     static getDerivationClass(name) {
         if (!this.isDerivation(name)) {
             throw new exceptions_1.DerivationError('Invalid derivation name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks if a derivation name exists in the dictionary.
+     * @param {string} name - The derivation name to check.
+     * @returns {boolean} True if the derivation name exists, false otherwise.
+     */
     static isDerivation(name) {
         return this.dictionary.hasOwnProperty(name);
     }

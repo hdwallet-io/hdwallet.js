@@ -18,6 +18,14 @@ Object.defineProperty(exports, "SLIP10Nist256p1ECC", { enumerable: true, get: fu
 Object.defineProperty(exports, "SLIP10Secp256k1ECC", { enumerable: true, get: function () { return slip10_1.SLIP10Secp256k1ECC; } });
 const utils_1 = require("../utils");
 const exceptions_1 = require("../exceptions");
+/**
+ * The `ECCS` class manages and provides access to supported
+ * Elliptic Curve Cryptography (ECC) implementations.
+ *
+ * It maintains a dictionary of available ECC algorithm classes,
+ * such as Ed25519, Ed25519-Blake2b, Ed25519-Monero, Nist256p1, and Secp256k1.
+ * This class allows retrieval, validation, and enumeration of these ECC types.
+ */
 class ECCS {
     static dictionary = {
         [kholaw_1.KholawEd25519ECC.NAME]: kholaw_1.KholawEd25519ECC,
@@ -27,23 +35,49 @@ class ECCS {
         [slip10_1.SLIP10Nist256p1ECC.NAME]: slip10_1.SLIP10Nist256p1ECC,
         [slip10_1.SLIP10Secp256k1ECC.NAME]: slip10_1.SLIP10Secp256k1ECC
     };
+    /**
+     * Get the names of all supported ECC implementations.
+     * @returns {string[]} List of ECC class names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Get all available ECC classes.
+     * @returns {typeof _EllipticCurveCryptography[]} Array of ECC classes.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Retrieve an ECC class by its name.
+     * @param {string} name - The ECC class name.
+     * @returns {typeof _EllipticCurveCryptography} The corresponding ECC class.
+     * @throws {ECCError} If the name is invalid.
+     */
     static getECCClass(name) {
         if (!this.isECC(name)) {
             throw new exceptions_1.ECCError(`Invalid ECC name`, { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Check if a given name corresponds to a valid ECC implementation.
+     * @param {string} name - The ECC name to verify.
+     * @returns {boolean} True if valid, false otherwise.
+     */
     static isECC(name) {
         return this.getNames().includes(name);
     }
 }
 exports.ECCS = ECCS;
+/**
+ * Validate and normalize a public key input.
+ * @param {Uint8Array | string | _PublicKey} publicKey - Public key data or object.
+ * @param {typeof _PublicKey} publicKeyCls - Expected public key class.
+ * @returns {_PublicKey} Validated and instantiated public key.
+ * @throws {PublicKeyError} If the public key is invalid or of the wrong type.
+ */
 function validateAndGetPublicKey(publicKey, publicKeyCls) {
     try {
         if (publicKey instanceof Uint8Array) {

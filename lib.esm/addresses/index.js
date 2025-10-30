@@ -34,6 +34,10 @@ import { TezosAddress } from './tezos';
 import { SuiAddress } from './sui';
 import { AptosAddress } from './aptos';
 import { NearAddress } from './near';
+/**
+ * Central registry of all supported blockchain address classes.
+ * Provides utility methods to fetch names, classes, or check validity.
+ */
 export class ADDRESSES {
     static dictionary = {
         [P2PKHAddress.getName()]: P2PKHAddress,
@@ -70,18 +74,37 @@ export class ADDRESSES {
         [AptosAddress.getName()]: AptosAddress,
         [NearAddress.getName()]: NearAddress
     };
+    /**
+     * Returns an array of all supported address names.
+     * @returns {string[]} List of address names.
+     */
     static getNames() {
         return Object.keys(this.dictionary);
     }
+    /**
+     * Returns an array of all address classes.
+     * @returns {Array<typeof Address>} List of address classes.
+     */
     static getClasses() {
         return Object.values(this.dictionary);
     }
+    /**
+     * Fetches the address class corresponding to the given name.
+     * @param {string} name - Name of the address.
+     * @returns {typeof Address} The corresponding address class.
+     * @throws {AddressError} If the name is not a valid address.
+     */
     static getAddressClass(name) {
         if (!this.isAddress(name)) {
             throw new AddressError('Invalid address name', { expected: this.getNames(), got: name });
         }
         return this.dictionary[name];
     }
+    /**
+     * Checks whether a given name corresponds to a supported address.
+     * @param {string} name - Name to check.
+     * @returns {boolean} True if the name is supported, false otherwise.
+     */
     static isAddress(name) {
         return name in this.dictionary;
     }

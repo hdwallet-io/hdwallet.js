@@ -12,8 +12,21 @@ const addresses_1 = require("../addresses");
 const seeds_1 = require("../seeds");
 const exceptions_1 = require("../exceptions");
 const consts_1 = require("../consts");
+/**
+ * Implements hierarchical deterministic (HD) wallet logic for Cardano.
+ * Supports multiple Cardano derivation types including Byron Legacy, Icarus, Shelley, and Ledger.
+ * Provides methods to derive keys, addresses, and extended keys according to Cardano standards.
+ *
+ */
 class CardanoHD extends bip32_1.BIP32HD {
     cardanoType;
+    /**
+     * Creates a new CardanoHD instance.
+     * @param options Configuration options for Cardano HD wallet
+     * @param options.publicKeyType Type of public key (default: compressed)
+     * @param options.cardanoType Cardano derivation type (required)
+     * @throws {BaseError} If an invalid Cardano type is provided
+     */
     constructor(options = {
         publicKeyType: consts_1.PUBLIC_KEY_TYPES.COMPRESSED
     }) {
@@ -26,9 +39,22 @@ class CardanoHD extends bip32_1.BIP32HD {
         }
         this.cardanoType = options.cardanoType;
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Cardano'
+     */
     static getName() {
         return 'Cardano';
     }
+    /**
+     * Initializes the HD wallet from a seed.
+     * Handles different derivation types and Cardano-specific tweaks.
+     *
+     * @param seed Seed value as string or Seed instance
+     * @param passphrase Optional passphrase for certain derivation types
+     * @returns {this} Current CardanoHD instance
+     * @throws {SeedError|BaseError} If seed data or length is invalid
+     */
     fromSeed(seed, passphrase) {
         try {
             this.seed = (0, utils_1.getBytes)(seed instanceof seeds_1.Seed ? seed.getSeed() : seed);
@@ -102,6 +128,12 @@ class CardanoHD extends bip32_1.BIP32HD {
         this.strict = true;
         return this;
     }
+    /**
+     * Sets the HD wallet from a private key (only supported for Shelley types).
+     * @param privateKey Private key as string
+     * @returns {this} Current CardanoHD instance
+     * @throws {BaseError|PrivateKeyError} If private key is unsupported or invalid
+     */
     fromPrivateKey(privateKey) {
         if ([cryptocurrencies_1.Cardano.TYPES.BYRON_ICARUS, cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY, cryptocurrencies_1.Cardano.TYPES.BYRON_LEDGER].includes(this.cardanoType)) {
             throw new exceptions_1.BaseError(`From private key not supported for ${this.cardanoType}`);
@@ -116,6 +148,12 @@ class CardanoHD extends bip32_1.BIP32HD {
             throw new exceptions_1.PrivateKeyError('Invalid private key data');
         }
     }
+    /**
+     * Sets the HD wallet from a public key (only supported for Shelley types).
+     * @param publicKey Public key as string
+     * @returns {this} Current CardanoHD instance
+     * @throws {BaseError|PublicKeyError} If public key is unsupported or invalid
+     */
     fromPublicKey(publicKey) {
         if ([cryptocurrencies_1.Cardano.TYPES.BYRON_ICARUS, cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY, cryptocurrencies_1.Cardano.TYPES.BYRON_LEDGER].includes(this.cardanoType)) {
             throw new exceptions_1.BaseError(`From public key not supported for ${this.cardanoType}`);
@@ -129,6 +167,14 @@ class CardanoHD extends bip32_1.BIP32HD {
             throw new exceptions_1.PublicKeyError('Invalid public key data');
         }
     }
+    /**
+     * Derives a child key at the given index according to Cardano derivation rules.
+     * Supports hardened and non-hardened derivation.
+     *
+     * @param index Child index to derive
+     * @returns {this} Current CardanoHD instance with updated keys
+     * @throws {BaseError|DerivationError} If derivation fails
+     */
     drive(index) {
         const digestHalf = 32; // sha512().digest_size / 2
         const isLegacy = this.cardanoType === cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY;
@@ -197,18 +243,49 @@ class CardanoHD extends bip32_1.BIP32HD {
         this.fingerprint = (0, utils_1.getBytes)(this.getFingerprint());
         return this;
     }
+    /**
+     * Returns the root extended private key (xprv) for the current derivation.
+     * Delegates to BIP32HD serialization logic.
+     *
+     * @param version Optional version bytes or number (default: Cardano mainnet P2PKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string|null} Serialized root extended private key
+     */
     getRootXPrivateKey(version = cryptocurrencies_1.Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
         return super.getRootXPrivateKey(version, encoded);
     }
+    /**
+     * Returns the extended private key (xprv) for the current path.
+     * Delegates to BIP32HD serialization logic.
+     *
+     * @param version Optional version bytes or number (default: Cardano mainnet P2PKH)
+     * @param encoded Whether to return a base58-encoded string (default: true)
+     * @returns {string|null} Serialized extended private key
+     */
     getXPrivateKey(version = cryptocurrencies_1.Cardano.NETWORKS.MAINNET.XPRIVATE_KEY_VERSIONS.P2PKH, encoded = true) {
         return super.getXPrivateKey(version, encoded);
     }
+    /**
+     * Computes the Byron Legacy path key used for address generation.
+     * @returns {string|null} Computed path key or null for non-Legacy types
+     */
     getPathKey() {
         if (this.cardanoType === cryptocurrencies_1.Cardano.TYPES.BYRON_LEGACY) {
             return (0, utils_1.bytesToString)((0, crypto_1.pbkdf2HmacSha512)((0, utils_1.concatBytes)(this.rootPublicKey.getRawCompressed().slice(1), this.rootChainCode), 'address-hashing', 500, 32));
         }
         return null;
     }
+    /**
+     * Generates a Cardano address for the current public key and derivation path.
+     * Handles Byron Legacy, Icarus, Ledger, and Shelley address types.
+     *
+     * @param options Address generation options
+     * @param options.network Network string ('mainnet' or 'testnet', default: 'mainnet')
+     * @param options.addressType Type of address (Payment, Staking, Reward, Public Key)
+     * @param options.stakingPublicKey Required for Shelley Payment addresses
+     * @returns {string} Encoded Cardano address
+     * @throws {BaseError|AddressError} If address type is invalid or staking key is missing
+     */
     getAddress(options = {
         network: 'mainnet'
     }) {

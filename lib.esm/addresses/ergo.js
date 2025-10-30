@@ -7,6 +7,12 @@ import { bytesToString, ensureTypeMatch, integerToBytes, getBytes, concatBytes, 
 import { Address } from './address';
 import { AddressError, NetworkError } from '../exceptions';
 import { Network } from '../cryptocurrencies/cryptocurrency';
+/**
+ * Class representing Ergo blockchain addresses.
+ * Provides encoding and decoding of public keys into Ergo addresses using Base58 with a checksum.
+ * Supports different address types (p2pkh, p2sh) and networks (mainnet, testnet).
+ * Extends the abstract Address class.
+ */
 export class ErgoAddress extends Address {
     static checksumLength = Ergo.PARAMS.CHECKSUM_LENGTH;
     static addressType = Ergo.DEFAULT_ADDRESS_TYPE;
@@ -19,12 +25,34 @@ export class ErgoAddress extends Address {
         'mainnet': Ergo.NETWORKS.MAINNET.TYPE,
         'testnet': Ergo.NETWORKS.TESTNET.TYPE
     };
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Ergo'
+     */
     static getName() {
         return 'Ergo';
     }
+    /**
+     * Computes the checksum for Ergo address encoding.
+     * Uses Blake2b256 hash and takes the first `checksumLength` bytes.
+     *
+     * @param data Bytes to compute checksum from
+     * @returns {Uint8Array} Computed checksum
+     */
     static computeChecksum(data) {
         return blake2b256(data).slice(0, this.checksumLength);
     }
+    /**
+     * Encodes a public key into an Ergo address.
+     * Combines network type, address type, and compressed public key bytes with a checksum,
+     * then encodes the result in Base58.
+     *
+     * @param publicKey Public key to encode (Uint8Array, string, or PublicKey)
+     * @param options Address options including addressType and networkType
+     * @throws {NetworkError} If the network type is invalid
+     * @throws {AddressError} If the address type is invalid
+     * @returns {string} Encoded Ergo address
+     */
     static encode(publicKey, options = {
         addressType: this.addressType,
         networkType: this.networkType
@@ -50,6 +78,16 @@ export class ErgoAddress extends Address {
         const checksum = this.computeChecksum(addressPayload);
         return ensureString(encode(concatBytes(addressPayload, checksum)));
     }
+    /**
+     * Decodes an Ergo address back to the raw public key bytes.
+     * Validates prefix, length, checksum, and public key bytes.
+     *
+     * @param address Ergo address to decode
+     * @param options Address options including addressType and networkType
+     * @throws {NetworkError} If the network type is invalid
+     * @throws {AddressError} If the address type, prefix, length, checksum, or public key is invalid
+     * @returns {string} Decoded raw public key bytes as a string
+     */
     static decode(address, options = {
         addressType: this.addressType,
         networkType: this.networkType

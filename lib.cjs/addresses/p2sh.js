@@ -10,12 +10,31 @@ const crypto_1 = require("../crypto");
 const exceptions_1 = require("../exceptions");
 const utils_1 = require("../utils");
 const address_1 = require("./address");
+/**
+ * Class representing a Bitcoin P2SH (Pay-to-Script-Hash) address.
+ * Provides methods for encoding public keys to P2SH addresses and decoding P2SH addresses back to the script hash.
+ */
 class P2SHAddress extends address_1.Address {
     static scriptAddressPrefix = cryptocurrencies_1.Bitcoin.NETWORKS.MAINNET.SCRIPT_ADDRESS_PREFIX;
     static alphabet = cryptocurrencies_1.Bitcoin.PARAMS.ALPHABET;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("P2SH").
+     */
     static getName() {
         return 'P2SH';
     }
+    /**
+     * Encodes a public key into a Bitcoin P2SH address.
+     * The method generates a standard P2PKH redeem script, computes its hash, and encodes it with the script address prefix.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options:
+     *   - scriptAddressPrefix: prefix byte for the address
+     *   - publicKeyType: whether to use compressed or uncompressed public key
+     *   - alphabet: Base58 alphabet
+     * @returns {string} Base58-encoded P2SH address.
+     */
     static encode(publicKey, options = {
         scriptAddressPrefix: this.scriptAddressPrefix,
         publicKeyType: consts_1.PUBLIC_KEY_TYPES.COMPRESSED,
@@ -34,6 +53,16 @@ class P2SHAddress extends address_1.Address {
         const alphabet = options.alphabet ?? this.alphabet;
         return (0, utils_1.ensureString)((0, base58_1.checkEncode)(payload, alphabet));
     }
+    /**
+     * Decodes a Bitcoin P2SH address into its script hash.
+     *
+     * @param {string} address - The P2SH address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options:
+     *   - scriptAddressPrefix: expected prefix byte
+     *   - alphabet: Base58 alphabet
+     * @returns {string} The script hash extracted from the address.
+     * @throws {AddressError} If the address has invalid length or prefix.
+     */
     static decode(address, options = {
         scriptAddressPrefix: this.scriptAddressPrefix,
         alphabet: this.alphabet

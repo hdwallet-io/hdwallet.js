@@ -9,12 +9,28 @@ import { BIP32HD } from '../bip32';
 import { ensureTypeMatch } from '../../utils';
 import { BaseError, AddressError, DerivationError } from '../../exceptions';
 import { SLIP10Secp256k1ECC } from '../../eccs';
+/**
+ * Electrum V2 hierarchical deterministic (HD) wallet.
+ * Supports standard (P2PKH) and SegWit (P2WPKH) modes.
+ * Wraps a BIP32HD instance and provides Electrum-specific derivation logic.
+ *
+ */
 export class ElectrumV2HD extends HD {
     mode;
     wifType;
     publicKeyType;
     wifPrefix;
     bip32HD;
+    /**
+     * Constructs a new ElectrumV2HD instance.
+     * @param options Configuration options
+     * @param options.publicKeyType Type of public key ('compressed' or 'uncompressed')
+     * @param options.mode Wallet mode ('standard' or 'segwit')
+     * @param options.wifPrefix Optional WIF prefix
+     * @param options.change Optional derivation change index
+     * @param options.address Optional derivation address index
+     * @throws {BaseError} If mode or public key type is invalid
+     */
     constructor(options = {
         publicKeyType: PUBLIC_KEY_TYPES.UNCOMPRESSED,
         mode: MODES.STANDARD
@@ -47,28 +63,59 @@ export class ElectrumV2HD extends HD {
             ecc: Bitcoin.ECC, publicKeyType: this.publicKeyType
         });
     }
+    /**
+     * Returns the name of this HD implementation.
+     * @returns {string} 'Electrum-V2'
+     */
     static getName() {
         return 'Electrum-V2';
     }
+    /**
+     * Initializes wallet from a seed.
+     * @param seed Seed as Uint8Array, string, or Seed instance
+     * @returns {this} Current ElectrumV2HD instance
+     */
     fromSeed(seed) {
         this.bip32HD.fromSeed(seed);
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Sets the derivation path.
+     * @param derivation ElectrumDerivation instance
+     * @returns {this} Current ElectrumV2HD instance
+     * @throws {DerivationError} If derivation is invalid
+     */
     fromDerivation(derivation) {
         this.derivation = ensureTypeMatch(derivation, ElectrumDerivation, { errorClass: DerivationError });
         this.drive(derivation.getChange(), derivation.getAddress());
         return this;
     }
+    /**
+     * Updates derivation path by cleaning previous derivation state.
+     * @param derivation ElectrumDerivation instance
+     * @returns {this} Current ElectrumV2HD instance
+     */
     updateDerivation(derivation) {
         this.cleanDerivation();
         return this.fromDerivation(derivation);
     }
+    /**
+     * Resets derivation path to initial state.
+     * @returns {this} Current ElectrumV2HD instance
+     */
     cleanDerivation() {
         this.derivation.clean();
         this.fromDerivation(this.derivation);
         return this;
     }
+    /**
+     * Derives child keys for given change and address indices.
+     * Uses custom Electrum V2 derivation logic.
+     * @param changeIndex Change index
+     * @param addressIndex Address index
+     * @returns {this} Current ElectrumV2HD instance
+     */
     drive(changeIndex, addressIndex) {
         const custom = new CustomDerivation();
         if (this.mode === MODES.SEGWIT) {
@@ -79,48 +126,112 @@ export class ElectrumV2HD extends HD {
         this.bip32HD.updateDerivation(custom);
         return this;
     }
+    /**
+     * Returns the current wallet mode ('standard' or 'segwit').
+     * @returns {string} Mode string
+     */
     getMode() {
         return this.mode;
     }
+    /**
+     * Returns the raw seed as string.
+     * @returns {string|null} Seed or null if not set
+     */
     getSeed() {
         return this.bip32HD.getSeed();
     }
+    /**
+     * Returns master private key as string.
+     * @returns {string|null} Master private key
+     */
     getMasterPrivateKey() {
         return this.bip32HD.getRootPrivateKey();
     }
+    /**
+     * Returns master private key in WIF format.
+     * @param wifType Optional WIF type override
+     * @returns {string|null} WIF string
+     */
     getMasterWIF(wifType) {
         if (this.wifPrefix == null)
             return null;
         const type = wifType ?? this.wifType;
         return privateKeyToWIF(this.getMasterPrivateKey(), type, this.wifPrefix);
     }
+    /**
+     * Returns master public key as string.
+     * @param publicKeyType Optional type ('compressed' or 'uncompressed')
+     * @returns {string} Master public key
+     */
     getMasterPublicKey(publicKeyType) {
         return this.bip32HD.getRootPublicKey(publicKeyType ?? this.publicKeyType);
     }
+    /**
+     * Returns derived private key as string.
+     * @returns {string|null} Derived private key
+     */
     getPrivateKey() {
         return this.bip32HD.getPrivateKey();
     }
+    /**
+     * Returns derived private key in WIF format.
+     * @param wifType Optional WIF type override
+     * @returns {string|null} WIF string
+     */
     getWIF(wifType) {
         if (this.wifPrefix == null)
             return null;
         const type = wifType ?? this.wifType;
         return privateKeyToWIF(this.getPrivateKey(), type, this.wifPrefix);
     }
+    /**
+     * Returns the WIF type used by this instance.
+     * @returns {string} WIF type
+     */
     getWIFType() {
         return this.wifType;
     }
+    /**
+     * Returns derived public key as string.
+     * @param publicKeyType Optional type ('compressed' or 'uncompressed')
+     * @returns {string} Public key string
+     */
     getPublicKey(publicKeyType) {
         return this.bip32HD.getPublicKey(publicKeyType ?? this.publicKeyType);
     }
+    /**
+     * Returns public key type used by this instance.
+     * @returns {string} Public key type string
+     */
     getPublicKeyType() {
         return this.publicKeyType;
     }
+    /**
+     * Returns derived public key in uncompressed format.
+     * @returns {string} Uncompressed public key
+     */
     getUncompressed() {
         return this.bip32HD.getUncompressed();
     }
+    /**
+     * Returns derived public key in compressed format.
+     * @returns {string} Compressed public key
+     */
     getCompressed() {
         return this.bip32HD.getCompressed();
     }
+    /**
+     * Generates an address based on the current mode.
+     * - Standard mode → P2PKH
+     * - SegWit mode → P2WPKH
+     *
+     * @param options Address generation options
+     * @param options.publicKeyAddressPrefix Prefix for P2PKH address (standard mode)
+     * @param options.hrp Human-readable part for Bech32 address (SegWit mode)
+     * @param options.witnessVersion Witness version for SegWit address
+     * @returns {string} Encoded Bitcoin address
+     * @throws {AddressError} If mode is invalid
+     */
     getAddress(options = {
         publicKeyAddressPrefix: Bitcoin.NETWORKS.MAINNET.PUBLIC_KEY_ADDRESS_PREFIX,
         hrp: Bitcoin.NETWORKS.MAINNET.HRP,

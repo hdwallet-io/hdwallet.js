@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.0.0-beta.11](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.11) (2025-10-30)
+
+[Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.10...1.0.0-beta.11)
+
+**New Additions:**
+
+- Add: unit-tests and documentations
+
+**Enhancements:**
+
+- Modify: `getDump` passphrase for Electrum v1/v2 & Monero HDs
+- Update: all blake2b implementation doc strings
+- Drop: `make.bat` & `Makefile` docs builder commands
+- Drop: `sphinx-click` extension from docs
+
+**Fix Bugs:**
+
+- Fix: typo error of wif-type in HDWallet class
+- Fix: ArrayBufferLike issue of BIP32HD & AlgorandHD
+
 ## [1.0.0-beta.10](https://github.com/hdwallet-io/hdwallet.js/tree/1.0.0-beta.10) (2025-08-03)
 
 [Full Changelog](https://github.com/hdwallet-io/hdwallet.js/compare/1.0.0-beta.9...1.0.0-beta.10)

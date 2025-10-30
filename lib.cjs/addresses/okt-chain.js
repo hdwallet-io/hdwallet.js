@@ -8,11 +8,29 @@ const cryptocurrencies_1 = require("../cryptocurrencies");
 const utils_1 = require("../utils");
 const address_1 = require("./address");
 const exceptions_1 = require("../exceptions");
+/**
+ * Class representing an OKT-Chain blockchain address.
+ * Uses Ethereum-style addresses as the base and encodes them in Bech32 format for OKT-Chain.
+ */
 class OKTChainAddress extends address_1.Address {
     static hrp = cryptocurrencies_1.OKTChain.NETWORKS.MAINNET.HRP;
+    /**
+     * Returns the display name of this address type.
+     * @returns {string} Name of the address type ("OKT-Chain").
+     */
     static getName() {
         return 'OKT-Chain';
     }
+    /**
+     * Encodes a given public key into an OKTChain Bech32 address.
+     * The process involves Ethereum-style address derivation, stripping the "0x" prefix,
+     * and then Bech32 encoding using the specified HRP.
+     *
+     * @param {Uint8Array | string | PublicKey} publicKey - The public key to encode.
+     * @param {AddressOptionsInterface} options - Optional encoding options including HRP.
+     * @returns {string} Bech32-encoded OKTChain address.
+     * @throws {AddressError} If Bech32 encoding fails.
+     */
     static encode(publicKey, options = {
         hrp: this.hrp
     }) {
@@ -28,6 +46,14 @@ class OKTChainAddress extends address_1.Address {
         }
         return encoded;
     }
+    /**
+     * Decodes a Bech32-encoded OKTChain address back into an Ethereum-style address string.
+     *
+     * @param {string} address - The Bech32 OKTChain address to decode.
+     * @param {AddressOptionsInterface} options - Optional decoding options including HRP.
+     * @returns {string} Decoded Ethereum-style address (hex string with "0x" prefix).
+     * @throws {AddressError} If Bech32 decoding fails.
+     */
     static decode(address, options = {
         hrp: this.hrp
     }) {

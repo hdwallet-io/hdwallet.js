@@ -1,1 +1,1 @@
-{"version":3,"file":"point.js","sourceRoot":"","sources":["../../../../../src/eccs/slip10/ed25519/blake2b/point.ts"],"names":[],"mappings":";AAAA,+BAA+B;;;AAE/B,oCAA8C;AAE9C,MAAa,yBAA0B,SAAQ,0BAAkB;IAE/D,OAAO;QACL,OAAO,wBAAwB,CAAC;IAClC,CAAC;CACF;AALD,8DAKC"}
+{"version":3,"file":"point.js","sourceRoot":"","sources":["../../../../../src/eccs/slip10/ed25519/blake2b/point.ts"],"names":[],"mappings":";AAAA,+BAA+B;;;AAE/B,oCAA8C;AAE9C;;;GAGG;AACH,MAAa,yBAA0B,SAAQ,0BAAkB;IAE/D;;;OAGG;IACH,OAAO;QACL,OAAO,wBAAwB,CAAC;IAClC,CAAC;CACF;AATD,8DASC"}

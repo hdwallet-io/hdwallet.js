@@ -10,6 +10,10 @@ const public_key_1 = require("./public-key");
 Object.defineProperty(exports, "SLIP10Nist256p1PublicKey", { enumerable: true, get: function () { return public_key_1.SLIP10Nist256p1PublicKey; } });
 const private_key_1 = require("./private-key");
 Object.defineProperty(exports, "SLIP10Nist256p1PrivateKey", { enumerable: true, get: function () { return private_key_1.SLIP10Nist256p1PrivateKey; } });
+/**
+ * Represents the SLIP10 NIST P-256 elliptic curve cryptography implementation.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Nist256p1ECC extends ecc_1.EllipticCurveCryptography {
     static NAME = 'SLIP10-Nist256p1';
     static ORDER = p256_1.p256.CURVE.n;

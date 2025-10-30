@@ -31,14 +31,35 @@ const legacy_1 = require("@noble/hashes/legacy");
 const chacha20poly1305_1 = require("@stablelib/chacha20poly1305");
 const utils_1 = require("./utils");
 const consts_1 = require("./consts");
+/**
+ * Computes HMAC-SHA256 of the given data using the provided key.
+ * @param key - Secret key as a Uint8Array or string.
+ * @param data - Data to hash as a Uint8Array or string.
+ * @returns HMAC-SHA256 digest as Uint8Array.
+ */
 function hmacSha256(key, data) {
     const mac = (0, hmac_1.hmac)(sha2_1.sha256, (0, utils_1.toBuffer)(key), (0, utils_1.toBuffer)(data)); // ← key first!
     return (0, utils_1.getBytes)(mac);
 }
+/**
+ * Computes HMAC-SHA512 of the given data using the provided key.
+ * @param key - Secret key as a Uint8Array or string.
+ * @param data - Data to hash as a Uint8Array or string.
+ * @returns HMAC-SHA512 digest as Uint8Array.
+ */
 function hmacSha512(key, data) {
     const mac = (0, hmac_1.hmac)(sha2_1.sha512, (0, utils_1.toBuffer)(key), (0, utils_1.toBuffer)(data)); // ← key first!
     return (0, utils_1.getBytes)(mac);
 }
+/**
+ * Computes Blake2b hash of the input data.
+ * @param data - Data to hash.
+ * @param digestSize - Desired output length in bytes.
+ * @param key - Optional secret key.
+ * @param salt - Optional salt.
+ * @param personalize - Optional personalization string.
+ * @returns Blake2b digest as Uint8Array.
+ */
 function blake2b(data, digestSize, key = new Uint8Array(0), salt = new Uint8Array(0), personalize) {
     const msg = (0, utils_1.getBytes)(data);
     const k = (0, utils_1.getBytes)(key);
@@ -52,18 +73,68 @@ function blake2b(data, digestSize, key = new Uint8Array(0), salt = new Uint8Arra
     });
     return (0, utils_1.getBytes)(hashBytes);
 }
+/**
+ * Computes a 32-bit (4-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 4-byte Blake2b digest as Uint8Array.
+ */
 const blake2b32 = (d, k, s) => blake2b(d, 4, k, s);
 exports.blake2b32 = blake2b32;
+/**
+ * Computes a 40-bit (5-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 5-byte Blake2b digest as Uint8Array.
+ */
 const blake2b40 = (d, k, s) => blake2b(d, 5, k, s);
 exports.blake2b40 = blake2b40;
+/**
+ * Computes a 160-bit (20-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 20-byte Blake2b digest as Uint8Array.
+ */
 const blake2b160 = (d, k, s) => blake2b(d, 20, k, s);
 exports.blake2b160 = blake2b160;
+/**
+ * Computes a 224-bit (28-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 28-byte Blake2b digest as Uint8Array.
+ */
 const blake2b224 = (d, k, s) => blake2b(d, 28, k, s);
 exports.blake2b224 = blake2b224;
+/**
+ * Computes a 256-bit (32-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 32-byte Blake2b digest as Uint8Array.
+ */
 const blake2b256 = (d, k, s) => blake2b(d, 32, k, s);
 exports.blake2b256 = blake2b256;
+/**
+ * Computes a 512-bit (64-byte) BLAKE2b hash of the given data.
+ * @param d - Data to hash.
+ * @param k - Optional secret key.
+ * @param s - Optional salt.
+ * @returns 64-byte Blake2b digest as Uint8Array.
+ */
 const blake2b512 = (d, k, s) => blake2b(d, 64, k, s);
 exports.blake2b512 = blake2b512;
+/**
+ * Encrypts plaintext using ChaCha20-Poly1305.
+ * @param key - 32-byte secret key.
+ * @param nonce - Nonce for encryption.
+ * @param aad - Additional authenticated data.
+ * @param plaintext - Data to encrypt.
+ * @returns Object containing cipherText and authentication tag.
+ */
 function chacha20Poly1305Encrypt(key, nonce, aad, plaintext) {
     const aead = new chacha20poly1305_1.ChaCha20Poly1305((0, utils_1.getBytes)(key)); // key must be 32 bytes
     const ciphertextWithTag = aead.seal((0, utils_1.getBytes)(nonce), (0, utils_1.getBytes)(plaintext), (0, utils_1.getBytes)(aad));
@@ -72,6 +143,16 @@ function chacha20Poly1305Encrypt(key, nonce, aad, plaintext) {
     const tag = ciphertextWithTag.slice(-16);
     return { cipherText: (0, utils_1.getBytes)(ct), tag: (0, utils_1.getBytes)(tag) };
 }
+/**
+ * Decrypts ciphertext encrypted with ChaCha20-Poly1305.
+ * @param key - 32-byte secret key.
+ * @param nonce - Nonce used during encryption.
+ * @param aad - Additional authenticated data.
+ * @param ciphertext - Encrypted data.
+ * @param tag - Authentication tag.
+ * @returns Decrypted plaintext as Uint8Array.
+ * @throws Error if authentication fails.
+ */
 function chacha20Poly1305Decrypt(key, nonce, aad, ciphertext, tag) {
     const aead = new chacha20poly1305_1.ChaCha20Poly1305((0, utils_1.getBytes)(key));
     const combined = (0, utils_1.concatBytes)((0, utils_1.getBytes)(ciphertext), (0, utils_1.getBytes)(tag));
@@ -80,49 +161,89 @@ function chacha20Poly1305Decrypt(key, nonce, aad, ciphertext, tag) {
         throw new Error('ChaCha20-Poly1305: authentication failed');
     return (0, utils_1.getBytes)(pt);
 }
+/**
+ * Computes SHA-256 hash.
+ * @param data - Data to hash.
+ * @returns SHA-256 digest as Uint8Array.
+ */
 function sha256(data) {
     const bytes = (0, utils_1.getBytes)(data);
     const digestBytes = (0, sha2_1.sha256)(bytes);
     return (0, utils_1.getBytes)(digestBytes);
 }
+/**
+ * Computes double SHA-256 hash (SHA-256 of SHA-256).
+ */
 const doubleSha256 = (d) => sha256(sha256(d));
 exports.doubleSha256 = doubleSha256;
+/**
+ * Computes SHA-512 hash.
+ */
 function sha512(data) {
     const bytes = (0, utils_1.getBytes)(data);
     const digestBytes = (0, sha2_1.sha512)(bytes);
     return (0, utils_1.getBytes)(digestBytes);
 }
+/**
+ * Computes SHA-512/256 hash.
+ */
 function sha512_256(data) {
     const bytes = (0, utils_1.getBytes)(data);
     const digestBytes = (0, sha2_1.sha512_256)(bytes);
     return (0, utils_1.getBytes)(digestBytes);
 }
+/**
+ * Computes Keccak-256 hash.
+ */
 function keccak256(data) {
     const bytes = (0, utils_1.getBytes)(data);
     const digestBytes = (0, sha3_1.keccak_256)(bytes);
     return (0, utils_1.getBytes)(digestBytes);
 }
+/**
+ * Computes SHA3-256 hash.
+ */
 function sha3_256(data) {
     const bytes = (0, utils_1.getBytes)(data);
     const digestBytes = (0, sha3_1.sha3_256)(bytes);
     return (0, utils_1.getBytes)(digestBytes);
 }
+/**
+ * Computes RIPEMD-160 hash.
+ */
 function ripemd160(data) {
     const bytes = (0, utils_1.getBytes)(data); // whatever util you already use
     return (0, utils_1.getBytes)((0, legacy_1.ripemd160)(bytes));
 }
+/**
+ * Computes HASH160 (RIPEMD-160 of SHA-256).
+ */
 function hash160(data) {
     const sha = sha256(data);
     return ripemd160(sha);
 }
+/**
+ * Computes CRC32 checksum.
+ */
 function crc32(data) {
     const num = (0, crc32_1.default)((0, utils_1.toBuffer)(data));
     return (0, utils_1.integerToBytes)(num, 4);
 }
+/**
+ * Computes XMODEM CRC16 checksum.
+ */
 function xmodemCrc(data) {
     const num = (0, crc16xmodem_1.default)((0, utils_1.toBuffer)(data));
     return (0, utils_1.integerToBytes)(num, 2);
 }
+/**
+ * Computes PBKDF2-HMAC-SHA512 key derivation.
+ * @param password - Password.
+ * @param salt - Salt.
+ * @param iterations - Number of iterations (>0).
+ * @param keyLen - Desired key length.
+ * @returns Derived key as Uint8Array.
+ */
 function pbkdf2HmacSha512(password, salt, iterations, keyLen = 64) {
     if (iterations <= 0 || !Number.isSafeInteger(iterations))
         throw new RangeError('iterations must be a positive integer');
@@ -131,6 +252,9 @@ function pbkdf2HmacSha512(password, salt, iterations, keyLen = 64) {
     const dk = (0, pbkdf2_1.pbkdf2)(sha2_1.sha512, (0, utils_1.toBuffer)(password), (0, utils_1.toBuffer)(salt), { c: iterations, dkLen: keyLen });
     return (0, utils_1.getBytes)(dk);
 }
+/**
+ * Returns checksum of data as first 4 bytes of double SHA-256.
+ */
 const getChecksum = (d) => (0, exports.doubleSha256)(d).slice(0, consts_1.SLIP10_SECP256K1_CONST.CHECKSUM_BYTE_LENGTH);
 exports.getChecksum = getChecksum;
 //# sourceMappingURL=crypto.js.map

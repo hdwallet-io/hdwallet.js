@@ -10,6 +10,10 @@ const public_key_1 = require("./public-key");
 Object.defineProperty(exports, "SLIP10Ed25519MoneroPublicKey", { enumerable: true, get: function () { return public_key_1.SLIP10Ed25519MoneroPublicKey; } });
 const private_key_1 = require("./private-key");
 Object.defineProperty(exports, "SLIP10Ed25519MoneroPrivateKey", { enumerable: true, get: function () { return private_key_1.SLIP10Ed25519MoneroPrivateKey; } });
+/**
+ * Represents the SLIP10 Ed25519 Monero elliptic curve.
+ * @extends EllipticCurveCryptography
+ */
 class SLIP10Ed25519MoneroECC extends ecc_1.EllipticCurveCryptography {
     static NAME = 'SLIP10-Ed25519-Monero';
     static ORDER = index_1.SLIP10Ed25519ECC.ORDER;

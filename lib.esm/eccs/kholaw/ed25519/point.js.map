@@ -1,1 +1,1 @@
-{"version":3,"file":"point.js","sourceRoot":"","sources":["../../../../src/eccs/kholaw/ed25519/point.ts"],"names":[],"mappings":"AAAA,+BAA+B;AAE/B,OAAO,EAAE,kBAAkB,EAAE,MAAM,cAAc,CAAC;AAElD,MAAM,OAAO,kBAAmB,SAAQ,kBAAkB;IAExD,OAAO;QACL,OAAO,gBAAgB,CAAC;IAC1B,CAAC;CACF"}
+{"version":3,"file":"point.js","sourceRoot":"","sources":["../../../../src/eccs/kholaw/ed25519/point.ts"],"names":[],"mappings":"AAAA,+BAA+B;AAE/B,OAAO,EAAE,kBAAkB,EAAE,MAAM,cAAc,CAAC;AAElD;;;GAGG;AACH,MAAM,OAAO,kBAAmB,SAAQ,kBAAkB;IAExD;;OAEG;IACH,OAAO;QACL,OAAO,gBAAgB,CAAC;IAC1B,CAAC;CACF"}

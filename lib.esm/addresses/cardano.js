@@ -8,6 +8,11 @@ import { crc32, blake2b224, sha3_256, chacha20Poly1305Encrypt } from '../crypto'
 import { getBytes, bytesToInteger, bytesToString, integerToBytes, pathToIndexes, concatBytes, ensureString, equalBytes } from '../utils';
 import { AddressError, BaseError } from '../exceptions';
 import { Address } from './address';
+/**
+ * Class representing Cardano blockchain addresses.
+ * Supports Byron (Legacy & Icarus) and Shelley (Payment & Staking/Reward) address formats.
+ * Extends the abstract Address class and provides Cardano-specific encoding and decoding logic.
+ */
 export class CardanoAddress extends Address {
     static addressTypes = {
         'public-key': Cardano.PARAMS.PUBLIC_KEY_ADDRESS,
@@ -32,9 +37,22 @@ export class CardanoAddress extends Address {
     static chacha20Poly1305AssociatedData = new Uint8Array();
     static chacha20Poly1305Nonce = getBytes('7365726f6b656c6c666f7265');
     static payloadTag = 24;
+    /**
+     * Returns the name of the address implementation.
+     * @returns {string} 'Cardano'
+     */
     static getName() {
         return 'Cardano';
     }
+    /**
+     * Encodes a public key into a Cardano address.
+     * Supports different types: Byron Legacy, Byron Icarus, Shelley Payment, Shelley Staking/Reward.
+     *
+     * @param publicKey Public key to encode
+     * @param options Address options including encodeType, path, chainCode, network, and staking public key
+     * @throws {AddressError} If encode type is invalid
+     * @returns {string} Encoded Cardano address
+     */
     static encode(publicKey, options = {
         encodeType: Cardano.ADDRESS_TYPES.PAYMENT
     }) {
@@ -54,6 +72,15 @@ export class CardanoAddress extends Address {
         }
         throw new AddressError('Invalid encode type');
     }
+    /**
+     * Decodes a Cardano address into its raw public key.
+     * Supports Byron and Shelley address types.
+     *
+     * @param address Cardano address to decode
+     * @param options Address options including decodeType, network, or addressType
+     * @throws {AddressError} If decode type is invalid
+     * @returns {string} Decoded raw public key
+     */
     static decode(address, options = {
         decodeType: Cardano.ADDRESS_TYPES.PAYMENT
     }) {
@@ -71,6 +98,16 @@ export class CardanoAddress extends Address {
         }
         throw new AddressError('Invalid decode type');
     }
+    /**
+     * Encodes a Byron address (generic helper for Icarus & Legacy).
+     *
+     * @param publicKey Public key object
+     * @param chainCode Chain code for HD derivation
+     * @param addressAttributes Extra address attributes (Map)
+     * @param addressType Address type ('public-key' or 'redemption')
+     * @throws {AddressError} If address type is invalid
+     * @returns {string} Encoded Byron address (Base58)
+     */
     static encodeByron(publicKey, chainCode, addressAttributes, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         if (!(addressType in this.addressTypes)) {
             throw new AddressError('Invalid address type');
@@ -91,10 +128,28 @@ export class CardanoAddress extends Address {
         ]);
         return ensureString(base58Encode(full));
     }
+    /**
+     * Encodes a Byron Icarus address.
+     * @param publicKey Public key
+     * @param chainCode Chain code
+     * @param addressType Address type
+     * @returns {string} Encoded Byron Icarus address
+     */
     static encodeByronIcarus(publicKey, chainCode, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
         return this.encodeByron(pk, getBytes(chainCode), {}, addressType);
     }
+    /**
+     * Encodes a Byron Legacy address using HD path encryption.
+     *
+     * @param publicKey Public key
+     * @param path HD derivation path
+     * @param pathKey HD path key
+     * @param chainCode Chain code
+     * @param addressType Address type
+     * @throws {BaseError} If HD path key length is invalid
+     * @returns {string} Encoded Byron Legacy address
+     */
     static encodeByronLegacy(publicKey, path, pathKey, chainCode, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         const pathK = getBytes(pathKey);
         if (pathK.length !== 32) {
@@ -108,6 +163,14 @@ export class CardanoAddress extends Address {
         attributes.set(1, encode(concatBytes(cipherText, tag)));
         return this.encodeByron(pk, getBytes(chainCode), attributes, addressType);
     }
+    /**
+     * Decodes a Byron address (generic for Icarus & Legacy).
+     *
+     * @param address Address string to decode
+     * @param addressType Address type
+     * @throws {AddressError} If decoding fails or CRC/payload invalid
+     * @returns {string} Decoded raw public key
+     */
     static decodeByron(address, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         const decoded = base58Decode(address);
         const outer = decode(decoded);
@@ -140,12 +203,31 @@ export class CardanoAddress extends Address {
         }
         return bytesToString(concatBytes(rootHash, extra));
     }
+    /**
+     * Decode Byron Icarus address.
+     * @param address Address string
+     * @param addressType Address type
+     * @returns {string} Decoded raw public key
+     */
     static decodeByronIcarus(address, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         return CardanoAddress.decodeByron(address, addressType);
     }
+    /**
+     * Decode Byron Legacy address.
+     * @param address Address string
+     * @param addressType Address type
+     * @returns {string} Decoded raw public key
+     */
     static decodeByronLegacy(address, addressType = Cardano.ADDRESS_TYPES.PUBLIC_KEY) {
         return CardanoAddress.decodeByron(address, addressType);
     }
+    /**
+     * Encode Shelley payment address.
+     * @param publicKey Payment public key
+     * @param stakingPublicKey Staking public key
+     * @param network Network ('mainnet' or 'testnet')
+     * @returns {string} Encoded Shelley payment address
+     */
     static encodeShelley(publicKey, stakingPublicKey, network) {
         const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
         const spk = validateAndGetPublicKey(stakingPublicKey, KholawEd25519PublicKey);
@@ -154,6 +236,13 @@ export class CardanoAddress extends Address {
         const hash2 = blake2b224(spk.getRawCompressed().slice(1));
         return bech32Encode(this.paymentAddressHrp[network], concatBytes(prefix, hash1, hash2));
     }
+    /**
+     * Decode Shelley payment address.
+     * @param address Address string
+     * @param network Network ('mainnet' or 'testnet')
+     * @throws {AddressError} If address length or prefix invalid
+     * @returns {string} Decoded raw public key
+     */
     static decodeShelley(address, network) {
         const [hrp, data] = bech32Decode(this.paymentAddressHrp[network], address);
         if (!data || data.length !== 57) {
@@ -165,12 +254,25 @@ export class CardanoAddress extends Address {
         }
         return bytesToString(data.slice(1));
     }
+    /**
+     * Encode Shelley staking/reward address.
+     * @param publicKey Staking public key
+     * @param network Network ('mainnet' or 'testnet')
+     * @returns {string} Encoded staking/reward address
+     */
     static encodeShelleyStaking(publicKey, network) {
         const pk = validateAndGetPublicKey(publicKey, KholawEd25519PublicKey);
         const prefix = integerToBytes((this.prefixTypes['reward'] << 4) + this.networkTypes[network]);
         const hash = blake2b224(pk.getRawCompressed().slice(1));
         return bech32Encode(this.rewardAddressHrp[network], concatBytes(prefix, hash));
     }
+    /**
+     * Decode Shelley staking/reward address.
+     * @param address Address string
+     * @param network Network ('mainnet' or 'testnet')
+     * @throws {AddressError} If address length or prefix invalid
+     * @returns {string} Decoded raw public key
+     */
     static decodeShelleyStaking(address, network) {
         const [hrp, data] = bech32Decode(this.rewardAddressHrp[network], address);
         if (!data || data.length !== 29) {
