@@ -12,6 +12,10 @@
     "noEmit": true,
     "baseUrl": "."
   },
-  "include": ["src"],
-  "exclude": ["../**/*.test.ts", "../tests/**", "../node_modules/**"]
+  "include": [
+    "src/**/*", "src/**/*.ts"
+  ],
+  "exclude": [
+    "../**/*.test.ts", "../tests/**", "../node_modules/**"
+  ]
 }
