@@ -1,4 +1,28 @@
 {
+    "Algorand": {
+        "name": "Algorand",
+        "seed": "3be138b36c013fc797d9a897dfeb57c82bfa43f32509753140d851bc88be0fbe5a0abe984e0ca0678749952a1b1f99853ce30b0c388a4da38e2a65c5d1f23e9b",
+        "root-xprivate-key": "xprv3QESAWYc9vDdZfSSV961AhBP9xiVn2AbVnogWgvY4JUr8akGaVBeTVAA4PkKGZRc5qARyS7icBJtYAcwHh4NzqhjhNt9djtfmPfBBY9KxJUL4FAyosZKtdWVWRC4u4UW1F13RfHt7hqbj78cyxv6QUF",
+        "root-xpublic-key": "xpub661MyMwAqRbcFsvr7uTkLDfTbW9E8XS4mnToUK3qytPukrTTA8HM3Xgm4pzUH2W5QLPShuKyeX56NmhRD4tyiBTh6X8qz73eha9M6nCTuEE",
+        "root-private-key": "d87a73c754bedc63c1a3cb21755d716c1b5775aa6a44c2e98138f161c4ccfa509f0aa44aa6ef7e969e3735da9805eac46da3f8f1ef983c65ebe3a9595357de99",
+        "root-chain-code": "8633bfaef62e4fd738b3b9abefe751431b91ba8d09d65a5cf2f915d50d9b53b8",
+        "root-public-key": "009c5077f61dff6c5211b0162f6f9479041c6e523c15ae10a2111ee6f1532863d2",
+        "derivation": {
+            "path": "m/44'/283'/0'/0/0",
+            "depth": 5,
+            "index": 0,
+            "indexes": [2147483692, 2147483931, 2147483648, 0, 0 ],
+            "xprivate-key": "xprv3TY6B2jMcFr91GF5ZN6EbFvU99yAf5rF89WrY2JgB8MSi7dveTqq6j1ycijVdebsCbvE1kD3uyv6mHJKyWHkhvDdMaQRygmJ82LhhKogxmw3kcmwRjDTz3KCpsP8k1ouFeQXSvuTohhHDgKUXUuucRX",
+            "xpublic-key": "xpub6H8Xo2cPahyvA8eTVLKaUvRPT6mJUTV2rbDnAqCFxPdmAtwmhUSqp3eppcCHs7gvhsn67MTQRHDZHwrmWwJTYGLaEgLxokLHq9cwqVjb3nU",
+            "private-key": "78d58e2b0e2d619b1b9716687fec49a5b84f14075540bfd32d90961825ada856d560257e38d3ab0d53951ac5fd00808c153ff3ac49dd62e7781008ade989780f",
+            "chain-code": "af84a8e89e1026b464d8705fca13d9cc5725c97ecf446c04f2072db6306dea46",
+            "public-key": "0092274693311b50f943dde72d4b129f696b30c47d3795a96beea031b9de31a8fd",
+            "hash": "e3de45fc02835761cdc6aa4d91c2bc9ee7839594",
+            "fingerprint": "e3de45fc",
+            "parent-fingerprint": "e96102d2",
+            "address": "SITUNEZRDNIPSQ6544WUWEU7NFVTBRD5G6K2S27OUAY3TXRRVD6UDYEYZU"
+        }
+    },
     "BIP32": {
         "name": "BIP32",
         "seed": "ff5a325f6eeaf59ee9576aa7f108d44ffd989a1218c3ce002285d6df71a064fcd66bce6837a49a44f4073d3839109f770b14b6f9a3cac2b26c6f0ef9dec5f462",
