@@ -1,9 +1,6 @@
 SEEDS
 =====
 
-.. js:autoclass:: seed.Seed
-   :members:
-
 .. js:autoclass:: index.SEEDS
    :members:
 
@@ -26,8 +23,14 @@ SEEDS
       * - Monero
         - :js:class:`monero.MoneroSeed`
 
+.. js:autoclass:: seed.Seed
+   :members:
+
+
 .. js:autoclass:: algorand.AlgorandSeed
    :members:
+
+.. code-block:: javascript
 
    const { SEEDS, AlgorandSeed } = await import('./src/seeds/index.js');
    SEEDS.getNames()
@@ -51,6 +54,8 @@ SEEDS
 
 .. js:autoclass:: bip39.BIP39Seed
    :members:
+
+.. code-block:: javascript
 
    const { SEEDS, BIP39Seed } = await import('./src/seeds/index.js');
    SEEDS.getNames()
@@ -80,6 +85,8 @@ SEEDS
 
 .. js:autoclass:: cardano.CardanoSeed
    :members:
+
+.. code-block:: javascript
 
    const { SEEDS, CardanoSeed } = await import('./src/seeds/index.js');
    SEEDS.getNames()
@@ -114,6 +121,8 @@ SEEDS
 .. js:autoclass:: monero.MoneroSeed
    :members:
 
+.. code-block:: javascript
+
    const { SEEDS, MoneroSeed } = await import('./src/seeds/index.js');
    SEEDS.getNames()
    console.log(SEEDS.getNames());
@@ -142,6 +151,8 @@ SEEDS
 .. js:autoclass:: electrum/v1.ElectrumV1Seed
    :members:
 
+.. code-block:: javascript
+
    const { SEEDS, ElectrumV1Seed } = await import('./src/seeds/index.js');
    SEEDS.getNames()
    console.log(SEEDS.getNames());
@@ -169,6 +180,8 @@ SEEDS
 
 .. js:autoclass:: electrum/v2.ElectrumV2Seed
    :members:
+
+.. code-block:: javascript
 
    const { SEEDS, ElectrumV2Seed } = await import('./src/seeds/index.js');
    SEEDS.getNames()

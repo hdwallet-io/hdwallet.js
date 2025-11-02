@@ -1,9 +1,6 @@
 Derivations
 ===========
 
-.. js:autoclass:: derivation.Derivation
-   :members:
-
 .. js:autoclass:: index.DERIVATIONS
    :members:
 
@@ -31,9 +28,15 @@ Derivations
         - :js:class:`monero.MoneroDerivation`
       * - HDW
         - :js:class:`hdw.HDWDerivation`
+        
+.. js:autoclass:: derivation.Derivation
+   :members:
+
 
 .. js:autoclass:: bip44.BIP44Derivation
    :members:
+
+.. code-block:: javascript
 
    const { DERIVATIONS, BIP44Derivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
@@ -82,6 +85,8 @@ Derivations
 .. js:autoclass:: bip49.BIP49Derivation
    :members:
 
+.. code-block:: javascript
+
    const { DERIVATIONS, BIP49Derivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
    console.log('DERIVATIONS.getNames()');
@@ -126,6 +131,8 @@ Derivations
 
 .. js:autoclass:: bip84.BIP84Derivation
    :members:
+
+.. code-block:: javascript
 
    const { DERIVATIONS, BIP84Derivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
@@ -173,6 +180,8 @@ Derivations
 .. js:autoclass:: bip86.BIP86Derivation
    :members:
 
+.. code-block:: javascript
+
    const { DERIVATIONS, BIP86Derivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
    console.log(DERIVATIONS.getNames());
@@ -219,6 +228,8 @@ Derivations
 .. js:autoclass:: cip1852.CIP1852Derivation
    :members:
 
+.. code-block:: javascript
+
    const { DERIVATIONS, CIP1852Derivation, ROLES } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
    console.log(DERIVATIONS.getNames());
@@ -263,6 +274,8 @@ Derivations
 .. js:autoclass:: custom.CustomDerivation
    :members:
 
+.. code-block:: javascript
+
    const { DERIVATIONS, CustomDerivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
    console.log(DERIVATIONS.getNames());
@@ -295,6 +308,8 @@ Derivations
 
 .. js:autoclass:: electrum.ElectrumDerivation
    :members:
+
+.. code-block:: javascript
 
    const { DERIVATIONS, ElectrumDerivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
@@ -332,6 +347,8 @@ Derivations
 
 .. js:autoclass:: hdw.HDWDerivation
    :members:
+
+.. code-block:: javascript
 
    const { DERIVATIONS, HDWDerivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()
@@ -371,6 +388,8 @@ Derivations
 
 .. js:autoclass:: monero.MoneroDerivation
    :members:
+
+.. code-block:: javascript
 
    const { DERIVATIONS, MoneroDerivation } = await import('./src/derivations/index.js');
    DERIVATIONS.getNames()

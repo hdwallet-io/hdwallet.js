@@ -3,15 +3,6 @@ Utility
 
 .. currentmodule:: utils
 
-Overview
---------
-This module provides general-purpose utility functions for handling bytes, 
-strings, integers, encoding/decoding, random data, HMAC seeds, derivation paths, 
-and type validation.
-
-Functions
----------
-
 .. js:autofunction:: getBytes
 
 .. js:autofunction:: toBuffer

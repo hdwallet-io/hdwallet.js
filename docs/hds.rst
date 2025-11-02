@@ -40,34 +40,67 @@ HD's
 .. js:autoclass:: algorand.AlgorandHD
    :members:
 
+   **Example:**  
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/algorand.ts
+
 .. js:autoclass:: bip32.BIP32HD
    :members:
+
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/bip32.ts
 
 .. js:autoclass:: bip44.BIP44HD
    :members:
 
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/bip44.ts
+
 .. js:autoclass:: bip49.BIP49HD
    :members:
+
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/bip49.ts
 
 .. js:autoclass:: bip84.BIP84HD
    :members:
 
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/bip84.ts
+
 .. js:autoclass:: bip86.BIP86HD
    :members:
+
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/bip86.ts
 
 .. js:autoclass:: bip141.BIP141HD
    :members:
 
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/bip141.ts
+
 .. js:autoclass:: cardano.CardanoHD
    :members:
+
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/tree/master/examples/hds/cardano
 
 .. js:autoclass:: electrum/v1.ElectrumV1HD
    :members:
 
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/electrum/v1.ts
+
 .. js:autoclass:: electrum/v2.ElectrumV2HD
    :members:
 
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/tree/master/examples/hds/electrum/v2
+
 .. js:autoclass:: monero.MoneroHD
    :members:
+
+   **Example:**
+   https://github.com/hdwallet-io/hdwallet.js/blob/master/examples/hds/monero.ts
 
 

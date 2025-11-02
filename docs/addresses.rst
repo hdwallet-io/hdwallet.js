@@ -5,79 +5,81 @@ Addresses
    :members:
 
    .. list-table::
-        :header-rows: 1
-        :widths: 30 70
+	   :header-rows: 1
+	   :widths: 30 70
 
-        * - Name
-         - Class
-        * - Address
-         - :js:class:`address.Address`
-        * - AlgorandAddress
-         - :js:class:`algorand.AlgorandAddress`
-        * - AptosAddress
-         - :js:class:`aptos.AptosAddress`
-        * - AvalancheAddress
-         - :js:class:`avalanche.AvalancheAddress`
-        * - CardanoAddress
-         - :js:class:`cardano.CardanoAddress`
-        * - CosmosAddress
-         - :js:class:`cosmos.CosmosAddress`
-        * - EOSAddress
-         - :js:class:`eos.EOSAddress`
-        * - ErgoAddress
-         - :js:class:`ergo.ErgoAddress`
-        * - EthereumAddress
-         - :js:class:`ethereum.EthereumAddress`
-        * - FilecoinAddress
-         - :js:class:`filecoin.FilecoinAddress`
-        * - HarmonyAddress
-         - :js:class:`harmony.HarmonyAddress`
-        * - IconAddress
-         - :js:class:`icon.IconAddress`
-        * - InjectiveAddress
-         - :js:class:`injective.InjectiveAddress`
-        * - MoneroAddress
-         - :js:class:`monero.MoneroAddress`
-        * - MultiversXAddress
-         - :js:class:`multiversx.MultiversXAddress`
-        * - NanoAddress
-         - :js:class:`nano.NanoAddress`
-        * - NearAddress
-         - :js:class:`near.NearAddress`
-        * - NeoAddress
-         - :js:class:`neo.NeoAddress`
-        * - OKTChainAddress
-         - :js:class:`okt-chain.OKTChainAddress`
-        * - P2PKHAddress
-         - :js:class:`p2pkh.P2PKHAddress`
-        * - P2SHAddress
-         - :js:class:`p2sh.P2SHAddress`
-        * - P2TRAddress
-         - :js:class:`p2tr.P2TRAddress`
-        * - P2WPKHInP2SHAddress
-         - :js:class:`p2wpkh-in-p2sh.P2WPKHInP2SHAddress`
-        * - P2WPKHAddress
-         - :js:class:`p2wpkh.P2WPKHAddress`
-        * - P2WSHInP2SHAddress
-         - :js:class:`p2wsh-in-p2sh.P2WSHInP2SHAddress`
-        * - P2WSHAddress
-         - :js:class:`p2wsh.P2WSHAddress`
-        * - RippleAddress
-         - :js:class:`ripple.RippleAddress`
-        * - SolanaAddress
-         - :js:class:`solana.SolanaAddress`
-        * - StellarAddress
-         - :js:class:`stellar.StellarAddress`
-        * - SuiAddress
-         - :js:class:`sui.SuiAddress`
-        * - TezosAddress
-         - :js:class:`tezos.TezosAddress`
-        * - TronAddress
-         - :js:class:`tron.TronAddress`
-        * - XinFinAddress
-         - :js:class:`xinfin.XinFinAddress`
-        * - ZilliqaAddress
-         - :js:class:`zilliqa.ZilliqaAddress`
+	   * - Name
+	     - Class
+	   * - Address
+	     - :js:class:`address.Address`
+	   * - AlgorandAddress
+	     - :js:class:`algorand.AlgorandAddress`
+	   * - AptosAddress
+	     - :js:class:`aptos.AptosAddress`
+	   * - AvalancheAddress
+	     - :js:class:`avalanche.AvalancheAddress`
+	   * - CardanoAddress
+	     - :js:class:`cardano.CardanoAddress`
+	   * - CosmosAddress
+	     - :js:class:`cosmos.CosmosAddress`
+	   * - EOSAddress
+	     - :js:class:`eos.EOSAddress`
+	   * - ErgoAddress
+	     - :js:class:`ergo.ErgoAddress`
+	   * - EthereumAddress
+	     - :js:class:`ethereum.EthereumAddress`
+	   * - FilecoinAddress
+	     - :js:class:`filecoin.FilecoinAddress`
+	   * - HarmonyAddress
+	     - :js:class:`harmony.HarmonyAddress`
+	   * - IconAddress
+	     - :js:class:`icon.IconAddress`
+	   * - InjectiveAddress
+	     - :js:class:`injective.InjectiveAddress`
+	   * - MoneroAddress
+	     - :js:class:`monero.MoneroAddress`
+	   * - MultiversXAddress
+	     - :js:class:`multiversx.MultiversXAddress`
+	   * - NanoAddress
+	     - :js:class:`nano.NanoAddress`
+	   * - NearAddress
+	     - :js:class:`near.NearAddress`
+	   * - NeoAddress
+	     - :js:class:`neo.NeoAddress`
+	   * - OKTChainAddress
+	     - :js:class:`okt-chain.OKTChainAddress`
+	   * - P2PKHAddress
+	     - :js:class:`p2pkh.P2PKHAddress`
+	   * - P2SHAddress
+	     - :js:class:`p2sh.P2SHAddress`
+	   * - P2TRAddress
+	     - :js:class:`p2tr.P2TRAddress`
+	   * - P2WPKHInP2SHAddress
+	     - :js:class:`p2wpkh-in-p2sh.P2WPKHInP2SHAddress`
+	   * - P2WPKHAddress
+	     - :js:class:`p2wpkh.P2WPKHAddress`
+	   * - P2WSHInP2SHAddress
+	     - :js:class:`p2wsh-in-p2sh.P2WSHInP2SHAddress`
+	   * - P2WSHAddress
+	     - :js:class:`p2wsh.P2WSHAddress`
+	   * - RippleAddress
+	     - :js:class:`ripple.RippleAddress`
+	   * - SolanaAddress
+	     - :js:class:`solana.SolanaAddress`
+	   * - StellarAddress
+	     - :js:class:`stellar.StellarAddress`
+	   * - SuiAddress
+	     - :js:class:`sui.SuiAddress`
+	   * - TezosAddress
+	     - :js:class:`tezos.TezosAddress`
+	   * - TronAddress
+	     - :js:class:`tron.TronAddress`
+	   * - XinFinAddress
+	     - :js:class:`xinfin.XinFinAddress`
+	   * - ZilliqaAddress
+	     - :js:class:`zilliqa.ZilliqaAddress`
+
+
 
 .. js:autoclass:: address.Address
    :members:

@@ -1,9 +1,6 @@
 ENTROPIES
 ==========
 
-.. js:autoclass:: entropy.Entropy
-   :members:
-
 .. js:autoclass:: index.ENTROPIES
    :members:
 
@@ -24,10 +21,14 @@ ENTROPIES
       * - Monero
         - :js:class:`monero.MoneroEntropy`
 
+.. js:autoclass:: entropy.Entropy
+   :members:
 
 
 .. js:autoclass:: algorand.AlgorandEntropy
    :members:
+
+.. code-block:: javascript
 
    const { ENTROPIES, AlgorandEntropy, ALGORAND_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
    ENTROPIES.names()
@@ -54,6 +55,8 @@ ENTROPIES
 .. js:autoclass:: bip39.BIP39Entropy
    :members:
 
+.. code-block:: javascript
+
    const { ENTROPIES, BIP39Entropy } = await import('./src/entropies/index.js');
    ENTROPIES.names()
    console.log(ENTROPIES.getNames());
@@ -75,6 +78,7 @@ ENTROPIES
 .. js:autoclass:: monero.MoneroEntropy
    :members:
 
+.. code-block:: javascript
 
    const { ENTROPIES, MoneroEntropy, MONERO_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
    ENTROPIES.names()
@@ -109,6 +113,8 @@ ENTROPIES
 .. js:autoclass:: electrum/v1.ElectrumV1Entropy
    :members:
 
+.. code-block:: javascript
+
    const { ENTROPIES, ElectrumV1Entropy, ELECTRUM_V1_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
    ENTROPIES.names()
    console.log(ENTROPIES.getNames());
@@ -138,6 +144,8 @@ ENTROPIES
 
 .. js:autoclass:: electrum/v2.ElectrumV2Entropy
    :members:
+
+.. code-block:: javascript
 
    const { ENTROPIES, ElectrumV2Entropy, ELECTRUM_V2_ENTROPY_STRENGTHS } = await import('./src/entropies/index.js');
    ENTROPIES.names()

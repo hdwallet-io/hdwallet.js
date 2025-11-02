@@ -1,9 +1,6 @@
 MNEMONICS
 ==========
 
-.. js:autoclass:: mnemonic.Mnemonic
-   :members:
-
 .. js:autoclass:: index.MNEMONICS
    :members:
 
@@ -24,8 +21,13 @@ MNEMONICS
       * - Monero
         - :js:class:`monero.mnemonic.MoneroMnemonic`
 
+.. js:autoclass:: mnemonic.Mnemonic
+   :members:
+
 .. js:autoclass:: algorand/mnemonic.AlgorandMnemonic
    :members:
+
+.. code-block:: javascript
 
    const { MNEMONICS, AlgorandMnemonic, ALGORAND_MNEMONIC_STRENGTHS } = await import('./src/mnemonics/index.js');
    MNEMONICS.names()
@@ -49,6 +51,8 @@ MNEMONICS
 
 .. js:autoclass:: bip39/mnemonic.BIP39Mnemonic
    :members:
+
+.. code-block:: javascript
 
     const { MNEMONICS, BIP39Mnemonic, BIP39_MNEMONIC_STRENGTHS } = await import('./src/mnemonics/index.js');
     MNEMONICS.names()
@@ -76,6 +80,8 @@ MNEMONICS
 .. js:autoclass:: electrum/v1/mnemonic.ElectrumV1Mnemonic
    :members:
 
+.. code-block:: javascript
+
    const { MNEMONICS, ElectrumV1Mnemonic, ELECTRUM_V1_MNEMONIC_WORDS, ELECTRUM_V1_MNEMONIC_LANGUAGES } = await import('./src/mnemonics/index.js');
    MNEMONICS.names()
    console.log(MNEMONICS.getNames());
@@ -102,6 +108,8 @@ MNEMONICS
 
 .. js:autoclass:: electrum/v2/mnemonic.ElectrumV2Mnemonic
    :members:
+
+.. code-block:: javascript
 
     const { MNEMONICS, ElectrumV2Mnemonic, ELECTRUM_V2_MNEMONIC_WORDS, ELECTRUM_V2_MNEMONIC_LANGUAGES, ELECTRUM_V2_MNEMONIC_TYPES } = await import('./src/mnemonics/index.js');
     MNEMONICS.names()
@@ -134,6 +142,8 @@ MNEMONICS
 
 .. js:autoclass:: monero/mnemonic.MoneroMnemonic
    :members:
+
+.. code-block:: javascript
 
     const { MNEMONICS, MoneroMnemonic, MONERO_MNEMONIC_STRENGTHS } = await import('./src/mnemonics/index.js');
     MNEMONICS.names()
