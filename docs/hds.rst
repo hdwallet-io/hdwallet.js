@@ -1,5 +1,5 @@
-HD's
-====
+Hierarchical Deterministic’s
+============================
 
 .. js:autoclass:: index.HDS
    :members:

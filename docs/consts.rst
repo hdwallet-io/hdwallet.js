@@ -1,5 +1,5 @@
-Consts Module
-=============
+Constant Values
+===============
 
 .. js:autoattribute:: consts.SLIP10_ED25519_CONST
 

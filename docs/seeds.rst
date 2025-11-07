@@ -1,4 +1,4 @@
-SEEDS
+Seeds
 =====
 
 .. js:autoclass:: index.SEEDS

@@ -1,5 +1,5 @@
-ENTROPIES
-==========
+Entropies
+=========
 
 .. js:autoclass:: index.ENTROPIES
    :members:

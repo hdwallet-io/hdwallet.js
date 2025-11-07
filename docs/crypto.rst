@@ -1,5 +1,5 @@
-Cryptography 
-============
+Crypto
+======
 
 .. currentmodule:: hashes
 

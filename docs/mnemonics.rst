@@ -1,5 +1,5 @@
-MNEMONICS
-==========
+Mnemonics
+=========
 
 .. js:autoclass:: index.MNEMONICS
    :members:
