@@ -219,7 +219,6 @@ export interface HDWalletOptionsInterface {
   addressPrefix?: string;
   language?: string;
   passphrase?: string | null;
-  useDefaultPath?: boolean;
   stakingPublicKey?: string;
   paymentID?: string;
   semantic?: string;

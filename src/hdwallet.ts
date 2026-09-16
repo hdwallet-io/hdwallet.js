@@ -45,7 +45,6 @@ export class HDWallet {
   private mnemonicType?: string;
   private publicKeyType?: string;
   private cardanoType?: string;
-  private useDefaultPath = true;
   private checksum = true;
   private stakingPublicKey?: string;
   private paymentID?: string;
@@ -126,7 +125,6 @@ export class HDWallet {
 
     this.language = options.language ?? 'english';
     this.passphrase = options.passphrase ?? null;
-    this.useDefaultPath = options.useDefaultPath ?? false;
     this.stakingPublicKey = options.stakingPublicKey;
     this.paymentID = options.paymentID;
 
